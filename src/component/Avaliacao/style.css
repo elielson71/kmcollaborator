@@ -1,0 +1,18 @@
+*{
+    padding:0;
+margin:0;
+
+}
+#avaliacao{
+    display: flex;
+    padding: 4%;
+}
+.card.shadow.mb-4{
+    margin-right: 10%;
+}
+select{
+        margin-bottom: 5%;
+}
+.corpo_avaliacao{
+    padding: 20px;
+}
