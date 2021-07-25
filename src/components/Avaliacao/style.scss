@@ -1,0 +1,53 @@
+#avaliacao {
+  
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0% 5% 2% 5%;
+    padding: 10px 10px 10px 10px;
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      margin-top: 3%;
+      text-align: center;
+      span {
+        margin-bottom: 10%;
+      }
+      padding-left: 10px;
+    }
+    .contex {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      justify-content: space-between;
+      span {
+        margin-bottom: 5%;
+      }
+    }
+    .info-user {
+      margin-top: 10px;
+      button {
+        align-items: center;
+        padding: 65%;
+        height: 20%;
+        border-radius: 50%;
+        display: flex;
+        justify-items: center;
+        background-color: #0d6efd;
+        border-style: solid;
+        border-color: #0d6efd;
+      }
+    }
+    .button {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-content: flex-end;
+      align-items: flex-end;
+      button {
+        width: 100%;
+      }
+    }
+  }

@@ -1,0 +1,61 @@
+#Question {
+    margin-bottom: 4%;
+    width: 50%;
+    .card-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .card.shadow.mb-6 {
+        margin-bottom: 4%;
+    }
+    label {
+        font-size: smaller;
+        margin-bottom: 2%;
+    }
+    input {
+        margin-bottom: 2%;
+    }
+    textarea#floatingTextarea2 {
+        border-color: #fff;
+        border-bottom-color: #55545436;
+
+        height: 60px;
+        overflow-y: hidden;
+
+        margin-bottom: 1%;
+        :focus-visible {
+            border-color: #fff;
+            border-bottom-color: #080707;
+        }
+    }
+    .button {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            padding: 2%;
+            border: none;
+            color: blue;
+            margin: 5px 2px 0px 15px;
+            background: none;
+            :hover {
+                color: #080707;
+            }
+        }
+    }
+    .form-floating {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        .tipo-resposta {
+            select {
+                font-size: small;
+            }
+        }
+    }
+    ::-webkit-input-placeholder {
+        color: rgba(143, 143, 143, 0.719);
+    }
+}

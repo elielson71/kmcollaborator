@@ -1,0 +1,24 @@
+#avaliacao {
+    margin: 1%;
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        padding: 3%;
+        .Responsavel {
+            width: 20%;
+        }
+        .form-group {
+            width: 40%;
+        }
+    }
+    .listQuestion{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-left: 30px;
+    }
+ 
+}

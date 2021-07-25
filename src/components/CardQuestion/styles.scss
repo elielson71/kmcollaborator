@@ -1,0 +1,42 @@
+#card-questao{    
+        display: flex;
+        flex-direction: row;
+        margin: 2%;
+        margin-top: 0%;
+        .card {
+            padding: 1%;
+            margin: 1%;
+            text-align: center;
+            width: 250px;
+            min-height: 300px;
+            .card-bory {
+                display: flex;
+                flex-direction: column;
+                justify-items: end;
+                height: 100%;
+                justify-content: space-around;
+            }
+        }
+        .card-title {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10%;
+            
+        }
+        .titulo-pergunta {
+            margin-bottom: 10%;
+            min-height: 175px;
+            max-height: 175px;
+        }
+        .info-pergunta {
+            display: flex;
+            text-align: start;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 10%;
+            margin-bottom: 10%;
+        }
+        .btn{
+            margin-bottom: 10%;
+        }
+}
