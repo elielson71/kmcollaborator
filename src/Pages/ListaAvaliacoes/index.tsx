@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Avaliacao } from "../../components/Avaliacao/";
 import { Button } from "../../components/Button";
 
@@ -19,6 +20,7 @@ type propsAssessments = {
 
 export function ListaAvaliacoes() {
     const [assessments, setAssessments] = useState<propsAssessments[]>([])
+    const history = useHistory();
     useEffect(() => {
         setAssessments([{
             idAssessments: 1,
@@ -28,7 +30,7 @@ export function ListaAvaliacoes() {
             responsavel: "Elielson da Silva Santos",
             //avatar: <div><i className="fas fa-user-tie"></i></div>
         }, {
-            idAssessments: 1,
+            idAssessments: 2,
             departamento: "suporte",
             nivel: "facil",
             title: "Avaliação para iniciante no suporte tecnico ",
@@ -38,10 +40,18 @@ export function ListaAvaliacoes() {
     }
 
         , [])
+
+    function handleCreatAssem(event:FormEvent){
+        event.preventDefault();
+        alert("ok")
+        history.push('/avaliacao')
+    }
+
+        
     return (
         <div id="listaAvaliacao">
             <header>
-                <Button text="CRIAR NOVA AVALIAÇÃO" />
+                <Button to='/avaliacao'>CRIAR NOVA AVALIAÇÃO</Button>
                 <h2>Lista de Avaliacoes</h2>
                 <span>KMC</span>
             </header>

@@ -1,75 +1,82 @@
-import { useEffect, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 
 import './style.scss'
 import { Button } from '../../components/Button';
 import { CardQuestion } from '../../components/CardQuestion';
+import { useHistory } from 'react-router-dom';
 
 type Question = {
-    idQuestion:number,
+    idQuestion: number,
     title: string,
     departamento: string,
     nivel: string
 
 }
 
-export const Avaliacao = () => {
+export const CadAvaliacao = () => {
     const [Questions, setQuestion] = useState<Question[]>([]);
+    const history = useHistory();
     useEffect(() => {
         setQuestion([{
-            idQuestion:1,
+            idQuestion: 1,
             title: "A empresa que você está atendendo tem apenas um colaborador ",
             departamento: "suporte",
             nivel: "facil"
         }, {
-            idQuestion:2,
+            idQuestion: 2,
             title: "A",
             departamento: "suporte",
             nivel: "facil"
-        },{
-            idQuestion:1,
+        }, {
+            idQuestion: 3,
             title: "A empresa que você está atendendo tem apenas um colaborador ",
             departamento: "suporte",
             nivel: "facil"
         }, {
-            idQuestion:2,
+            idQuestion: 4,
             title: "A",
             departamento: "suporte",
             nivel: "facil"
-        },{
-            idQuestion:1,
+        }, {
+            idQuestion: 5,
             title: "A empresa que você está atendendo tem apenas um colaborador ",
             departamento: "suporte",
             nivel: "facil"
         }, {
-            idQuestion:2,
+            idQuestion: 6,
             title: "A",
             departamento: "suporte",
             nivel: "facil"
-        },{
-            idQuestion:1,
+        }, {
+            idQuestion: 7,
             title: "A empresa que você está atendendo tem apenas um colaborador ",
             departamento: "suporte",
             nivel: "facil"
         }, {
-            idQuestion:2,
+            idQuestion: 8,
             title: "A",
             departamento: "suporte",
             nivel: "facil"
-        },{
-            idQuestion:1,
+        }, {
+            idQuestion: 9,
             title: "A empresa que você está atendendo tem apenas um colaborador ",
             departamento: "suporte",
             nivel: "facil"
         }, {
-            idQuestion:2,
+            idQuestion: 10,
             title: "A",
             departamento: "suporte",
             nivel: "facil"
         }])
     }
         , [])
+
+    function handleCreateAssessments(event: FormEvent) {
+        event.preventDefault();
+        history.push('/')
+    }
     return (
-        <div id="avaliacao">
+        <form onSubmit={handleCreateAssessments} id="cad-avaliacao">
             <header>
                 <div className="Responsavel">
                     <label htmlFor="Responsavel">Responsável</label>
@@ -84,9 +91,9 @@ export const Avaliacao = () => {
                     <input className="form-control" type="text" placeholder="Digite Titulo da Avaliação" />
                 </div>
                 <div>
-                    <button type="button" className="btn btn-success btn-lg btn-block" >Salvar Avaliacao</button>
+                    <button type="submit"  className="btn btn-success btn-lg btn-block" >Salvar Avaliacao</button>
                 </div><div>
-                    <Button text="CRIAR NOVA QUESTÃO" />
+                    <Button to='/question'>CRIAR NOVA QUESTÃO </Button>
                 </div>
             </header>
             <div className="listQuestion">
@@ -101,7 +108,7 @@ export const Avaliacao = () => {
                     ))
                 }
             </div>
-        </div>
+        </form>
     )
 };
 

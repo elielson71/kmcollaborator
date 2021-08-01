@@ -1,12 +1,20 @@
-//import {BrowserRouter} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 //import './App.css';
-import { Avaliacao } from './Pages/CadastroAvaliacao'
+import { CadAvaliacao } from './Pages/CadastroAvaliacao'
 import { RegisterQuestion } from './Pages/RegisterQuestion';
 import { ListaAvaliacoes } from './/Pages/ListaAvaliacoes'
 
 function App() {
   return (
-      <RegisterQuestion />
+    
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact component={ListaAvaliacoes} />
+        <Route path="/avaliacao"  component={CadAvaliacao} />
+        <Route path="/question"  component={RegisterQuestion} />
+        
+      </Switch>
+    </BrowserRouter>
   );
 }
 

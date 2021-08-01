@@ -1,17 +1,21 @@
-//import {Children, ReactNode} from 'react'
+import {  ReactNode,} from 'react'
+import { Link } from 'react-router-dom'
 import './style.scss'
 
-type ButtonPops = {
-    text: string;
-    //children:ReactNode,
-}
 
-export function Button(props: ButtonPops) {
+type typeProps={
+    children:ReactNode,
+    to:string
+}
+export function Button(props: typeProps,) {
+    const {children,to}=props
     return (
         <div id="button">
-            <button className='btn btn-primary btn-lg btn-block' >
-                {props.text}
-            </button>
+            <Link  to={to} className='btn btn-primary btn-lg btn-block'>
+                {children}
+            </Link>
+            
+            
         </div>
     )
 }
