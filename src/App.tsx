@@ -9,10 +9,9 @@ function App() {
     
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={ListaAvaliacoes} />
-        <Route path="/avaliacao"  component={CadAvaliacao} />
-        <Route path="/question"  component={RegisterQuestion} />
-        
+        <Route path="/avaliacao" exact component={ListaAvaliacoes} />
+        <Route path="/avaliacao/new"  component={CadAvaliacao} />
+        <Route path="/question/new"  component={RegisterQuestion} />
       </Switch>
     </BrowserRouter>
   );

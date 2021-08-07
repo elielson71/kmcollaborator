@@ -1,19 +1,19 @@
-import {  ReactNode,} from 'react'
-import { Link } from 'react-router-dom'
+import {  ButtonHTMLAttributes, ReactNode,} from 'react'
+//import { Link as button } from 'react-router-dom'
 import './style.scss'
 
 
-type typeProps={
+type typeProps= ButtonHTMLAttributes<HTMLButtonElement> &{
     children:ReactNode,
-    to:string
+    onClick?:any
 }
 export function Button(props: typeProps,) {
-    const {children,to}=props
+    const {children,onClick}=props
     return (
         <div id="button">
-            <Link  to={to} className='btn btn-primary btn-lg btn-block'>
+            <button onClick={onClick} className='btn btn-primary btn-lg btn-block'>
                 {children}
-            </Link>
+            </button>
             
             
         </div>

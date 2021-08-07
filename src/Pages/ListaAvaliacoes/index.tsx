@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Avaliacao } from "../../components/Avaliacao/";
 import { Button } from "../../components/Button";
@@ -41,17 +41,17 @@ export function ListaAvaliacoes() {
 
         , [])
 
-    function handleCreatAssem(event:FormEvent){
+    /*function handleCreatAssem(event:FormEvent){
         event.preventDefault();
         alert("ok")
         history.push('/avaliacao')
-    }
+    }*/
 
         
     return (
         <div id="listaAvaliacao">
             <header>
-                <Button to='/avaliacao'>CRIAR NOVA AVALIAÇÃO</Button>
+                <Button onClick={()=>{history.push('/avaliacao/new')}}>CRIAR NOVA AVALIAÇÃO</Button>
                 <h2>Lista de Avaliacoes</h2>
                 <span>KMC</span>
             </header>

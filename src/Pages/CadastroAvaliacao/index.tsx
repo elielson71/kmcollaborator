@@ -3,12 +3,13 @@ import { FormEvent, useEffect, useState } from 'react'
 import './style.scss'
 import { Button } from '../../components/Button';
 import { CardQuestion } from '../../components/CardQuestion';
-import { useHistory } from 'react-router-dom';
+import { useHistory,Link } from 'react-router-dom';
+import axios from 'axios';
 
 type Question = {
-    idQuestion: number,
-    title: string,
-    departamento: string,
+    id_perguntas: number,
+    conteudo: string,
+    id_departamento: string,
     nivel: string
 
 }
@@ -16,58 +17,20 @@ type Question = {
 export const CadAvaliacao = () => {
     const [Questions, setQuestion] = useState<Question[]>([]);
     const history = useHistory();
+
+     async function QuestionsAPi(){
+        const q = await axios.get<Question[]>('http://localhost:3001/questions')
+            setQuestion(q.data)
+    }
+    
+    /* id_perguntas: 296,
+              conteudo: 'Qual é seu nome?',
+              id_responsavel: 1,
+              id_departamento: 1,
+              nivel: 'F'*/
     useEffect(() => {
-        setQuestion([{
-            idQuestion: 1,
-            title: "A empresa que você está atendendo tem apenas um colaborador ",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 2,
-            title: "A",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 3,
-            title: "A empresa que você está atendendo tem apenas um colaborador ",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 4,
-            title: "A",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 5,
-            title: "A empresa que você está atendendo tem apenas um colaborador ",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 6,
-            title: "A",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 7,
-            title: "A empresa que você está atendendo tem apenas um colaborador ",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 8,
-            title: "A",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 9,
-            title: "A empresa que você está atendendo tem apenas um colaborador ",
-            departamento: "suporte",
-            nivel: "facil"
-        }, {
-            idQuestion: 10,
-            title: "A",
-            departamento: "suporte",
-            nivel: "facil"
-        }])
+        QuestionsAPi()
+
     }
         , [])
 
@@ -80,8 +43,8 @@ export const CadAvaliacao = () => {
             <header>
                 <div className="Responsavel">
                     <label htmlFor="Responsavel">Responsável</label>
-                    <select className="form-select" aria-label="Default select example" defaultValue="1">
-                        <option selected>Selecione o Responsável</option>
+                    <select className="form-select" aria-label="Default select example" defaultValue="0">
+                        <option value='0'>Selecione o Responsável</option>
                         <option value="1">Elielson da Silva Santos</option>
                         <option value="2">Junior</option>
                     </select>
@@ -91,19 +54,19 @@ export const CadAvaliacao = () => {
                     <input className="form-control" type="text" placeholder="Digite Titulo da Avaliação" />
                 </div>
                 <div>
-                    <button type="submit"  className="btn btn-success btn-lg btn-block" >Salvar Avaliacao</button>
+                    <button type="submit" className="btn btn-success btn-lg btn-block" >Salvar Avaliacao</button>
                 </div><div>
-                    <Button to='/question'>CRIAR NOVA QUESTÃO </Button>
+                    <Link to={'/question/new'}><Button>CRIAR NOVA QUESTÃO </Button></Link>
                 </div>
             </header>
             <div className="listQuestion">
                 {
                     Questions.map(question => (
                         <CardQuestion
-                            key={question.idQuestion}
-                            title={question.title}
+                            key={question.id_perguntas}
+                            title={question.conteudo}
                             nivel={question.nivel}
-                            departamento={question.departamento}
+                            departamento={question.id_departamento}
                         />
                     ))
                 }

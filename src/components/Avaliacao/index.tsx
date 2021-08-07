@@ -22,7 +22,7 @@ export function Avaliacao(props: propsAssessments) {
             </div>
 
             <div className="contex">
-                <Button to='#' >RESPONDER AVALIAÇÃO </Button>
+                <Button  >RESPONDER AVALIAÇÃO </Button>
                 <h2>{props.titulo}</h2>
                 <span>Responsavel: {props.responsavel}</span>
             </div>

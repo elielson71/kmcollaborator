@@ -2,73 +2,106 @@ import { useState } from 'react';
 import './styles.scss'
 import { Button } from '../../components/Button';
 import { ListAnswer } from '../../components/ListAnswer';
-
-interface List {
-    id: number
-    value: string
-    type: string
-}
-type Answer = {
-    idAnswer: number
-    content: string
-    id_question: number
-    selectedType: string
-}
+import { QuestionInfo } from '../../components/QuestionInfo';
+import axios from 'axios'
+import { Link, useHistory } from 'react-router-dom';
+import { typeAnswer, typeInfo, typeQuestion } from '../../components/Interface'
 let count = 1;
 let countAnswer = 0;
 export function RegisterQuestion() {
-    const [listQuestions, setListCard] = useState<List[]>([{ id: 0, value: '', type: '' }])
-    const [answers, setAnswers] = useState<Answer[]>([])
+    const [listQuestions, setListQuestions] = useState<typeQuestion[]>([{ id: 0, conteudo: '', tipo_resposta: '', hiddenInfo: false }])
+    const [answers, setAnswers] = useState<typeAnswer[]>([])
+    const [infoQuestions, setInfoQuestions] = useState<typeInfo[]>([{ nota: 1, departamento: 0, senioridade: '', nivel: 'F', responsavel: 0, id_question: 0, }])
 
-    let contentQuestionAnswer = listQuestions ;
-    function handleAddListCard(index: List['id']) {
-        const newItem = { id: count++, value: '', type: "" };
-        setListCard(prev => [...prev.slice(0, index + 1), newItem, ...prev.slice(index + 1),])
+    const history = useHistory();
+
+    async function saveQuestion() {
+
+        let DataQuestions = {} as any;
+        listQuestions.map(function (lq, key) {
+            DataQuestions["perg" + key] = lq
+            const r = {} as any
+            answers.map(function (ans, index) {
+                if (ans.id_question === lq.id)
+                    r['rs' + index] = ans as any
+                return null
+            })
+            lq.answersQuestion = r
+            infoQuestions.filter(function (dq) {
+                lq['info'] = dq
+                return dq.id_question === lq.id
+            })
+            return null
+        })
+        //console.log(DataQuestions)
+        const question = await axios.post('http://localhost:3001/questions', DataQuestions)
+        if (question) {
+            alert("Questões Salvas com Sucesso!")
+            history.push('/avaliacao/new')
+        } else {
+            alert("Erro ao Salvar Questões!")
+            console.log(question)
+
+        }
     }
-    function handleChangeListCard(value: string, id: List['id']) {
-        setListCard(prev => prev.map(item => item.id === id ? { ...item, value } : item))
+
+    function handleAddListCard(index: typeQuestion['id']) {
+        const newItem = { id: count++, conteudo: '', tipo_resposta: "", hiddenInfo: true };
+        setListQuestions(prev => [...prev.slice(0, index + 1), newItem, ...prev.slice(index + 1),])
+        const newItemIfo = { nota: 1, departamento: 0, senioridade: '', nivel: 'F', responsavel: 0, id_question: newItem.id }
+        setInfoQuestions(prev => [...prev.slice(0, index + 1), newItemIfo, ...prev.slice(index + 1),])
+    }
+    function handleChangeListCard(value: string, id: typeQuestion['id']) {
+        setListQuestions(prev => prev.map(item => item.id === id ? { ...item, conteudo: value } : item))
 
     }
-    function handleChangeTypeListCard(type: string, id: List['id']) {
-        setListCard(prev => prev.map(item => item.id === id ? { ...item, type } : item))
-        const selectedType = type;
-        if (answers.length == 0)
-            setAnswers([{ idAnswer: countAnswer++, content: "", id_question: id, selectedType: type }])
+    function handleChangeTypeListCard(type: string, id: typeQuestion['id']) {
+        setListQuestions(prev => prev.map(item => item.id === id ? { ...item, tipo_resposta: type } : item))
+        if (answers.length === 0)
+            setAnswers([{ idAnswer: countAnswer++, content: type === "B" ? "Breve" : type === "L" ? "Longa" : "", id_question: id, selectedType: type, isTrue: false }])
         else {
             if (answers.filter(a => a.id_question === id)) {
-                if (answers.filter(a => a.id_question === id).length == 0)
-                    setAnswers([...answers, { idAnswer: countAnswer++, content: "", id_question: id, selectedType: type }])
+                if (answers.filter(a => a.id_question === id).length === 0)
+                    setAnswers([...answers, { idAnswer: countAnswer++, content: type === "B" ? "Breve" : type === "L" ? "Longa" : "", id_question: id, selectedType: type, isTrue: false }])
                 else
-                    setAnswers(prev=>prev.map(item=> item.id_question===id ?{...item,selectedType:type}:item))
-        }}
+                    setAnswers(prev => prev.map(item => item.id_question === id ? { ...item, selectedType: type } : item))
+            }
+        }
 
     }
-    function handleDeleteListCard(id: List['id']) {
-        setListCard(prev => prev.filter(item => item.id !== id))
+    function handleDeleteListCard(id: typeQuestion['id']) {
+        if (listQuestions.length !== 1) {
+            setListQuestions(prev => prev.filter(item => item.id !== id))
+            setInfoQuestions(prev => prev.filter(item => item.id_question !== id))
+        }
     }
 
 
 
-    function handleAddAnswer(index: Answer["idAnswer"],
-        id_question: Answer["id_question"],
-        content: Answer["content"],
+    function handleAddAnswer(index: typeAnswer["idAnswer"],
+        id_question: typeAnswer["id_question"],
+        content: typeAnswer["content"],
         selectedType: string) {
-        if ((selectedType === "Radio"
-            || selectedType === "Check"
-            || selectedType === "VF"
+        if ((selectedType === "R"
+            || selectedType === "C"
         ) && content !== "") {
-            const newAnswer = { idAnswer: countAnswer++, content: "", id_question, selectedType };
+            const newAnswer = { idAnswer: countAnswer++, content: "", id_question, selectedType, isTrue: false };
             setAnswers(prev => [...prev.slice(0, index + 1), newAnswer, ...prev.slice(index + 1),])
         }
 
     }
     function handleDeleteAnswer(index: number) {
-        setAnswers(prev=>prev.filter(item=>item.idAnswer!==index))
+        setAnswers(prev => prev.filter(item => item.idAnswer !== index))
     }
     function handleChangeAnswer(idAnswer: number, idQuestion: number, content: string) {
         setAnswers(prev => prev.map(answer => answer.idAnswer === idAnswer && answer.id_question === idQuestion ?
             { ...answer, content } : answer))
     }
+    function handleChangeTrueAnswer(idAnswer: number, idQuestion: number, isTrue: boolean,) {
+        setAnswers(prev => prev.map(answer => answer.idAnswer === idAnswer && answer.id_question === idQuestion ?
+            { ...answer, isTrue } : answer))
+    }
+
 
     return (
         <div id="register-question">
@@ -77,91 +110,96 @@ export function RegisterQuestion() {
                     <div className="col-2" id="btn">
 
                     </div>
-                    <h3 className="col-8">Cadastrar Novas Questions</h3>
-                    <div className="col-2" id="btn">
-                        <Button to='/avaliacao' >Finalizar "</Button>
-                        <button onClick={()=>{
-                            console.log(listQuestions.map(lq=>({"pergunta":lq,"resposta":answers.filter(ans=>ans.id_question===lq.id)}))
-                            )
-                            
-                            }}></button>
+                    <h3 className="col-6">Cadastrar Novas Questions</h3>
+                    <div className="col-4" id="btn">
+                        <Link to='/avaliacao/new'><button className='btn btn-seccundary' >Voltar</button></Link>
+                        <Button onClick={saveQuestion} >Salvar {listQuestions.length === 1 ? "Questão" : "Questões"}</Button>
                     </div>
                 </div>
             </div>
-            <div className="questions">
+            {listQuestions.map((item, index) => (
+                <div className="questions" key={index}>
 
-                {
-                    listQuestions.map((item, index) => (
-                        //questions.map((question, index) => (
-                        <div id="Question" className="card shadow mb-6">
-                            <div className="card-header py-3">
-                                <div>
-                                    <h6 className="m-0 font-weight-bold text-primary" >Questão</h6>
-                                </div>
-
-                                <div className="button">
-                                    <button onClick={() => handleAddListCard(index)}><i className="fas fa-plus-circle"></i></button>
-                                    <button ><i className="far fa-images"></i></button>
-                                    <button onClick={() => handleDeleteListCard(item.id)}><i className="fas fa-trash-alt"></i></button>
-                                </div>
-                            </div>
+                    <div id="Question" className="card shadow mb-6">
+                        <div className="card-header py-3">
                             <div>
-                                <div className="card-body" >
-                                    <div className="form-floating">
-                                        <textarea className="form-control" placeholder="Digite sua pergunta aqui!" id="floatingTextarea2"
-                                            onChange={event => {
-                                                event.target.style.height = "auto"
-                                                event.target.style.height = `${event.target.scrollHeight}px`
-                                                //setContentQuestion(event.target.value)
-                                                handleChangeListCard(event.currentTarget.value, item.id)
-                                            }}
-                                            value={item.value}
-                                        />
-                                        <div className="type-question">
-                                            <div>
-                                                <input defaultValue="" className="form-check-input" type="radio" id="Breve" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id,) } }} name={`radio${index}`} />
-                                                <label className="form-check-label" htmlFor={`radio${index}`} >Breve</label>
-                                            </div>
-                                            <div>
-                                                <input defaultValue="" className="form-check-input" type="radio" id="Longa" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id) } }} name={`radio${index}`} />
-                                                <label className="form-check-label" htmlFor={`radio${index}`} >Longa</label>
-                                            </div>
-                                            <div>
-                                                <input defaultValue="" className="form-check-input" type="radio" id="Radio" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id) } }} name={`radio${index}`} />
-                                                <label className="form-check-label" htmlFor={`radio${index}`} >Multipla Escolha</label>
-                                            </div>
-                                            <div>
-                                                <input defaultValue="" className="form-check-input" type="radio" id="Check" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id) } }} name={`radio${index}`} />
-                                                <label className="form-check-label" htmlFor={`radio${index}`} >Caixa de seleção</label>
-                                            </div>
-                                        </div>
-
-                                        <div id="answer">
-                                            {
-                                                answers.filter(filterAnswer => filterAnswer.id_question === item.id)
-                                                    .map((answer, key) => (
-                                                        <div className="add-answer">
-                                                            <ListAnswer
-                                                                key={answer.idAnswer }
-                                                                idAnswer={answer.idAnswer}
-                                                                idQuestion={item.id}
-                                                                content={answer.content}
-                                                                typeQuestions={answer.selectedType}
-                                                                handleAddAnswer={handleAddAnswer}
-                                                                handleDeleteAnswer={handleDeleteAnswer}
-                                                                handleChangeAnswer={handleChangeAnswer}
-                                                            />
-                                                        </div>
-                                                    ))}
-                                        </div>
-
-                                    </div>
-                                </div>
+                                <h6 className="m-0 font-weight-bold text-primary" >Questão</h6>
                             </div>
+
+                            <div className="button">
+                                <button onClick={() => handleAddListCard(index)}><i className="fas fa-plus-circle"></i></button>
+                                <button ><i className="far fa-images"></i></button>
+                                <button onClick={() => handleDeleteListCard(item.id)}><i className="fas fa-trash-alt"></i></button>
+                                <button onClick={() => { setListQuestions(prev => prev.map(i => i.id === item.id ? { ...i, hiddenInfo: (!i.hiddenInfo) } : i)) }}><i className="fas fa-info"></i></button>
+                            </div >
 
                         </div>
-                    ))}
-            </div>
+                        <div>
+                            <div className="card-body" >
+                                <div className="form-floating">
+                                    <textarea className="form-control" placeholder="Digite sua pergunta aqui!" id="floatingTextarea2"
+                                        onChange={event => {
+                                            event.target.style.height = "auto"
+                                            event.target.style.height = `${event.target.scrollHeight}px`
+                                            handleChangeListCard(event.currentTarget.value, item.id)
+                                        }}
+                                        value={item.conteudo}
+                                    />
+                                    <div className="type-question">
+                                        <div>
+                                            <input defaultValue="" className="form-check-input" type="radio" id="B" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id,) } }} name={`radio${index}`} />
+                                            <label className="form-check-label" htmlFor={`radio${index}`} >Breve</label>
+                                        </div>
+                                        <div>
+                                            <input defaultValue="" className="form-check-input" type="radio" id="L" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id) } }} name={`radio${index}`} />
+                                            <label className="form-check-label" htmlFor={`radio${index}`} >Longa</label>
+                                        </div>
+                                        <div>
+                                            <input defaultValue="" className="form-check-input" type="radio" id="R" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id) } }} name={`radio${index}`} />
+                                            <label className="form-check-label" htmlFor={`radio${index}`}  >Multipla Escolha</label>
+                                        </div>
+                                        <div>
+                                            <input defaultValue="" className="form-check-input" type="radio" id="C" onChange={e => { if (e.target.checked) { handleChangeTypeListCard(e.target.id, item.id) } }} name={`radio${index}`} />
+                                            <label className="form-check-label" htmlFor={`radio${index}`} >Caixa de seleção</label>
+                                        </div>
+                                    </div>
+
+                                    <div id="answer">
+                                        {
+                                            answers.filter(filterAnswer => filterAnswer.id_question === item.id)
+                                                .map((answer, key) => (
+                                                    <div className="add-answer">
+                                                        <ListAnswer
+                                                            key={answer.idAnswer}
+                                                            idAnswer={answer.idAnswer}
+                                                            isTrue={answer.isTrue}
+                                                            idQuestion={item.id}
+                                                            content={answer.content}
+                                                            typeQuestions={answer.selectedType}
+                                                            handleAddAnswer={handleAddAnswer}
+                                                            handleDeleteAnswer={handleDeleteAnswer}
+                                                            handleChangeAnswer={handleChangeAnswer}
+                                                            handleChangeTrueAnswer={handleChangeTrueAnswer}
+                                                        />
+                                                    </div>
+                                                ))}
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <QuestionInfo
+                        key={item.id}
+                        info={infoQuestions}
+                        idQuestion={item.id}
+                        setInfo={setInfoQuestions}
+                        hiddenInfo={item.hiddenInfo}
+                    />
+
+                </div>
+            ))}
 
         </div>
 
