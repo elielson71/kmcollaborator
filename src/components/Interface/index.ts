@@ -19,10 +19,9 @@ export type typeAnswer = {
 
 export type typeInfo = {
     id_question: number
-    nota: number,
-    responsavel: number,
-    senioridade: string,
-    departamento: number,
-    nivel: string,
+    responsavel: number
+    senioridade: string
+    departamento: number
+    nivel: string
 
 }

@@ -11,20 +11,19 @@ let countAnswer = 0;
 export function RegisterQuestion() {
     const [listQuestions, setListQuestions] = useState<typeQuestion[]>([{ id: 0, conteudo: '', tipo_resposta: '', hiddenInfo: false }])
     const [answers, setAnswers] = useState<typeAnswer[]>([])
-    const [infoQuestions, setInfoQuestions] = useState<typeInfo[]>([{ nota: 1, departamento: 0, senioridade: '', nivel: 'F', responsavel: 0, id_question: 0, }])
+    const [infoQuestions, setInfoQuestions] = useState<typeInfo[]>([{ departamento: 0, senioridade: '', nivel: 'F', responsavel: 0, id_question: 0, }])
 
     const history = useHistory();
 
     async function saveQuestion() {
+        const DataQuestions = {} as any;
+        const r = {} as any
 
-        let DataQuestions = {} as any;
         listQuestions.map(function (lq, key) {
             DataQuestions["perg" + key] = lq
-            const r = {} as any
-            answers.map(function (ans, index) {
-                if (ans.id_question === lq.id)
+            answers.filter(function (ans, index) {
                     r['rs' + index] = ans as any
-                return null
+                return ans.id_question === lq.id
             })
             lq.answersQuestion = r
             infoQuestions.filter(function (dq) {
@@ -33,22 +32,38 @@ export function RegisterQuestion() {
             })
             return null
         })
+        function ValidadeDataQuestions(DataQuestion: Object) {
+            let erro = false
+             Object.values(DataQuestion).forEach(element => {
+                //validar pergunta
+                if (element.conteudo === "") {
+                    alert("Não é possível salvar Questions sem conteudo!")
+                    erro=true
+                } else if (erro&&element.tipo_resposta === "") {
+                    alert("Não é possível salvar Questions sem tipo de resposta! \nSelecione um tipo de resposta para Salvar!")
+                    erro=true
+                }
+            })
+            return erro
+        }
         //console.log(DataQuestions)
-        const question = await axios.post('http://localhost:3001/questions', DataQuestions)
-        if (question) {
-            alert("Questões Salvas com Sucesso!")
-            history.push('/avaliacao/new')
-        } else {
-            alert("Erro ao Salvar Questões!")
-            console.log(question)
+        if (!(ValidadeDataQuestions(DataQuestions))) {
+            const question = await axios.post('http://localhost:3001/questions', DataQuestions)
+            if (question) {
+                alert("Questões Salvas com Sucesso!")
+                history.push('/avaliacao/new')
+            } else {
+                alert("Erro ao Salvar Questões!")
+                console.log(question)
 
+            }
         }
     }
 
     function handleAddListCard(index: typeQuestion['id']) {
         const newItem = { id: count++, conteudo: '', tipo_resposta: "", hiddenInfo: true };
         setListQuestions(prev => [...prev.slice(0, index + 1), newItem, ...prev.slice(index + 1),])
-        const newItemIfo = { nota: 1, departamento: 0, senioridade: '', nivel: 'F', responsavel: 0, id_question: newItem.id }
+        const newItemIfo = { departamento: 0, senioridade: '', nivel: 'F', responsavel: 0, id_question: newItem.id }
         setInfoQuestions(prev => [...prev.slice(0, index + 1), newItemIfo, ...prev.slice(index + 1),])
     }
     function handleChangeListCard(value: string, id: typeQuestion['id']) {
@@ -170,7 +185,7 @@ export function RegisterQuestion() {
                                                 .map((answer, key) => (
                                                     <div className="add-answer">
                                                         <ListAnswer
-                                                            key={answer.idAnswer}
+                                                            key={key}
                                                             idAnswer={answer.idAnswer}
                                                             isTrue={answer.isTrue}
                                                             idQuestion={item.id}
@@ -190,13 +205,16 @@ export function RegisterQuestion() {
                         </div>
 
                     </div>
-                    <QuestionInfo
-                        key={item.id}
-                        info={infoQuestions}
-                        idQuestion={item.id}
-                        setInfo={setInfoQuestions}
-                        hiddenInfo={item.hiddenInfo}
-                    />
+                    {infoQuestions.map(i => (
+                        i.id_question === item.id &&
+                        <QuestionInfo
+                            key={item.id}
+                            info={i}
+                            idQuestion={item.id}
+                            setInfo={setInfoQuestions}
+                            hiddenInfo={item.hiddenInfo}
+                        />
+                    ))}
 
                 </div>
             ))}
