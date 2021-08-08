@@ -2,17 +2,16 @@ import React from 'react';
 
 
 import './styles.scss';
-import {typeInfo} from '../Interface'
+import {typeQuestions} from '../Interface'
 
 
 type props = {
-    idQuestion: number
     hiddenInfo: boolean
-    info: typeInfo
-    setInfo: React.Dispatch<React.SetStateAction<typeInfo[]>>
+    info: typeQuestions
+    setInfo: React.Dispatch<React.SetStateAction<typeQuestions>>
 }
 
-export function QuestionInfo({ idQuestion, info, setInfo, hiddenInfo }: props) {
+export function QuestionInfo({  info, setInfo, hiddenInfo }: props) {
 
 
 
@@ -28,7 +27,7 @@ export function QuestionInfo({ idQuestion, info, setInfo, hiddenInfo }: props) {
                     <div className="col-8">
                         <label htmlFor="status">Senioridade</label>
                         <select className="form-select" value={info.senioridade}
-                            onChange={event => setInfo(prev=> prev.map(item => item.id_question===idQuestion?{...item,senioridade:event.target.value}:item))}
+                            onChange={event => setInfo({...info,senioridade:event.target.value})}
                             aria-label="Default select example" >
                             <option value="">Selecione uma Senioridade</option>
                             <option value="J">Junior</option>
@@ -39,7 +38,7 @@ export function QuestionInfo({ idQuestion, info, setInfo, hiddenInfo }: props) {
                     <div className="col-4">
                         <label htmlFor="nivel">Nível</label>
                         <select className="form-select" value={info.nivel} 
-                             onChange={event => setInfo(prev=> prev.map(item => item.id_question===idQuestion?{...item,nivel:event.target.value}:item))}
+                             onChange={event => setInfo({...info,nivel:event.target.value})}
                              aria-label="Default select example" >
                             <option value="F" >Facil</option>
                             <option value="M">Médio</option>
@@ -48,8 +47,8 @@ export function QuestionInfo({ idQuestion, info, setInfo, hiddenInfo }: props) {
                     </div>
                 </div>
                 <label htmlFor="Departamento">Departamento</label>
-                <select  value={info.departamento} 
-                    onChange={event => setInfo(prev=> prev.map(item => item.id_question===idQuestion?{...item,departamento:parseInt(event.target.value)}:item))}
+                <select  value={info.id_departamento} 
+                    onChange={event => setInfo({...info,id_departamento:parseInt(event.target.value)})}
                     className="form-select" aria-label="Default select example">
                     <option value={0}>Selecione o Departamento</option>
                     <option value={1}>Suporte</option>

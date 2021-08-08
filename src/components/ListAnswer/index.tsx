@@ -1,7 +1,6 @@
 import './styles.scss'
 
 type propsLista = {
-    idQuestion: number,
     idAnswer:number,
     typeQuestions: string,
     isTrue:boolean,
@@ -11,12 +10,12 @@ type propsLista = {
     handleChangeAnswer: any;
     handleChangeTrueAnswer:any;
 }
-export function ListAnswer({ idQuestion,idAnswer, isTrue,typeQuestions,content, handleDeleteAnswer, handleChangeAnswer, handleAddAnswer,handleChangeTrueAnswer }: propsLista) {
+export function ListAnswer({ idAnswer, isTrue,typeQuestions,content, handleDeleteAnswer, handleChangeAnswer, handleAddAnswer,handleChangeTrueAnswer }: propsLista) {
 
 
 
     const done = (value: string) => {
-        handleChangeAnswer(idAnswer,idQuestion, value)
+        handleChangeAnswer(idAnswer, value)
     }
 
 
@@ -29,8 +28,8 @@ export function ListAnswer({ idQuestion,idAnswer, isTrue,typeQuestions,content, 
                     <input
                         defaultValue=""
                         className="form-check-input"
-                        type="radio" name={`flexRadioDefault${idQuestion}`} id="flexRadioDefault1"
-                        onChange={e=>handleChangeTrueAnswer(idAnswer,idQuestion,e.target.checked)}
+                        type="radio" name={`flexRadioDefault`} id="flexRadioDefault1"
+                        onChange={e=>handleChangeTrueAnswer(idAnswer,e.target.checked)}
                         checked={isTrue}
                     />
                 </div>
@@ -42,7 +41,7 @@ export function ListAnswer({ idQuestion,idAnswer, isTrue,typeQuestions,content, 
                         defaultValue=""
                         type="checkbox"
                         id="flexCheckIndeterminate"
-                        onChange={e=>handleChangeTrueAnswer(idAnswer,idQuestion,e.target.checked)}
+                        onChange={e=>handleChangeTrueAnswer(idAnswer,e.target.checked)}
                         checked={isTrue}
                     />
                 </div>)
@@ -62,7 +61,7 @@ export function ListAnswer({ idQuestion,idAnswer, isTrue,typeQuestions,content, 
                         typeQuestions === "B" || typeQuestions === "L"
                     }
                     placeholder={typeQuestions === "B" || typeQuestions === "L"?"":"Digite a Resposta"}
-                    onChange={e => { handleChangeAnswer(idAnswer,idQuestion, e.target.value); }}
+                    onChange={e => { handleChangeAnswer(idAnswer, e.target.value); }}
                     onBlur={e => done(e.target.value)}
                     value={typeQuestions === "B" ? "Resposta Curta ---" : typeQuestions === "L" ? "Resposta Longa ---------" : content}
                 /> 
@@ -70,7 +69,7 @@ export function ListAnswer({ idQuestion,idAnswer, isTrue,typeQuestions,content, 
             }
             
             <div className="button" hidden={typeQuestions === "B" || typeQuestions === "L"}>
-                <button onClick={() => { handleAddAnswer(idAnswer,idQuestion, content,typeQuestions)}} ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
+                <button onClick={() => { handleAddAnswer(idAnswer, content,typeQuestions)}} ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
                 <button ><i className="far fa-images"></i></button>
                 <button className="button" onClick={()=>handleDeleteAnswer(idAnswer)}><i className="far fa-times-circle"></i></button>
                 
