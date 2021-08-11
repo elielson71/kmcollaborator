@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles.scss'
 import { Button } from '../../components/Button';
 import { ListAnswer } from '../../components/ListAnswer';
 import { QuestionInfo } from '../../components/QuestionInfo';
-import axios from 'axios'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { typeAnswer, typeQuestions } from '../../components/Interface'
+import { postQuestions, getOneQuestions,getQuestionsAnswer } from '../../service/QuestionsService';
 
+type QuestionParams = {
+    id: string
+}
 let countAnswer = 0;
 export function RegisterQuestion() {
 
@@ -14,11 +17,25 @@ export function RegisterQuestion() {
     const [answers, setAnswers] = useState<typeAnswer[]>([])
     const [hiddenInfo, setHiddenInfo] = useState<boolean>(false)
     const history = useHistory();
+    const params = useParams<QuestionParams>()
+    const questionId = params.id;
 
-
+    async function RecuperarQuestao(id: string) {
+        const dataQuestion:typeQuestions = (await getOneQuestions(parseInt(id))).data
+        const dataAnswer:typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
+        console.log({dataQuestion,dataAnswer})
+        setQuestions(dataQuestion)
+            
+            setAnswers(dataAnswer)
+        
+    }
+    useEffect(() => {
+        RecuperarQuestao('321')
+    }
+        , [questionId])
 
     async function saveQuestion() {
-        if (!(Questions.tipo_resposta == 'B' || Questions.tipo_resposta == 'L')) {
+        if (!(Questions.tipo_resposta==='B' || Questions.tipo_resposta==='L')) {
             const resp = {} as any
             answers.forEach(function (ans, index) {
                 resp[index] = ans as any
@@ -27,50 +44,50 @@ export function RegisterQuestion() {
             Questions['answers'] = resp
         }
 
-        function ValidadeDataQuestions(Question:typeQuestions) {
-            
-                //validar pergunta
-                if (Question.conteudo === "") {
-                    alert("Conteudo é campo Obrigatório!")
-                    return 
-                } else if (Question.tipo_resposta === "") {
-                    alert("Não é possível salvar Questão sem um tipo de resposta! \nSelecione um tipo de resposta para Salvar!")
-                    return
-                } else if(Question.id_departamento===0){
-                    alert("Selecione o Departamento")
-                    return
-                } else if(Question.senioridade===''){
-                    alert("O campo senioridade é Obrigatório")
-                    return
-                }else {
-                    let nullrespota = false
-                    let umverdadeiro =false
-                    answers.map(value=>{
-                           nullrespota=value.content===""
-                            umverdadeiro=value.selectedType=="R" || value.selectedType=="C"
-                    })
-                    if(nullrespota){
-                        alert("Não é possível salva com reposta em branco")
-                        return
-                    }
+        function ValidadeDataQuestions(Question: typeQuestions) {
 
-                    if(umverdadeiro) {
-                        alert("Marque a resposta verdadeira!")
-                        return
-                    }
+            //validar pergunta
+            if (Question.conteudo === "") {
+                alert("Conteudo é campo Obrigatório!")
+                return
+            } else if (Question.tipo_resposta === "") {
+                alert("Não é possível salvar Questão sem um tipo de resposta! \nSelecione um tipo de resposta para Salvar!")
+                return
+            } else if (Question.id_departamento === 0) {
+                alert("Selecione o Departamento")
+                return
+            } else if (Question.senioridade === '') {
+                alert("O campo senioridade é Obrigatório")
+                return
+            } else {
+                let nullrespota = false
+                let umverdadeiro = false
+                answers.map(value => {
+                    nullrespota = value.descricao === ""
+                    umverdadeiro = value.selectedType==="R" || value.selectedType==="C"
+                })
+                if (nullrespota) {
+                    alert("Não é possível salva com reposta em branco")
+                    return
                 }
-    
+
+                if (umverdadeiro) {
+                    alert("Marque a resposta verdadeira!")
+                    return
+                }
+            }
+
             return true
         }
 
         if ((ValidadeDataQuestions(Questions))) {
-            const question = await axios.post('http://localhost:3001/questions', Questions)
-            if (question) {
+            const resp = postQuestions(Questions)
+            if (await resp) {
                 alert("Questões Salvas com Sucesso!")
                 history.push('/avaliacao/new')
             } else {
                 alert("Erro ao Salvar Questões!")
-                console.log(question)
+                console.log(resp)
 
             }
         }
@@ -81,11 +98,11 @@ export function RegisterQuestion() {
         if ((tipo_resposta === 'R' || tipo_resposta === 'C') && answers.length !== 0)
             setAnswers(prev => prev.map(answer => answer.selectedType === 'B' || answer.selectedType === 'L' ? { ...answer, content: "", selectedType: tipo_resposta } : { ...answer, selectedType: tipo_resposta }))
         else
-            setAnswers([{ idAnswer: countAnswer++, content: tipo_resposta === 'B' ? 'Breve' : tipo_resposta === 'L' ? 'Longa' : "", selectedType: tipo_resposta, isTrue: false }])
+            setAnswers([{ idAnswer: countAnswer++, descricao: tipo_resposta === 'B' ? 'Breve' : tipo_resposta === 'L' ? 'Longa' : "", selectedType: tipo_resposta, isTrue: false }])
     }
-    function handleAddAnswer(index: typeAnswer["idAnswer"], content: typeAnswer["content"], selectedType: string) {
+    function handleAddAnswer(index: typeAnswer["idAnswer"], content: typeAnswer["descricao"], selectedType: string) {
         if ((selectedType === "R" || selectedType === "C") && content !== "") {
-            const newAnswer = { idAnswer: countAnswer++, content: "", selectedType, isTrue: false };
+            const newAnswer = { idAnswer: countAnswer++, descricao: "", selectedType, isTrue: false };
             setAnswers(prev => [...prev.slice(0, index + 1), newAnswer, ...prev.slice(index + 1),])
         }
 
@@ -94,7 +111,7 @@ export function RegisterQuestion() {
         setAnswers(prev => prev.filter(item => item.idAnswer !== index))
     }
     function handleChangeAnswer(idAnswer: number, content: string) {
-        setAnswers(prev => prev.map(answer => answer.idAnswer === idAnswer ? { ...answer, content } : answer))
+        setAnswers(prev => prev.map(answer => answer.idAnswer === idAnswer ? { ...answer, descricao: content } : answer))
     }
     function handleChangeTrueAnswer(idAnswer: number, isTrue: boolean,) {
         setAnswers(prev => prev.map(answer => answer.idAnswer === idAnswer ? { ...answer, isTrue } : answer))
@@ -164,18 +181,18 @@ export function RegisterQuestion() {
                                 <div id="answer">
                                     {
                                         answers.map((answer, key) => (
-                                            <div key={key} className="add-answer">
+                                            
                                                 <ListAnswer
-                                                    idAnswer={answer.idAnswer}
-                                                    isTrue={answer.isTrue}
-                                                    content={answer.content}
-                                                    typeQuestions={answer.selectedType}
+                                                key={key}
+                                                    answer={answer}
+                                                    setAnswer={setAnswers}
+                                                    typeQuestions={Questions.tipo_resposta}
                                                     handleAddAnswer={handleAddAnswer}
                                                     handleDeleteAnswer={handleDeleteAnswer}
                                                     handleChangeAnswer={handleChangeAnswer}
                                                     handleChangeTrueAnswer={handleChangeTrueAnswer}
                                                 />
-                                            </div>
+                                            
                                         ))}
                                 </div>
 

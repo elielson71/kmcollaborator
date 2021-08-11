@@ -11,7 +11,7 @@ function App() {
       <Switch>
         <Route path="/avaliacao" exact component={ListaAvaliacoes} />
         <Route path="/avaliacao/new"  component={CadAvaliacao} />
-        <Route path="/question/new"  component={RegisterQuestion} />
+        <Route path="/question/:id"  component={RegisterQuestion} />
       </Switch>
     </BrowserRouter>
   );

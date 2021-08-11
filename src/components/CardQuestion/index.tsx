@@ -1,7 +1,7 @@
 import './styles.scss'
 type propsQuestion = {
     title:string,
-    departamento:string,
+    id_departamento:number,
     nivel:string
 
 }
@@ -18,7 +18,7 @@ export function CardQuestion(props:propsQuestion) {
                         <h3>{props.title}</h3>
                     </div>
                     <div className="info-pergunta">
-                        <span>Departamento: {props.departamento}</span>
+                        <span>Departamento: {props.id_departamento}</span>
                         <span>nivel: {props.nivel}</span>
                     </div>
                     <div >

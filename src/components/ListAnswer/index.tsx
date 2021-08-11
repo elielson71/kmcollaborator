@@ -1,26 +1,19 @@
+import { typeAnswer } from '../Interface'
 import './styles.scss'
 
 type propsLista = {
-    idAnswer:number,
-    typeQuestions: string,
-    isTrue:boolean,
-    content:string,
-    handleAddAnswer:any,
+    answer: typeAnswer
+    setAnswer: React.Dispatch<React.SetStateAction<typeAnswer[]>>
+    typeQuestions: string
+    handleAddAnswer: any,
     handleDeleteAnswer: any;
     handleChangeAnswer: any;
-    handleChangeTrueAnswer:any;
+    handleChangeTrueAnswer: any;
 }
-export function ListAnswer({ idAnswer, isTrue,typeQuestions,content, handleDeleteAnswer, handleChangeAnswer, handleAddAnswer,handleChangeTrueAnswer }: propsLista) {
-
-
-
+export function ListAnswer({ answer, setAnswer, typeQuestions, handleDeleteAnswer, handleChangeAnswer, handleAddAnswer, handleChangeTrueAnswer }: propsLista) {
     const done = (value: string) => {
-        handleChangeAnswer(idAnswer, value)
+        handleChangeAnswer(answer.idAnswer, value)
     }
-
-
-    
-
     const handleTypeAnswer = (type: string, isTrue: boolean) => {
         switch (type) {
             case "R": return (
@@ -29,7 +22,7 @@ export function ListAnswer({ idAnswer, isTrue,typeQuestions,content, handleDelet
                         defaultValue=""
                         className="form-check-input"
                         type="radio" name={`flexRadioDefault`} id="flexRadioDefault1"
-                        onChange={e=>handleChangeTrueAnswer(idAnswer,e.target.checked)}
+                        onChange={e => handleChangeTrueAnswer(answer.idAnswer, e.target.checked)}
                         checked={isTrue}
                     />
                 </div>
@@ -41,7 +34,7 @@ export function ListAnswer({ idAnswer, isTrue,typeQuestions,content, handleDelet
                         defaultValue=""
                         type="checkbox"
                         id="flexCheckIndeterminate"
-                        onChange={e=>handleChangeTrueAnswer(idAnswer,e.target.checked)}
+                        onChange={e => handleChangeTrueAnswer(answer.idAnswer, e.target.checked)}
                         checked={isTrue}
                     />
                 </div>)
@@ -50,33 +43,34 @@ export function ListAnswer({ idAnswer, isTrue,typeQuestions,content, handleDelet
     }
 
     return (
-        <div id="list-answer">
-            {handleTypeAnswer(typeQuestions,isTrue)}
-            {
-                <input
-                    autoFocus
-                    className="answer-input"
-                    type="text"
-                    disabled={
-                        typeQuestions === "B" || typeQuestions === "L"
-                    }
-                    placeholder={typeQuestions === "B" || typeQuestions === "L"?"":"Digite a Resposta"}
-                    onChange={e => { handleChangeAnswer(idAnswer, e.target.value); }}
-                    onBlur={e => done(e.target.value)}
-                    value={typeQuestions === "B" ? "Resposta Curta ---" : typeQuestions === "L" ? "Resposta Longa ---------" : content}
-                /> 
-                
-            }
-            
-            <div className="button" hidden={typeQuestions === "B" || typeQuestions === "L"}>
-                <button onClick={() => { handleAddAnswer(idAnswer, content,typeQuestions)}} ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
-                <button ><i className="far fa-images"></i></button>
-                <button className="button" onClick={()=>handleDeleteAnswer(idAnswer)}><i className="far fa-times-circle"></i></button>
-                
+        <div className="add-answer">
+            <div id="list-answer">
+                {handleTypeAnswer(typeQuestions, answer.isTrue)}
+                {
+                    <input
+                        autoFocus
+                        className="answer-input"
+                        type="text"
+                        disabled={
+                            typeQuestions === "B" || typeQuestions === "L"
+                        }
+                        placeholder={typeQuestions === "B" || typeQuestions === "L" ? "" : "Digite a Resposta"}
+                        onChange={e => { setAnswer(prev => prev.map(item => item.idAnswer === answer.idAnswer ? { ...item, descricao: e.target.value } : item)); }}
+                        onBlur={e => done(e.target.value)}
+                        value={typeQuestions === "B" ? "Resposta Curta ---" : typeQuestions === "L" ? "Resposta Longa ---------" : answer.descricao}
+                    />
+
+                }
+
+                <div className="button" hidden={typeQuestions === "B" || typeQuestions === "L"}>
+                    <button onClick={() => { handleAddAnswer(answer.idAnswer, answer.descricao, typeQuestions) }} ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
+                    <button ><i className="far fa-images"></i></button>
+                    <button className="button" onClick={() => handleDeleteAnswer(answer.idAnswer)}><i className="far fa-times-circle"></i></button>
+                </div>
+
+
             </div>
-
-
-        </div>
+        </div >
 
     )
 }

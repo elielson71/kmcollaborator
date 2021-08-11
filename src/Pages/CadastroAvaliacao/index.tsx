@@ -4,23 +4,17 @@ import './style.scss'
 import { Button } from '../../components/Button';
 import { CardQuestion } from '../../components/CardQuestion';
 import { useHistory,Link } from 'react-router-dom';
-import axios from 'axios';
+import { typeQuestions } from '../../components/Interface';
+import { getQuestions } from '../../service/QuestionsService';
 
-type Question = {
-    id_perguntas: number,
-    conteudo: string,
-    id_departamento: string,
-    nivel: string
-
-}
 
 export const CadAvaliacao = () => {
-    const [Questions, setQuestion] = useState<Question[]>([]);
+    const [Questions, setQuestion] = useState<typeQuestions[]>([]);
     const history = useHistory();
-
-     async function QuestionsAPi(){
-        const q = await axios.get<Question[]>('http://localhost:3001/questions')
-            setQuestion(q.data)
+    
+    async function dataQuestions(){
+        const data = (await getQuestions()).data
+        setQuestion(data)
     }
     
     /* id_perguntas: 296,
@@ -28,8 +22,8 @@ export const CadAvaliacao = () => {
               id_responsavel: 1,
               id_departamento: 1,
               nivel: 'F'*/
-    useEffect(() => {
-        QuestionsAPi()
+    useEffect(()=>{
+        dataQuestions()
 
     }
         , [])
@@ -66,7 +60,7 @@ export const CadAvaliacao = () => {
                             key={question.id_perguntas}
                             title={question.conteudo}
                             nivel={question.nivel}
-                            departamento={question.id_departamento}
+                            id_departamento={question.id_departamento}
                         />
                     ))
                 }

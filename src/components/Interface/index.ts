@@ -1,13 +1,14 @@
 
 export type typeAnswer = {
     idAnswer: number
-    content: string
+    descricao: string
     selectedType: string
     isTrue: boolean
 
 }
 
 export type typeQuestions = {
+    id_perguntas?:number
     conteudo: string
     tipo_resposta: string
     id_responsavel: number
