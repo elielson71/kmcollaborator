@@ -1,4 +1,31 @@
-#list-answer {
+import styled from 'styled-components'
+export const ButtonIcon = styled.div`
+
+    display: flex;
+    justify-content: flex-end;
+    button {
+        padding: 2%;
+        border: none;
+        color: blue;
+        margin: 5px 2px 0px 15px;
+        background: none;
+        :hover {
+            color: #080707;
+        }
+    }
+`
+
+export const AnswerInput = styled.input `
+    padding: 2%;
+    width: 80%;
+    border-color: rgba(92, 83, 83, 0);
+    border-bottom-color: #55545436;
+
+    overflow-y: hidden;
+
+    margin-bottom: 1%;
+    `
+export const ListAnswerDiv = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -31,26 +58,4 @@
         align-items: center;
         justify-content: center;
     }
-
-    .answer-input {
-        //margin-left: 5%;
-        padding: 2%;
-        width: 80%;
-        border-color: rgba(92, 83, 83, 0);
-        border-bottom-color: #55545436;
-
-        overflow-y: hidden;
-
-        margin-bottom: 1%;
-    }
-    .button {
-        padding: 2%;
-        border: none;
-        color: blue;
-        //margin: 5px 2px 0px 15px;
-        background: none;
-        :hover {
-            color: #080707;
-        }
-    }
-}
+`

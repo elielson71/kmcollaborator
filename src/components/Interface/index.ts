@@ -1,9 +1,9 @@
 
 export type typeAnswer = {
-    idAnswer: number
+    id_respostas: number
     descricao: string
     selectedType: string
-    isTrue: boolean
+    correta: boolean
 
 }
 
