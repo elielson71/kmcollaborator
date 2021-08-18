@@ -3,15 +3,9 @@
     
     header {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
+        //@at-root: ;
+        align-items: center;
         padding: 3%;
-        .Responsavel {
-            width: 20%;
-        }
-        .form-group {
-            width: 40%;
-        }
     }
     .listQuestion{
         display: flex;

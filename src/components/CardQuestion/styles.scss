@@ -20,13 +20,16 @@
         .card-title {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 10%;
+            
             
         }
         .titulo-pergunta {
             margin-bottom: 10%;
             min-height: 175px;
             max-height: 175px;
+            align-items: center;
+            display: flex;
+            justify-content: center;
         }
         .info-pergunta {
             display: flex;

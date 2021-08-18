@@ -59,3 +59,12 @@ export const ListAnswerDiv = styled.div`
         justify-content: center;
     }
 `
+export const TitleCadQuestion = styled.div `
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-right: 5px;
+    `
+
+    

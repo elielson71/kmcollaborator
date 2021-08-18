@@ -1,37 +1,38 @@
 import { Button } from "../../components/Button";
 import { NivelMedioDificuldade } from "../../components/NivelMedioDificuldade";
+import { typeAvaliacao } from "../Interface";
 
 import './style.scss'
-type propsAssessments = {
-    idAssessments: number
-    departamento: string,
-    nivel: string,
-    titulo: string,
-    responsavel: string,
-    //avatar:string,
+type propsAvaliacao={
+    id_avaliacoes?: number
+    titulo: string
+    id_usuario: number
+    id_departamento?: number
+    deleteAvaliacao:any
+    editAvaliacao:any
 }
-
-export function Avaliacao(props: propsAssessments) {
+export function Avaliacao({id_usuario,titulo,id_avaliacoes,id_departamento,editAvaliacao,deleteAvaliacao}: propsAvaliacao) {
+    
     return (
         <section id="avaliacao">
             <div className='info'>
                 <h5>DEPARTAMENTO</h5>
-                <span>{props.departamento}</span>
+                <span>{id_departamento}</span>
                 <h5>Nível médio de Dificuldade </h5>
-                <NivelMedioDificuldade nivel={props.nivel}></NivelMedioDificuldade>
+                <NivelMedioDificuldade nivel={'F'}></NivelMedioDificuldade>
             </div>
 
             <div className="contex">
                 <Button  >RESPONDER AVALIAÇÃO </Button>
-                <h2>{props.titulo}</h2>
-                <span>Responsavel: {props.responsavel}</span>
+                <h2>{titulo}</h2>
+                <span>Responsavel: {id_usuario}</span>
             </div>
             <div className="info-user">
                 <button><div><i className="fas fa-user-tie"></i></div></button>
             </div>
             <div className="button">
-                <button className="btn btn-info">Editar</button>
-                <button className="btn btn-danger">Excluir</button>
+                <button className="btn btn-info" onClick={()=>editAvaliacao(id_avaliacoes)}>Editar</button>
+                <button className="btn btn-danger" onClick={()=>deleteAvaliacao(id_avaliacoes)}>Excluir</button>
 
             </div>
         </section>

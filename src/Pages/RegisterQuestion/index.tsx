@@ -1,161 +1,117 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useState, useEffect } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
+import { Button } from "../../components/Button";
+import { AnswerInput, ButtonIcon, ListAnswerDiv } from "../../components/componetsStypes";
+import { typeAnswer, typeQuestions } from "../../components/Interface";
+import { QuestionInfo } from "../../components/QuestionInfo";
+import { getOneQuestions, getQuestionsAnswer, postQuestions, putQuestionsAnswer } from "../../service/QuestionsService";
 import './styles.scss'
-import { Button } from '../../components/Button';
-import { QuestionInfo } from '../../components/QuestionInfo';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import { typeAnswer, typeQuestions } from '../../components/Interface'
-import { postQuestions, getOneQuestions, getQuestionsAnswer } from '../../service/QuestionsService';
-
-import { AnswerInput, ButtonIcon, ListAnswerDiv } from '../../components/componetsStypes'
-import { validateYupSchema } from 'formik';
-
+import { ValidQuestion } from "../../Hooks/Question/ValidQuestion";
+import { deleteAnswer, postAnswer } from "../../service/AnswerService";
 type QuestionParams = {
     id: string
 }
-let countAnswer = 0;
+let countAnswer = 1;
 export function RegisterQuestion() {
-
     const [Questions, setQuestions] = useState<typeQuestions>({ conteudo: '', tipo_resposta: '', id_departamento: 0, senioridade: '', nivel: 'F', id_responsavel: 0 })
     const [answers, setAnswers] = useState<typeAnswer[]>([])
     const [hiddenInfo, setHiddenInfo] = useState<boolean>(false)
-    const history = useHistory();
-    const params = useParams<QuestionParams>()
-    const questionId = params.id;
+    const history = useHistory()
 
-    async function RecuperarQuestao(id: string) {
-        const dataQuestion: typeQuestions[] = (await getOneQuestions(parseInt(id))).data
-        const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
-        dataQuestion.map(value => {
-            setQuestions(value)
-
-        }
-        )
-
-        console.log(dataQuestion)
-        setAnswers(dataAnswer)
-
+    if (!(Questions.tipo_resposta === 'B' || Questions.tipo_resposta === 'L')) {
+        const resp = {} as any
+        answers.forEach(function (ans, index) {
+            resp[index] = ans as any
+        })
+        Questions['answers'] = resp
     }
-    useEffect(() => {
-        RecuperarQuestao(questionId)
-    }
-        , [questionId])
 
     async function saveQuestion() {
-        if (!(Questions.tipo_resposta === 'B' || Questions.tipo_resposta === 'L')) {
-            const resp = {} as any
-            answers.forEach(function (ans, index) {
-                resp[index] = ans as any
-
-            })
-            Questions['answers'] = resp
-        }
-
-        function ValidadeDataQuestions(Question: typeQuestions) {
-
-            //validar pergunta
-            if (Question.conteudo === "") {
-                alert("Conteudo é campo Obrigatório!")
-                return
-            } else if (Question.tipo_resposta === "") {
-                alert("Não é possível salvar Questão sem um tipo de resposta! \nSelecione um tipo de resposta para Salvar!")
-                return
-            } else if (Question.id_departamento === 0) {
-                alert("Selecione o Departamento")
-                return
-            } else if (Question.senioridade === '') {
-                alert("O campo senioridade é Obrigatório")
-                return
-            } else {
-                let nullrespota = false
-                let umverdadeiro = false
-                answers.map(value => {
-                    nullrespota = value.descricao === ""
-                    umverdadeiro = value.selectedType === "R" || value.selectedType === "C"
-                })
-                if (nullrespota) {
-                    alert("Não é possível salva com reposta em branco")
-                    return
-                }
-
-                if (umverdadeiro) {
-                    alert("Marque a resposta verdadeira!")
-                    return
-                }
-            }
-
-            return true
-        }
-
-        if ((ValidadeDataQuestions(Questions))) {
+        if (ValidQuestion(Questions, answers)) {
             const resp = postQuestions(Questions)
             if (await resp) {
                 alert("Questões Salvas com Sucesso!")
                 history.push('/avaliacao/new')
             } else {
                 alert("Erro ao Salvar Questões!")
-                console.log(resp)
-
+                console.error(resp)
             }
         }
     }
+    async function updateQuestion() {
+        if (ValidQuestion(Questions, answers)) {
+            const answerNew = answers.filter(answer => answer.status === 'C')
+            if (answerNew.length !== 0)
+                postAnswer(answerNew)
+            const resp = putQuestionsAnswer(parseInt(questionId), Questions)
+            if (await resp) {
+                alert("Questões atualizadas com Sucesso!")
+                history.push('/avaliacao/new')
+            } else {
+                alert("Erro ao atualizar Questões!")
+                console.error(resp)
+
+            }
+
+        }
+
+    }
+
+    const params = useParams<QuestionParams>()
+    const questionId = params.id;
+    async function RecuperarQuestao(id: string) {
+        const dataQuestion: typeQuestions[] = (await getOneQuestions(parseInt(id))).data
+        const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
+        dataQuestion.map(value => {
+            setQuestions(value)
+        })
+        setAnswers(dataAnswer)
+    }
+    useEffect(() => {
+        RecuperarQuestao(questionId)
+    }
+        , [questionId])
 
     function handleChangeTypeListCard(tipo_resposta: string) {
         setQuestions({ ...Questions, tipo_resposta })
-        if ((tipo_resposta === 'R' || tipo_resposta === 'C') && answers.length !== 0)
-            setAnswers(prev => prev.map(answer => answer.selectedType === 'B' || answer.selectedType === 'L' ? { ...answer, content: "", selectedType: tipo_resposta } : { ...answer, selectedType: tipo_resposta }))
+        if ((tipo_resposta === 'B' || tipo_resposta === 'L') && answers.length !== 0)
+            setAnswers([])
         else
-            setAnswers([{ id_respostas: countAnswer++, descricao: tipo_resposta === 'B' ? 'Breve' : tipo_resposta === 'L' ? 'Longa' : "", selectedType: tipo_resposta, correta: false }])
+            setAnswers(prev => prev.map(item => ({ ...item, correta: 'N' })))
     }
-    function handleAddAnswer(index: typeAnswer["id_respostas"], content: typeAnswer["descricao"], selectedType: string) {
-        if ((selectedType === "R" || selectedType === "C") && content !== "") {
-            const newAnswer:typeAnswer = { id_respostas: countAnswer++, descricao: "", selectedType, correta: false };
-            setAnswers(prev => [...prev.slice(0, index + 1), newAnswer, ...prev.slice(index + 1),])
+
+    const [descriptionAnswer, setDescriptionAnswer] = useState<string>('')
+
+    function handleAddAnswer(e: FormEvent, descriptionAnswer: string, selectedType: string, id_perguntas?: number) {
+        e.preventDefault();
+        if ((selectedType === "R" || selectedType === "C") && descriptionAnswer !== "") {
+            const newAnswer: typeAnswer = { correta: 'N', descricao: descriptionAnswer, id_respostas: countAnswer++, id_perguntas, status: 'C' }
+            setAnswers([...answers, newAnswer])
         }
+        setDescriptionAnswer('')
+    }
 
-    }
-    function handleDeleteAnswer(index: number) {
-        if (index !== undefined)
-            setAnswers(prev => prev.filter(item => item.id_respostas !== index))
-    }
-    function handleChangeAnswer(idAnswer: number, content: string) {
-        setAnswers(prev => prev.map(answer => answer.id_respostas === idAnswer ? { ...answer, descricao: content } : answer))
-    }
-    function handleChangeTrueAnswer(idAnswer: number, isTrue: boolean,) {
-        setAnswers(prev => prev.map(answer => answer.id_respostas === idAnswer ? { ...answer, correta: isTrue } : answer))
-    }
-    const [edit, setEdit] = useState<boolean>(false)
-
-    const done = (idAnswer: number, value: string) => {
-        setEdit(false)
-        handleChangeAnswer(idAnswer, value)
-    }
-    const handleTypeAnswer = (idAnswer: number, type: string, isTrue: boolean) => {
-        switch (type) {
-            case "R": return (
-                <div className="form-check">
-                    <input
-                        defaultValue=""
-                        className="form-check-input"
-                        type="radio" name={`flexRadioDefault`} id="flexRadioDefault1"
-                        onChange={e => handleChangeTrueAnswer(idAnswer, e.target.checked)}
-                        checked={isTrue}
-                    />
-                </div>
-            );
-            case "C": return (
-                <div className="form-check">
-                    <input
-                        className="form-check-input"
-                        defaultValue=""
-                        type="checkbox"
-                        id="flexCheckIndeterminate"
-                        onChange={e => handleChangeTrueAnswer(idAnswer, e.target.checked)}
-                        checked={isTrue}
-                    />
-                </div>)
-            default: return false;
+    async function handleDeleteAnswer(index: number, id_resposta: number) {
+        if (index !== undefined) {
+            if (id_resposta !== undefined) {
+                if (await deleteAnswer(id_resposta))
+                    setAnswers(prev => prev.filter(item => item.id_respostas !== index))
+            } else {
+                setAnswers(prev => prev.filter(item => item.id_respostas !== index))
+            }
         }
     }
+    function handleIsTrue(id_respostas: number) {
+        setAnswers(prev => prev.map(item => item.id_respostas === id_respostas ? { ...item, correta: 'S' } : item))
+        setAnswers(prev => prev.map(item => item.id_respostas !== id_respostas ? { ...item, correta: 'N' } : item))
+    }
+    function sendQuestion() {
+        if (questionId === 'new')
+            saveQuestion()
+        else if (questionId !== '')
+            updateQuestion()
+    }
+
 
     return (
         <div id="register-question">
@@ -167,13 +123,11 @@ export function RegisterQuestion() {
                     <h3 className="col-6">Cadastrar Novas Questions</h3>
                     <div className="col-4" id="btn">
                         <Link to='/avaliacao/new'><button className='btn btn-seccundary' >Voltar</button></Link>
-                        <Button onClick={saveQuestion} >Salvar</Button>
+                        <Button onClick={sendQuestion} >Salvar</Button>
                     </div>
                 </div>
             </div>
-
             <div className="questions">
-
                 <div id="Question" className="card shadow mb-6">
                     <div className="card-header py-3">
                         <div>
@@ -217,39 +171,64 @@ export function RegisterQuestion() {
                                     </div>
                                 </div>
 
-                                <div id="answer">
-                                    {
-                                        answers.map((answer, key) => (
-
-                                            <ListAnswerDiv key={key}>
-                                                {handleTypeAnswer(answer.id_respostas, Questions.tipo_resposta, answer.correta)}
-
-                                                <AnswerInput
-                                                    name={`${answer.id_respostas}`}
-                                                    autoFocus
-                                                    className="answer-input"
-                                                    type="text"
-                                                    disabled={
-                                                        Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"
-                                                    }
-                                                    placeholder={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L" ? "" : "Digite a Resposta"}
-                                                    onBlur={e => done(answer.id_respostas, e.target.value)}
-                                                    defaultValue={Questions.tipo_resposta === "B" ? "Resposta Curta ---" : Questions.tipo_resposta === "L" ? "Resposta Longa ---------" : answer.descricao}
-                                                />
-
-                                                <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
-
-                                                    <button onClick={() => { handleAddAnswer(answer.id_respostas, answer.descricao, Questions.tipo_resposta) }} ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
-                                                    <button ><i className="far fa-images"></i></button>
-                                                    <button className="button" onClick={() => handleDeleteAnswer(answer.id_respostas)}><i className="far fa-times-circle"></i></button>
-
-                                                </ButtonIcon>
-                                            </ListAnswerDiv>
-
-
-                                        ))}
-                                </div>
-
+                                <form onSubmit={(e) => handleAddAnswer(e, descriptionAnswer, Questions.tipo_resposta, Questions.id_perguntas)} id="answer">
+                                    <ListAnswerDiv>
+                                        <AnswerInput
+                                            name="descricao"
+                                            autoFocus
+                                            type="text"
+                                            disabled={
+                                                Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"
+                                            }
+                                            placeholder={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L" ? "" : "Digite a Resposta"}
+                                            onChange={(e) => setDescriptionAnswer(e.target.value)}
+                                            //onBlur={e => done(answer.id_respostas, e.target.value)}
+                                            value={Questions.tipo_resposta === "B" ? "Resposta Curta ---" : Questions.tipo_resposta === "L" ? "Resposta Longa ---------" : descriptionAnswer}
+                                        />
+                                        <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
+                                            <button type="submit" ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
+                                            <button ><i className="far fa-images"></i></button>
+                                            <button type="reset"><i className="far fa-times-circle"></i></button>
+                                        </ButtonIcon>
+                                    </ListAnswerDiv>
+                                </form>
+                                {answers.map(value => (
+                                    <ListAnswerDiv>
+                                        {
+                                            Questions.tipo_resposta === 'R' ?
+                                                <div className="form-check">
+                                                    <input
+                                                        defaultValue=""
+                                                        className="form-check-input"
+                                                        type="radio" name='correta' id="flexRadioDefault1"
+                                                        onChange={(e) => handleIsTrue(value.id_respostas)}
+                                                        checked={value.correta === 'S'}
+                                                    />
+                                                </div>
+                                                : Questions.tipo_resposta === 'C' ?
+                                                    <div className="form-check">
+                                                        <input
+                                                            className="form-check-input"
+                                                            defaultValue=""
+                                                            type="checkbox"
+                                                            id="flexCheckIndeterminate"
+                                                            name='correta'
+                                                            onChange={e => setAnswers(prev => prev.map(item => item.id_respostas == value.id_respostas ? { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
+                                                            checked={value.correta === 'S'}
+                                                        />
+                                                    </div> : ''
+                                        }
+                                        <AnswerInput
+                                            type="text"
+                                            value={value.descricao}
+                                            onChange={e => setAnswers(prev => prev.map(item => item.id_respostas == value.id_respostas ? { ...item, descricao: e.target.value } : item))}
+                                        />
+                                        <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
+                                            <button ><i className="far fa-images"></i></button>
+                                            <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas,value.id_respostas,)}><i className="far fa-times-circle"></i></button>
+                                        </ButtonIcon>
+                                    </ListAnswerDiv>))
+                                }
                             </div>
                         </div>
                     </div>
@@ -260,10 +239,9 @@ export function RegisterQuestion() {
                     setInfo={setQuestions}
                     hiddenInfo={hiddenInfo}
                 />
-            </div>)
-
+            </div>
         </div>
-
-
     )
 }
+
+

@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Avaliacao } from "../../components/Avaliacao/";
 import { Button } from "../../components/Button";
-
+import { typeAvaliacao } from "../../components/Interface";
+import { getAvaliacoes } from "../../service/AvaliacoesService";
+import { deleteAvaliacoes } from "../../service/AvaliacoesService";
 
 
 import './styles.scss';;
 
 
-type propsAssessments = {
+type propsAvaliacoes = {
     idAssessments: number
     departamento: string,
     nivel: string,
@@ -19,27 +21,18 @@ type propsAssessments = {
 
 
 export function ListaAvaliacoes() {
-    const [assessments, setAssessments] = useState<propsAssessments[]>([])
+    const [avaliacoes, setAvaliacoes] = useState<typeAvaliacao[]>([])
     const history = useHistory();
-    useEffect(() => {
-        setAssessments([{
-            idAssessments: 1,
-            departamento: "suporte",
-            nivel: "facil",
-            title: "Avaliação para iniciante no suporte tecnico ",
-            responsavel: "Elielson da Silva Santos",
-            //avatar: <div><i className="fas fa-user-tie"></i></div>
-        }, {
-            idAssessments: 2,
-            departamento: "suporte",
-            nivel: "facil",
-            title: "Avaliação para iniciante no suporte tecnico ",
-            responsavel: "Elielson da Silva Santos",
-            //avatar: <div><i className="fas fa-user-tie"></i></div>
-        }])
+
+    async function dataAvaliacoes() {
+        const data = (await getAvaliacoes()).data
+        setAvaliacoes(data)
     }
 
-        , [])
+    useEffect(() => {
+        dataAvaliacoes()
+    }, [])
+
 
     /*function handleCreatAssem(event:FormEvent){
         event.preventDefault();
@@ -48,6 +41,18 @@ export function ListaAvaliacoes() {
     }*/
 
         
+    async function deleteAvaliacao(id_avaliacoes?:number){
+        if(id_avaliacoes){
+            if(await deleteAvaliacoes(id_avaliacoes))
+                setAvaliacoes(avaliacoes.filter(item => item.id_avaliacoes !== id_avaliacoes))
+
+        }
+    }
+    function EditAvaliacao(id_avaliacoes?:number){
+        if(id_avaliacoes)
+            history.push(`/avaliacao/${id_avaliacoes}`)
+    }
+    
     return (
         <div id="listaAvaliacao">
             <header>
@@ -57,14 +62,16 @@ export function ListaAvaliacoes() {
             </header>
 
             {
-                assessments.map((avaliacao) => (
+                avaliacoes.map((avaliacao) => (
                     <Avaliacao
-                        key={avaliacao.idAssessments}
-                        idAssessments={avaliacao.idAssessments}
-                        departamento={avaliacao.departamento}
-                        nivel={avaliacao.nivel}
-                        titulo={avaliacao.title}
-                        responsavel={avaliacao.responsavel}
+                        key={avaliacao.id_avaliacoes}
+                        id_avaliacoes={avaliacao.id_avaliacoes}
+                        id_departamento={avaliacao.id_departamento}
+                        titulo={avaliacao.titulo}
+                        id_usuario={avaliacao.id_usuario}
+                        editAvaliacao={EditAvaliacao}
+                        deleteAvaliacao={deleteAvaliacao}
+                        
                     //avatar={avaliacao.avatar}
                     />
 
