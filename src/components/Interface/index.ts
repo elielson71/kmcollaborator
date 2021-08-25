@@ -23,15 +23,20 @@ export type typeQuestions = {
 export type typeAvaliacao = {
     id_avaliacoes?: number
     titulo: string
-    tempo: number
+    tempo: string
     id_usuario: number
     id_departamento?: number
-    itens_avaliacao?: [{
+    questioes?:typeQuestions
+    itensAvaliacao?:typeItensAvaliacao[]
+}
+
+export type typeItensAvaliacao={
         id_perguntas: number
         id_avaliacoes: number
         nota_pergunta: number 
         id_profissional?: number
         nota_profissional?: number
-    }]
-    questioes?:typeQuestions
-}
+        situacao:string
+        Questoes?:typeQuestions[]
+    }
+    

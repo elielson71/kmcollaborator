@@ -40,7 +40,7 @@ export function RegisterQuestion() {
     }
     async function updateQuestion() {
         if (ValidQuestion(Questions, answers)) {
-            const answerNew = answers.filter(answer => answer.status === 'C')
+            const answerNew = answers.filter(answer => answer.status === 'AB')
             if (answerNew.length !== 0)
                 postAnswer(answerNew)
             const resp = putQuestionsAnswer(parseInt(questionId), Questions)
@@ -85,7 +85,7 @@ export function RegisterQuestion() {
     function handleAddAnswer(e: FormEvent, descriptionAnswer: string, selectedType: string, id_perguntas?: number) {
         e.preventDefault();
         if ((selectedType === "R" || selectedType === "C") && descriptionAnswer !== "") {
-            const newAnswer: typeAnswer = { correta: 'N', descricao: descriptionAnswer, id_respostas: countAnswer++, id_perguntas, status: 'C' }
+            const newAnswer: typeAnswer = { correta: 'N', descricao: descriptionAnswer, id_respostas: countAnswer++, id_perguntas, status: 'AB' }
             setAnswers([...answers, newAnswer])
         }
         setDescriptionAnswer('')

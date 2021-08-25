@@ -29,13 +29,14 @@ export function CardQuestion({ title, id_departamento, id_perguntas, nivel, dele
                             <label htmlFor="">Nota</label>
                             <input type="text"
                                 name="Nota"
-                                value={nota_pergunta}
-                                onChange={e=>setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,nota_pergunta:e.target.value?parseFloat(e.target.value):0}:item))}
+                                value={nota_pergunta?nota_pergunta:''}
+                                onChange={e=>{
+                                    setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,nota_pergunta:e.target.value?parseFloat(e.target.value):0}:item))}}
                             />
                         </div>
                         <input type="checkbox"
                             className="form-check-input"
-                            checked={selecionado}
+                            checked={selecionado?selecionado:false}
                             onChange={e=>setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,selecionado:e.target.checked}:item))}
                         />
                     </TitleCadQuestion>
