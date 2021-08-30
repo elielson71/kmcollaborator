@@ -1,7 +1,7 @@
-import { typeItensAvaliacao} from '../components/Interface'
+import { typeQuestions} from '../components/Interface'
 import axios from 'axios';
 
-export async function postItensAvaliacao(itensAvaliacao: typeItensAvaliacao[]) {
+export async function postItensAvaliacao(itensAvaliacao: typeQuestions[]) {
      const resp = await axios.post('http://localhost:3001/avaliacoes/itensAvaliacoes', itensAvaliacao)
      return resp.status === 200
 }

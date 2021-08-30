@@ -8,8 +8,8 @@ import { useUpdateAvaliacoes } from "./useUpdateAvaliacoes";
 import { useValidarAvaliacao } from "./useValidarAvaliacao";
 
 export function useAvaliacoes(avaliacaoId: string) {
-    const [avaliacao, setAvaliacao] = useState<typeAvaliacao>({ id_usuario: 1, tempo: '00:00:00', titulo: '' });
-    const [Questions, setQuestion] = useState<typeQuestions[]>([{ conteudo: '', id_departamento: 0, id_responsavel: 0, nivel: '', senioridade: '', tipo_resposta: '', nota_pergunta: 0 }]);
+    const [avaliacao, setAvaliacao] = useState<typeAvaliacao>({ id_usuario: 1, tempo: '00:00:00', titulo: '', itensAvaliacao: [] });
+    const [Questions, setQuestion] = useState<typeQuestions[]>([]);
     const UpdateAvaliacoes = useUpdateAvaliacoes;
     const validarAvaliacao = useValidarAvaliacao;
 
@@ -20,22 +20,8 @@ export function useAvaliacoes(avaliacaoId: string) {
         } else if (avaliacaoId !== '') {
             const data = (await getOneAvaliacoesQuestion(parseInt(avaliacaoId))).data
 
-            let itensA = [] as typeItensAvaliacao[]
-            data['questions'].map(value => {
-                if (value.selecionado)
-                    itensA = [...itensA, {
-                        id_avaliacoes: parseInt(avaliacaoId),
-                        id_perguntas: value.id_perguntas ? value.id_perguntas : 0,
-                        nota_pergunta: value.nota_pergunta ? value.nota_pergunta : 0,
-                        situacao: 'CO'
-                    }]
-            })
-            data['avaliacao'].map(v =>
-                // setAvaliacao(v)
-                 setAvaliacao({...v,itensAvaliacao:itensA})
-             )
-            
-            setQuestion(data['questions'].sort((a) => a.selecionado ? -1 : 1))
+            data['avaliacao'].map(v =>setAvaliacao(v))
+            setQuestion(data['questions'].sort((a) => a.situacao ? -1 : 1))
         }
     }
 
@@ -51,11 +37,8 @@ export function useAvaliacoes(avaliacaoId: string) {
 
 
     async function salvarAvaliacoes(questionsSelecionadas: typeQuestions[]) {
-        let item = [] as typeItensAvaliacao[]
-        questionsSelecionadas.map((questions) => {
-            item = [...item, { id_avaliacoes: parseInt(avaliacaoId), id_perguntas: questions.id_perguntas ? questions.id_perguntas : 0, nota_pergunta: questions.nota_pergunta === 0 ? questions.nota_pergunta : 0, situacao: questions.selecionado ? 'AB' : 'CA' }]
-        })
-        avaliacao.itensAvaliacao = item
+
+        avaliacao.itensAvaliacao = questionsSelecionadas
 
         if (validarAvaliacao(avaliacaoId, avaliacao.titulo, questionsSelecionadas)) {
             if (await postAvaliacoes(avaliacao)) {
@@ -68,21 +51,17 @@ export function useAvaliacoes(avaliacaoId: string) {
     }
 
     const enviarAvaliacao = async (e: FormEvent) => {
-        const questionsSelecionadas = Questions.filter(value => value.selecionado)
+        const questionsSelecionadas = Questions.filter(value => value.situacao==='AB'||value.situacao==='AB+')
         if (validarAvaliacao(avaliacaoId, avaliacao.titulo, questionsSelecionadas)) {
-            if (avaliacaoId === 'new')
+            if (avaliacaoId === 'new') {
                 salvarAvaliacoes(questionsSelecionadas)
-            else if (avaliacaoId !== '')
-                if (avaliacaoId === '' || (avaliacaoId === 'new')) {
-                    alert('não foi possível atualizar!\n Atualize a pagina!')
-                    return
+            } else {
+                if(await UpdateAvaliacoes(avaliacaoId, Questions, avaliacao)){
+                    alert('Avaliação Atualizada com Sucesso!')
+                    //history.push('/avaliacao')
+                } else {
+                    alert('Erro ao Registrar Avaliação!')
                 }
-            if (await UpdateAvaliacoes(avaliacaoId,Questions, avaliacao, questionsSelecionadas)) {
-                alert('Avaliação Atualizada com Sucesso!')
-                history.push('/avaliacao')
-            }
-            else {
-                alert('Erro ao Registrar Avaliação!')
             }
         }
     }

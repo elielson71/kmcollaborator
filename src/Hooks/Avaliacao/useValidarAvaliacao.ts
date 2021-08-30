@@ -1,8 +1,11 @@
 import { typeQuestions } from "../../components/Interface"
 
 export const useValidarAvaliacao = (avaliacaoId:string,titulo:string,questionsSelecionadas: typeQuestions[]) => {
-
-    if ( titulo === '') {
+            
+    if (avaliacaoId === '') {
+        alert('Não foi possível atualizar!\n Atualize a pagina!')
+        return
+    }else if ( titulo === '') {
         alert('A Avaliação deve ter titutlo!')
         return
     } else if (questionsSelecionadas.length === 0) {

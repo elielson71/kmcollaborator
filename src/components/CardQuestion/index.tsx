@@ -8,15 +8,14 @@ type propsQuestion = {
     nivel: string
     id_perguntas: number
     deletarQuestao: any
-    selecionado?:boolean
+    situacao?:string
     nota_pergunta?:number
     setQuestions:React.Dispatch<React.SetStateAction<typeQuestions[]>>
-    
+    id_avaliacao?:number
 
 }
 const item = {} as any
-export function CardQuestion({ title, id_departamento, id_perguntas, nivel, deletarQuestao,selecionado,nota_pergunta,setQuestions }: propsQuestion) {
-
+export function CardQuestion({ title, id_departamento, id_perguntas, nivel, deletarQuestao,situacao,nota_pergunta,setQuestions, id_avaliacao}: propsQuestion) {
     return (
         <div id="card-questao">
             <div className="card ">
@@ -30,14 +29,20 @@ export function CardQuestion({ title, id_departamento, id_perguntas, nivel, dele
                             <input type="text"
                                 name="Nota"
                                 value={nota_pergunta?nota_pergunta:''}
-                                onChange={e=>{
-                                    setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,nota_pergunta:e.target.value?parseFloat(e.target.value):0}:item))}}
+                                onChange={e=>setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,nota_pergunta:e.target.value?parseFloat(e.target.value):0}:item))}
+                                onBlur={e=>{
+                                    if(e.target.value)
+                                    setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,situacao:id_avaliacao?e.target.checked?'AB+':'CA':e.target.checked?'AB':'CA'}:item))
+                                }}
                             />
                         </div>
                         <input type="checkbox"
                             className="form-check-input"
-                            checked={selecionado?selecionado:false}
-                            onChange={e=>setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,selecionado:e.target.checked}:item))}
+                            checked={situacao?situacao==='AB'||situacao==='AB+':false}
+                            onChange={e=>{setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,situacao:id_avaliacao?e.target.checked?'AB+':'CA':e.target.checked?'AB':'CA'}:item))
+                            if(!(e.target.checked))
+                                setQuestions(prev=>prev.map(item=>item.id_perguntas===id_perguntas?{...item,nota_pergunta:0}:item))
+                            }}
                         />
                     </TitleCadQuestion>
 

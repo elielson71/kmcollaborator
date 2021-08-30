@@ -16,7 +16,7 @@ export type typeQuestions = {
     id_departamento: number
     nivel: string
     answers?: typeAnswer
-    selecionado?:boolean
+    situacao?:string
     nota_pergunta?:number
 
 }
@@ -26,17 +26,16 @@ export type typeAvaliacao = {
     tempo: string
     id_usuario: number
     id_departamento?: number
-    questioes?:typeQuestions
-    itensAvaliacao?:typeItensAvaliacao[]
+   itensAvaliacao:typeQuestions[]
 }
 
 export type typeItensAvaliacao={
-        id_perguntas: number
-        id_avaliacoes: number
+        //id_perguntas: number
+        //id_avaliacoes: number
         nota_pergunta: number 
         id_profissional?: number
         nota_profissional?: number
         situacao:string
-        Questoes?:typeQuestions[]
+        questoes:typeQuestions
     }
     

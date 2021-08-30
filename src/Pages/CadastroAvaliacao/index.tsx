@@ -69,8 +69,9 @@ export const CadAvaliacao = () => {
                             id_departamento={question.id_departamento}
                             deletarQuestao={deletarQuestao}
                             nota_pergunta={question.nota_pergunta}
-                            selecionado={question.selecionado}
+                            situacao={question.situacao}
                             setQuestions={setQuestion}
+                            id_avaliacao={parseInt(avaliacaoId)}
                         />
                     )).sort(() => 1)
                 }
