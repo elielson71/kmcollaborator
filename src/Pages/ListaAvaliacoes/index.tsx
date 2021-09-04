@@ -6,18 +6,34 @@ import { typeAvaliacao } from "../../components/Interface";
 import { getAvaliacoes } from "../../service/AvaliacoesService";
 import { deleteAvaliacoes } from "../../service/AvaliacoesService";
 
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import { MenuItens } from '../../components/MenuItens';
+import { Copyright } from '../../components/Footer';
+
 
 import './styles.scss';;
 
 
-type propsAvaliacoes = {
-    idAssessments: number
-    departamento: string,
-    nivel: string,
-    title: string,
-    responsavel: string,
-    //avatar: Element,
-}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+
+}));
 
 
 export function ListaAvaliacoes() {
@@ -40,48 +56,62 @@ export function ListaAvaliacoes() {
         history.push('/avaliacao')
     }*/
 
-        
-    async function deleteAvaliacao(id_avaliacoes?:number){
-        if(id_avaliacoes){
-            if(await deleteAvaliacoes(id_avaliacoes))
+
+    async function deleteAvaliacao(id_avaliacoes?: number) {
+        if (id_avaliacoes) {
+            if (await deleteAvaliacoes(id_avaliacoes))
                 setAvaliacoes(avaliacoes.filter(item => item.id_avaliacoes !== id_avaliacoes))
 
         }
     }
-    function EditAvaliacao(id_avaliacoes?:number){
-        if(id_avaliacoes)
+    function EditAvaliacao(id_avaliacoes?: number) {
+        if (id_avaliacoes)
             history.push(`/avaliacao/${id_avaliacoes}`)
     }
-    
+    const classes = useStyles();
     return (
-        <div id="listaAvaliacao">
-            <header>
-                <Button onClick={()=>{history.push('/avaliacao/new')}}>CRIAR NOVA AVALIAÇÃO</Button>
-                <h2>Lista de Avaliacoes</h2>
-                <span>KMC</span>
-            </header>
+        <div className={classes.root}>
+    <MenuItens titulo='Dashboard' />
 
-            {
-                avaliacoes.map((avaliacao) => (
-                    <Avaliacao
-                        key={avaliacao.id_avaliacoes}
-                        id_avaliacoes={avaliacao.id_avaliacoes}
-                        id_departamento={avaliacao.id_departamento}
-                        titulo={avaliacao.titulo}
-                        id_usuario={avaliacao.id_usuario}
-                        editAvaliacao={EditAvaliacao}
-                        deleteAvaliacao={deleteAvaliacao}
-                        
-                    //avatar={avaliacao.avatar}
-                    />
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <div id="listaAvaliacao">
+                            <header>
+                                <Button onClick={() => { history.push('/avaliacao/new') }}>CRIAR NOVA AVALIAÇÃO</Button>
+                                <h2>Lista de Avaliacoes</h2>
+                                <span>KMC</span>
+                            </header>
 
-                )
+                            {
+                                avaliacoes.map((avaliacao) => (
+                                    <Avaliacao
+                                        key={avaliacao.id_avaliacoes}
+                                        id_avaliacoes={avaliacao.id_avaliacoes}
+                                        id_departamento={avaliacao.id_departamento}
+                                        titulo={avaliacao.titulo}
+                                        id_usuario={avaliacao.id_usuario}
+                                        editAvaliacao={EditAvaliacao}
+                                        deleteAvaliacao={deleteAvaliacao}
+
+                                    //avatar={avaliacao.avatar}
+                                    />
+
+                                )
 
 
-                )
-            }
+                                )
+                            }
 
-        </div >
+                        </div >
+                    </Grid>
+                    <Box pt={4}>
+                        <Copyright />
+                    </Box>
+                </Container>
+            </main>
+        </div>
 
     )
 }

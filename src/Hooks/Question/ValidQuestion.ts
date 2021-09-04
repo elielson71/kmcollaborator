@@ -19,8 +19,8 @@ export function ValidQuestion(Questions: typeQuestions, answers: typeAnswer[]) {
         let umverdadeiro = false
         answers.map(value => {
             nullrespota = value.descricao === ""
-            
             umverdadeiro = value.correta==='S'
+            return null
         })
         if (nullrespota) {
             alert("Não é possível salva com reposta em branco")

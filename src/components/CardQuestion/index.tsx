@@ -14,7 +14,7 @@ type propsQuestion = {
     id_avaliacao?:number
 
 }
-const item = {} as any
+
 export function CardQuestion({ title, id_departamento, id_perguntas, nivel, deletarQuestao,situacao,nota_pergunta,setQuestions, id_avaliacao}: propsQuestion) {
     return (
         <div id="card-questao">

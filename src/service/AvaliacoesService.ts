@@ -1,4 +1,4 @@
-import { typeAnswer, typeAvaliacao, typeQuestions } from '../components/Interface'
+import {  typeAvaliacao, typeQuestions } from '../components/Interface'
 import axios from 'axios';
 export async function getAvaliacoes() {
     return await axios.get<[]>('http://localhost:3001/avaliacoes')

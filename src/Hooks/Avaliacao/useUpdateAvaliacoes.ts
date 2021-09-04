@@ -1,4 +1,4 @@
-import { typeAvaliacao, typeItensAvaliacao, typeQuestions } from "../../components/Interface"
+import { typeAvaliacao, typeQuestions } from "../../components/Interface"
 import { putAvaliacoes } from "../../service/AvaliacoesService"
 import { postItensAvaliacao } from "../../service/ItensAvaliacaoService"
 
@@ -10,7 +10,7 @@ export async function useUpdateAvaliacoes(avaliacaoId: string, Questions: typeQu
         return value.situacao === 'AB+'
     })
     if(newItens){
-        newItens.map((value:any)=>{value.situacao='AB';value['id_avaliacao']=avaliacaoId})
+        newItens.map((value:any)=>{value.situacao='AB';value['id_avaliacao']=avaliacaoId;return null})
         await postItensAvaliacao(newItens)
     }
     if (await putAvaliacoes(id, upAvaliacao))

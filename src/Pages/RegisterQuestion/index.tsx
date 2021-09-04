@@ -64,6 +64,7 @@ export function RegisterQuestion() {
         const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
         dataQuestion.map(value => {
             setQuestions(value)
+            return null
         })
         setAnswers(dataAnswer)
     }
@@ -213,7 +214,7 @@ export function RegisterQuestion() {
                                                             type="checkbox"
                                                             id="flexCheckIndeterminate"
                                                             name='correta'
-                                                            onChange={e => setAnswers(prev => prev.map(item => item.id_respostas == value.id_respostas ? { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
+                                                            onChange={e => setAnswers(prev => prev.map(item => item.id_respostas === value.id_respostas ? { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
                                                             checked={value.correta === 'S'}
                                                         />
                                                     </div> : ''
@@ -221,7 +222,7 @@ export function RegisterQuestion() {
                                         <AnswerInput
                                             type="text"
                                             value={value.descricao}
-                                            onChange={e => setAnswers(prev => prev.map(item => item.id_respostas == value.id_respostas ? { ...item, descricao: e.target.value } : item))}
+                                            onChange={e => setAnswers(prev => prev.map(item => item.id_respostas === value.id_respostas ? { ...item, descricao: e.target.value } : item))}
                                         />
                                         <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
                                             <button ><i className="far fa-images"></i></button>

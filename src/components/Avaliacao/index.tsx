@@ -1,6 +1,5 @@
 import { Button } from "../../components/Button";
 import { NivelMedioDificuldade } from "../../components/NivelMedioDificuldade";
-import { typeAvaliacao } from "../Interface";
 
 import './style.scss'
 type propsAvaliacao={

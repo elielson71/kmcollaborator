@@ -1,4 +1,4 @@
-import { typeAnswer, typeQuestions } from '../components/Interface'
+import { typeAnswer } from '../components/Interface'
 import axios from 'axios';
 
 export async function postAnswer(answer: typeAnswer[]) {

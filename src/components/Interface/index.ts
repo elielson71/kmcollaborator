@@ -38,4 +38,12 @@ export type typeItensAvaliacao={
         situacao:string
         questoes:typeQuestions
     }
+export type typeUsuario={
+    id_usuario:number
+    login:string
+    administrador:string
+    data_cadastro:string
+    nome_completo:string
+    email:string
+}
     
