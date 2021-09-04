@@ -51,7 +51,7 @@ export const ListMenuItens = (
 export const secondaryListItems = (
   <div>
     <ListSubheader inset>Opções</ListSubheader>
-    <ListItem button component={Link} to="/listarusuario">
+    <ListItem button component={Link} to="/usuario">
       <ListItemIcon>
         <PeopleAlt />
       </ListItemIcon>

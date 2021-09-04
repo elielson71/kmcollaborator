@@ -10,12 +10,11 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import SaveIcon from '@material-ui/icons/Save';
-import ArrowBack from '@material-ui/icons/ArrowBack';
 import { useState } from 'react'
 import Button from '@material-ui/core/Button';
 import { api } from '../../service/Api';
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
+import { useEffect } from 'react';
 
 
 
@@ -48,13 +47,16 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
-  },
-  botoes:{
-    margin:15
   }
 }));
 
-export function RegistrarUsuario() {
+type typeparams = {
+  id: string
+}
+export function EditarUsuario() {
+
+  const parms = useParams<typeparams>();
+  const id_usuario = parseInt(parms.id)
   const classes = useStyles();
   const [login, setLogin] = useState('')
   const [senha, setSenha] = useState('')
@@ -62,8 +64,29 @@ export function RegistrarUsuario() {
   const [administrador, setAdministrador] = useState('N')
   const [email, setEmail] = useState('')
   const history = useHistory();
+
+  useEffect(() => {
+    if(!id_usuario){
+      alert('Erro ao Abrir Edição, tente novamente por favor!')
+      history.push('/usuario')
+    }
+
+    async function recuperarUsuario(id: number) {
+      const resp = await api.get(`/usuario/${id}`)
+      if (resp.status === 200) {
+        setLogin(resp.data[0].login)
+        setSenha(resp.data[0].senha)
+        setNome(resp.data[0].nome_completo)
+        setAdministrador(resp.data[0].administrador)
+        setEmail(resp.data[0].email)
+      }
+    }
+    recuperarUsuario(id_usuario)
+  }, [id_usuario])
+
   async function handleSubmint() {
     const data = {
+      id_usuario:id_usuario,
       login: login,
       senha: senha,
       "nome_completo": nome,
@@ -71,11 +94,15 @@ export function RegistrarUsuario() {
       email: email,
     }
     if (login !== '' && senha !== '' && nome !== '' && administrador !== '' && email !== '') {
-      const resp = await api.post('/usuario', data)
-      if (resp.status === 201) {
+      const resp = await api.put(`/usuario/${id_usuario}`, data)
+      console.log(resp)
+      if (resp.status === 204) {
+        alert("Dados Atualizados com Sucesso!")
         history.push('/usuario')
+      } else if (resp.status === 404) {
+        alert('Email ou Login já existe!')
       } else {
-        alert('Errro ao cadastrar Usuario!')
+        alert('Errro ao Atualizar Usuario!')
       }
     } else {
       alert('Preencha todos os campos!')
@@ -91,7 +118,7 @@ export function RegistrarUsuario() {
           <Grid container spacing={3}>
             <Grid item sm={12}>
               <Paper className={classes.paper}>
-                <h3>Formulario de Usuario</h3>
+                <h3>Editar Usuario</h3>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={5}>
                     <TextField
@@ -157,12 +184,12 @@ export function RegistrarUsuario() {
                       onChange={e => setEmail(e.target.value)}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} >
-                    <Button variant="contained" onClick={() => history.push('/usuario')} startIcon={<ArrowBack />} className={classes.botoes}>
-                      Volta
+                  <Grid item xs={12} sm={12}>
+                    <Button variant="contained" color="primary" onClick={handleSubmint}>
+                      Salvar Alterações
                     </Button>
-                    <Button variant="contained" color="primary" onClick={handleSubmint} startIcon={<SaveIcon />}className={classes.botoes}>
-                      Salvar
+                    <Button variant="contained" onClick={() => history.push('/usuario')}>
+                      Volta
                     </Button>
                   </Grid>
                 </Grid>

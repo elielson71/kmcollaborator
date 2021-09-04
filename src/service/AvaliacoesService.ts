@@ -1,10 +1,10 @@
 import {  typeAvaliacao, typeQuestions } from '../components/Interface'
-import axios from 'axios';
+import { api } from './Api'
 export async function getAvaliacoes() {
-    return await axios.get<[]>('http://localhost:3001/avaliacoes')
+    return await api.get<[]>('h/avaliacoes')
 }
 export async function postAvaliacoes(avaliacoes: typeAvaliacao) {
-    const resp = await axios.post('http://localhost:3001/avaliacoes', avaliacoes)
+    const resp = await api.post('h/avaliacoes', avaliacoes)
     return resp.status === 200
 }
 type typeAvaliacoesQuestion={
@@ -12,16 +12,16 @@ type typeAvaliacoesQuestion={
     questions:typeQuestions[]
 }
 export async function getOneAvaliacoesQuestion(id_avaliacoes: number) {
-    return await axios.get<typeAvaliacoesQuestion>(`http://localhost:3001/avaliacoes/questions/${id_avaliacoes}`)
+    return await api.get<typeAvaliacoesQuestion>(`h/avaliacoes/questions/${id_avaliacoes}`)
 }
 
 export async function putAvaliacoes(id_avaliacoes: number, avaliacoes: typeAvaliacao) {
-    const resp = await axios.put<typeAvaliacao>(`http://localhost:3001/avaliacoes/${id_avaliacoes}`, avaliacoes)
+    const resp = await api.put<typeAvaliacao>(`h/avaliacoes/${id_avaliacoes}`, avaliacoes)
     return resp.status === 200
 }
 export async function deleteAvaliacoes(id_avaliacoes: number) {
     if (window.confirm('Deseja Realmente excluir Avaliacao?')) {
-        const resp = (await axios.delete(`http://localhost:3001/avaliacoes/${id_avaliacoes}`))
+        const resp = (await api.delete(`h/avaliacoes/${id_avaliacoes}`))
         return resp.status === 200
     }
     return 
