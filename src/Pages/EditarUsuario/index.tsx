@@ -95,7 +95,6 @@ export function EditarUsuario() {
     }
     if (login !== '' && senha !== '' && nome !== '' && administrador !== '' && email !== '') {
       const resp = await api.put(`/usuario/${id_usuario}`, data)
-      console.log(resp)
       if (resp.status === 204) {
         alert("Dados Atualizados com Sucesso!")
         history.push('/usuario')

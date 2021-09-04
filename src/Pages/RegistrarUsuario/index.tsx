@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
-  botoes:{
-    margin:15
+  botoes: {
+    margin: 15
   }
 }));
 
@@ -70,10 +70,13 @@ export function RegistrarUsuario() {
       administrador: administrador,
       email: email,
     }
+    
     if (login !== '' && senha !== '' && nome !== '' && administrador !== '' && email !== '') {
       const resp = await api.post('/usuario', data)
       if (resp.status === 201) {
         history.push('/usuario')
+      } else if (resp.status === 404) {
+        alert('Email ou Login já existe!')
       } else {
         alert('Errro ao cadastrar Usuario!')
       }
@@ -161,7 +164,7 @@ export function RegistrarUsuario() {
                     <Button variant="contained" onClick={() => history.push('/usuario')} startIcon={<ArrowBack />} className={classes.botoes}>
                       Volta
                     </Button>
-                    <Button variant="contained" color="primary" onClick={handleSubmint} startIcon={<SaveIcon />}className={classes.botoes}>
+                    <Button variant="contained" color="primary" onClick={handleSubmint} startIcon={<SaveIcon />} className={classes.botoes}>
                       Salvar
                     </Button>
                   </Grid>
