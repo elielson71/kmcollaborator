@@ -125,11 +125,7 @@ export function MenuItens({titulo}:props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {titulo}
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+
         </Toolbar>
       </AppBar>
       <Drawer
