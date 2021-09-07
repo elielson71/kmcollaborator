@@ -71,7 +71,7 @@ export function ListaAvaliacoes() {
     const classes = useStyles();
     return (
         <div className={classes.root}>
-    <MenuItens titulo='Dashboard' />
+    <MenuItens titulo='Avaliações' />
 
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />

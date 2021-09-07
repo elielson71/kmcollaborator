@@ -7,6 +7,8 @@ import { Dashboard } from './Pages/Home';
 import { RegistrarUsuario } from './Pages/RegistrarUsuario';
 import { ListarUsuario } from './Pages/ListarUsuario';
 import { EditarUsuario } from './Pages/EditarUsuario';
+import { RegistrarProfissional } from './Pages/RegistrarProfissional';
+import { ListarProfissionais } from './Pages/ListarProfissionais';
 
 function App() {
   return (
@@ -20,6 +22,9 @@ function App() {
         <Route path="/avaliacao" exact component={ListaAvaliacoes} />
         <Route path="/avaliacao/:id"  component={CadAvaliacao} />
         <Route path="/question/:id"  component={RegisterQuestion} />
+        <Route path="/profissionais" exact  component={ListarProfissionais} />
+        <Route path="/profissionais/:id" exact  component={RegistrarProfissional} />
+
       </Switch>
     </BrowserRouter>
   );
