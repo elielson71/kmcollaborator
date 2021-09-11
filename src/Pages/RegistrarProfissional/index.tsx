@@ -1,22 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
 import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { useState } from 'react'
-import Button from '@material-ui/core/Button';
-import { api } from '../../service/Api';
+import { useState,useEffect } from 'react'
+import {Container,Grid,Box,Button,MenuItem,TextField,FormControl,InputLabel,Select,Paper} from '@material-ui/core/';
 import { useHistory } from 'react-router-dom'
-import { useEffect } from 'react';
 
 
 

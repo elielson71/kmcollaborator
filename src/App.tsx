@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { CadAvaliacao } from './Pages/CadastroAvaliacao'
 import { RegisterQuestion } from './Pages/RegisterQuestion';
 import { ListaAvaliacoes } from './/Pages/ListaAvaliacoes'
+import { RealizarAvaliacao } from './/Pages/RealizarAvaliacao'
 import { Dashboard } from './Pages/Home';
 import { RegistrarUsuario } from './Pages/RegistrarUsuario';
 import { ListarUsuario } from './Pages/ListarUsuario';
@@ -20,6 +21,7 @@ function App() {
         <Route path="/usuario" exact component={ListarUsuario} />
         <Route path="/usuario/:id" exact component={EditarUsuario} />
         <Route path="/avaliacao" exact component={ListaAvaliacoes} />
+        <Route path="/realizaravaliacao" exact component={RealizarAvaliacao} />
         <Route path="/avaliacao/:id"  component={CadAvaliacao} />
         <Route path="/question/:id"  component={RegisterQuestion} />
         <Route path="/profissionais" exact  component={ListarProfissionais} />

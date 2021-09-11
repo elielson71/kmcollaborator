@@ -1,82 +1,205 @@
 import './style.scss'
-import { Button } from '../../components/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import { CardQuestion } from '../../components/CardQuestion';
-import {  Link, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useAvaliacoes } from '../../Hooks/Avaliacao/useAvaliacoes';
+import { Container, Grid, Button, MenuItem, TextField, FormControl, InputLabel, Select, Paper, InputBase, alpha } from '@material-ui/core/';
+import SaveIcon from '@material-ui/icons/Save';
+import { MenuItens } from '../../components/MenuItens';
+import SearchIcon from '@material-ui/icons/Search';
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
 
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+        flexGrow: 1,
+        height: '100vh',
+        overflow: 'auto',
+    },
+    container: {
+        paddingTop: theme.spacing(4),
+        paddingBottom: theme.spacing(4),
+    },
+    paper: {
+        padding: 20,
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        //overflow: 'auto',
 
+    },
+    formControl: {
+        //margin: theme.spacing(1),
+        minWidth: 250,
+
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(6),
+
+        //width: '100%',
+    },
+    botoes: {
+        margin: 10
+    },
+    textField: {
+
+        width: '100%',
+    },
+    headerQuestion: {
+        padding: 10,
+        display: 'flex',
+        //justifyContent: 'space-between'
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
+        },
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: alpha(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+}));
 
 export const CadAvaliacao = () => {
     const params = useParams<{ id: string }>()
     const avaliacaoId = params.id;
-    const {avaliacao,setAvaliacao,enviarAvaliacao,Questions,setQuestion,deletarQuestao,} = useAvaliacoes(avaliacaoId)
-    
+    const { avaliacao, setAvaliacao, enviarAvaliacao, Questions, setQuestion, deletarQuestao, } = useAvaliacoes(avaliacaoId)
+    const history = useHistory()
+
+    const classes = useStyles();
 
     return (
-        <div id="cad-avaliacao">
-            <header className="row">
-                <div className="col-3">
-                    <label htmlFor="Responsavel">Responsável</label>
-                    <select className="form-select"
-                        name="Responsavel"
-                        aria-label="Default select example"
-                        value={avaliacao.id_usuario}
-                        onChange={(e) => setAvaliacao({ ...avaliacao, id_usuario: parseInt(e.target.value) })}
-                    >
-                        <option value='0'>Selecione o Responsável</option>
-                        <option value="1">Elielson da Silva Santos</option>
-                        <option value="2">Junior</option>
-                    </select>
-                </div>
-                <div className="col-5">
-                    <div className="form-group">
-                        <label htmlFor="titulo">Titulo</label>
-                        <input name="titulo"
-                            className="form-control"
-                            type="text"
-                            placeholder="Digite Titulo da Avaliação"
-                            value={avaliacao.titulo}
-                            onChange={(e) => setAvaliacao({ ...avaliacao, titulo: e.target.value })} />
-                    </div>
-                </div>
-                <div className="col-2">
-                    <div className="form-group">
-                        <label htmlFor="tempo">Tempo de Execução</label>
-                        <input name="tempo"
-                            className="form-control tempo"
-                            type="text"
-                            placeholder="Tem Máximo Execução"
-                            value={avaliacao.tempo}
-                            onChange={(e) => setAvaliacao({ ...avaliacao, tempo: e.target.value ? e.target.value : '00:00:00' })} />
-                    </div>
-                </div>
-                <div className="col-2">
-                    <div className="row">
-                        <button onClick={enviarAvaliacao} className="btn btn-success btn-lg btn-block col-6" >Salvar</button>
-                        <Link to={'/avaliacao/'} className="btn btn-secondary col-6">Voltar</Link>
-                        <Link to={'/question/new'}><Button>CRIAR NOVA QUESTÃO </Button></Link>
-                    </div>
-                </div>
-            </header>
-            <div className="listQuestion">
-                {
-                    Questions.map((question,key) => (
-                        <CardQuestion
-                            key={key}
-                            id_perguntas={question.id_perguntas as number}
-                            title={question.conteudo}
-                            nivel={question.nivel}
-                            id_departamento={question.id_departamento}
-                            deletarQuestao={deletarQuestao}
-                            nota_pergunta={question.nota_pergunta}
-                            situacao={question.situacao}
-                            setQuestions={setQuestion}
-                            id_avaliacao={parseInt(avaliacaoId)}
-                        />
-                    )).sort(() => 1)
-                }
-            </div>
-        </div>
+        <div className={classes.root}>
+            <MenuItens titulo='Cadastrar Avaliacão' />
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={12}>
+                            <Paper className={classes.paper}>
+                                <Grid item xs={12} sm={3}>
+                                    <TextField
+                                        fullWidth
+                                        id="titulo"
+                                        label="Titulo"
+                                        placeholder="Digite Titulo da Avaliação"
+                                        value={avaliacao.titulo}
+                                        onChange={(e) => setAvaliacao({ ...avaliacao, titulo: e.target.value })}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={2}>
+                                    <TextField
+                                        label='Tempo de Execução'
+                                        id="tempo"
+                                        className="form-control tempo"
+                                        placeholder="Tem Máximo Execução"
+                                        value={avaliacao.tempo}
+                                        onChange={(e) => setAvaliacao({ ...avaliacao, tempo: e.target.value ? e.target.value : '00:00:00' })}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={2}>
+                                    <FormControl fullWidth >
+                                        <InputLabel id="departamento">Departamento</InputLabel>
+                                        <Select
+                                            label="Departamento"
+                                            id="departamento"
+                                            className={classes.selectEmpty}
+                                            value={avaliacao.id_usuario}
+                                            onChange={(e) => { const v = e.target.value as string; setAvaliacao({ ...avaliacao, id_usuario: parseInt(v) }) }}
+                                        >
+                                            <MenuItem value='0'>Selecione o Departamento</MenuItem>
+                                            <MenuItem value="1">Suporte</MenuItem>
+                                            <MenuItem value="2">Administrativo</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} sm={1}>
+                                    <Button variant="contained" color="primary" onClick={enviarAvaliacao} startIcon={<SaveIcon />} className={classes.botoes}>Salvar</Button>
+                                </Grid>
+
+                                <Grid item xs={12} sm={1}>
+                                    <Button variant="contained" onClick={() => history.push('/avaliacao/')} className={classes.botoes}> Voltar</Button>
+
+                                </Grid>
+                            </Paper>
+                        </Grid>
+
+                        <Grid container spacing={2} className={classes.paper}>
+                        <Grid sm={12} xs={12} className={classes.headerQuestion}>
+                                <Button variant='contained' color='primary' onClick={() => history.push('/question/new')}>CRIAR NOVA QUESTÃO </Button>
+                            <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    placeholder="Pesquisar…"
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                //onChange={e=>setAvaliacoes(avaliacoes?avaliacoes.filter(av=> av.titulo.toLowerCase().indexOf(e.target.value.toLowerCase())))}
+                                />
+                                
+                            </div>
+                        </Grid>
+                            {
+                                Questions.map((question, key) => (
+                                    <Grid item xs={12} sm={5}>
+                                        <CardQuestion
+                                            key={key}
+                                            id_perguntas={question.id_perguntas as number}
+                                            title={question.conteudo}
+                                            nivel={question.nivel}
+                                            departamento={question.id_departamento}
+                                            deletarQuestao={deletarQuestao}
+                                            nota_pergunta={question.nota_pergunta}
+                                            situacao={question.situacao}
+                                            setQuestions={setQuestion}
+                                            id_avaliacao={parseInt(avaliacaoId)}
+                                        />
+                                    </Grid>
+                                )).sort(() => 1)
+                            }
+
+                        </Grid>
+                    </Grid>
+                </Container>
+            </main>
+        </div >
     )
 };
 

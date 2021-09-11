@@ -14,6 +14,7 @@ export type typeQuestions = {
     id_responsavel: number
     senioridade: string
     id_departamento: number
+    descricao_depart?:string
     nivel: string
     answers?: typeAnswer
     situacao?: string

@@ -5,7 +5,7 @@ export async function getQuestions() {
 }
 export async function postQuestions(questions: typeQuestions) {
     const resp = await api.post('/questions', questions)
-    return resp.status === 200
+    return resp.status === 201
 }
 export async function getOneQuestions(id_perguntas: number) {
     return await api.get<typeQuestions[]>(`/questions/${id_perguntas}`)
@@ -15,12 +15,12 @@ export async function getQuestionsAnswer(id_perguntas: number) {
 }
 export async function putQuestionsAnswer(id_perguntas: number, questions: typeQuestions) {
     const resp = await api.put<typeQuestions>(`/questions/${id_perguntas}`, questions)
-    return resp.status === 200
+    return resp.status === 204
 }
 export async function deleteQuestionsAnswer(id_perguntas: number) {
     if (window.confirm('Deseja Realmente excluir essa pergunta?')) {
         const resp = (await api.delete(`/questions/${id_perguntas}`))
-        return resp.status === 200
+        return resp.status === 204
     }
     return 
 }

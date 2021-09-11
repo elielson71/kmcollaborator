@@ -5,7 +5,7 @@ export async function getAvaliacoes() {
 }
 export async function postAvaliacoes(avaliacoes: typeAvaliacao) {
     const resp = await api.post('/avaliacoes', avaliacoes)
-    return resp.status === 200
+    return resp.status === 201
 }
 type typeAvaliacoesQuestion={
     avaliacao:typeAvaliacao[]
@@ -17,12 +17,12 @@ export async function getOneAvaliacoesQuestion(id_avaliacoes: number) {
 
 export async function putAvaliacoes(id_avaliacoes: number, avaliacoes: typeAvaliacao) {
     const resp = await api.put<typeAvaliacao>(`/avaliacoes/${id_avaliacoes}`, avaliacoes)
-    return resp.status === 200
+    return resp.status === 204
 }
 export async function deleteAvaliacoes(id_avaliacoes: number) {
     if (window.confirm('Deseja Realmente excluir Avaliacao?')) {
         const resp = (await api.delete(`/avaliacoes/${id_avaliacoes}`))
-        return resp.status === 200
+        return resp.status === 204
     }
     return 
 }
