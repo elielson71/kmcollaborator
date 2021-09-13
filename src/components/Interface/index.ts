@@ -65,3 +65,7 @@ export type typeprofissional = {
     data_cadastro:Date
 
 }
+export type typeDepartamento ={
+    id_departamento?:number
+    nome:string
+}

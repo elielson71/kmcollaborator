@@ -15,7 +15,7 @@ export const ButtonIcon = styled.div`
     }
 `
 
-export const AnswerInput = styled.input `
+export const AnswerInput = styled.input`
     padding: 2%;
     width: 80%;
     border-color: rgba(92, 83, 83, 0);
@@ -26,6 +26,7 @@ export const AnswerInput = styled.input `
     margin-bottom: 1%;
     `
 export const ListAnswerDiv = styled.div`
+
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -59,7 +60,45 @@ export const ListAnswerDiv = styled.div`
         justify-content: center;
     }
 `
-export const TitleCadQuestion = styled.div `
+export const ListAnswerLabel = styled.label`
+    border-style: groove;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 2%;
+    //margin-left: 2%;
+    font-size: large;
+    label {
+        margin-bottom: 0px !important;
+    }
+    i {
+        padding-right: 10px;
+    }
+    .txt {
+        font-size: small;
+        padding: 1%;
+        width: 100%;
+        margin-bottom: 0%;
+    }
+    .form-check {
+        width: 50px;
+        margin-left: 0px;
+        display: flex;
+        justify-content: center;
+    }
+    .radio {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+`
+export const TitleCadQuestion = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -67,4 +106,3 @@ export const TitleCadQuestion = styled.div `
     padding-right: 5px;
     `
 
-    

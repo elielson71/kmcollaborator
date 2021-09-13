@@ -10,22 +10,27 @@ import { ListarUsuario } from './Pages/ListarUsuario';
 import { EditarUsuario } from './Pages/EditarUsuario';
 import { RegistrarProfissional } from './Pages/RegistrarProfissional';
 import { ListarProfissionais } from './Pages/ListarProfissionais';
+import { ListarDepartamento } from './Pages/ListarDepartamento';
+import { RegistrarDepartamento } from './Pages/RegistrarDepartamento';
+import {Login} from './Pages/Login';
 
 function App() {
   return (
-    
+
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={Dashboard} />
+        <Route path="/" exact component={Login} />
+        <Route path="/home" exact component={Dashboard} />
         <Route path="/usuario/new" exact component={RegistrarUsuario} />
         <Route path="/usuario" exact component={ListarUsuario} />
         <Route path="/usuario/:id" exact component={EditarUsuario} />
         <Route path="/avaliacao" exact component={ListaAvaliacoes} />
-        <Route path="/realizaravaliacao" exact component={RealizarAvaliacao} />
-        <Route path="/avaliacao/:id"  component={CadAvaliacao} />
-        <Route path="/question/:id"  component={RegisterQuestion} />
-        <Route path="/profissionais" exact  component={ListarProfissionais} />
-        <Route path="/profissionais/:id" exact  component={RegistrarProfissional} />
+        <Route path="/avaliacao/:id" component={CadAvaliacao} />
+        <Route path="/question/:id" component={RegisterQuestion} />
+        <Route path="/profissionais" exact component={ListarProfissionais} />
+        <Route path="/profissionais/:id" exact component={RegistrarProfissional} />
+        <Route path="/departamento/:id" exact component={RegistrarDepartamento} />
+        <Route path="/departamento" exact component={ListarDepartamento} />
 
       </Switch>
     </BrowserRouter>

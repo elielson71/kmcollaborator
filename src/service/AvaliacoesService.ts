@@ -14,6 +14,9 @@ type typeAvaliacoesQuestion={
 export async function getOneAvaliacoesQuestion(id_avaliacoes: number) {
     return await api.get<typeAvaliacoesQuestion>(`/avaliacoes/questions/${id_avaliacoes}`)
 }
+export async function getAvaliacoesItenQuestions(id_avaliacoes: number) {
+    return await api.get<typeQuestions[]>(`/avaliacoes/itensquestions/${id_avaliacoes}`)
+}
 
 export async function putAvaliacoes(id_avaliacoes: number, avaliacoes: typeAvaliacao) {
     const resp = await api.put<typeAvaliacao>(`/avaliacoes/${id_avaliacoes}`, avaliacoes)

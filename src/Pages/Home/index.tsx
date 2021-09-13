@@ -29,7 +29,7 @@ export function Dashboard() {
   return (
     <div className={classes.root}>
       
-      <MenuItens titulo='Avaliacões'/>
+      <MenuItens titulo='KMCollaborator'/>
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />

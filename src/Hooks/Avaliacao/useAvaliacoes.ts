@@ -1,19 +1,26 @@
 import { FormEvent, useEffect, useState } from "react"
 import { deleteQuestionsAnswer, getQuestions } from '../../service/QuestionsService';
-import { typeAvaliacao, typeQuestions } from '../../components/Interface';
+import { typeAvaliacao, typeDepartamento, typeQuestions } from '../../components/Interface';
 
 import { getOneAvaliacoesQuestion, postAvaliacoes } from '../../service/AvaliacoesService';
 import { useHistory } from "react-router-dom";
 import { useUpdateAvaliacoes } from "./useUpdateAvaliacoes";
 import { useValidarAvaliacao } from "./useValidarAvaliacao";
+import { useDepartamento } from "../Departamento/useDepartamento";
 
 export function useAvaliacoes(avaliacaoId: string) {
+    
     const [avaliacao, setAvaliacao] = useState<typeAvaliacao>({ id_usuario: 1, tempo: '00:00:00', titulo: '', itensAvaliacao: [] });
     const [Questions, setQuestion] = useState<typeQuestions[]>([]);
+    
+    const {departamentos} = useDepartamento('')
+
+    
     const UpdateAvaliacoes = useUpdateAvaliacoes;
     const validarAvaliacao = useValidarAvaliacao;
 
     async function RecuperandoDadosQuestions(avaliacaoId: string) {
+        
         if (avaliacaoId === 'new') {
             const data = (await getQuestions()).data
             setQuestion(data)
@@ -22,6 +29,7 @@ export function useAvaliacoes(avaliacaoId: string) {
 
             data['avaliacao'].map(v =>setAvaliacao(v))
             setQuestion(data['questions'].sort((a) => a.situacao ? -1 : 1))
+            
         }
     }
 
@@ -70,5 +78,8 @@ export function useAvaliacoes(avaliacaoId: string) {
         if (await deleteQuestionsAnswer(id_perguntas))
             setQuestion(Questions.filter(item => item.id_perguntas !== id_perguntas))
     }
-    return { avaliacao, setAvaliacao, enviarAvaliacao, Questions, setQuestion, deletarQuestao, }
+    
+    
+    return { avaliacao, setAvaliacao, enviarAvaliacao, Questions, setQuestion, deletarQuestao,RecuperandoDadosQuestions, departamentos}
 }
+

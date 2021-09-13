@@ -15,7 +15,7 @@ import {Link} from 'react-router-dom'
 
 export const ListMenuItens = (
   <div>
-    <ListItem button component={Link} to='/'>
+    <ListItem button component={Link} to='/home'>
       <ListItemIcon >
         <DashboardIcon />
       </ListItemIcon>
@@ -33,13 +33,13 @@ export const ListMenuItens = (
       </ListItemIcon>
       <ListItemText primary="Profissionais" />
     </ListItem>
-    <ListItem button component={Link} to='/relatorios'>
+    <ListItem button component={Link} to='/home'>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Relatórios" />
     </ListItem>
-    <ListItem button component={Link} to='/midias'>
+    <ListItem button component={Link} to='/home'>
       <ListItemIcon>
         <LayersIcon />
       </ListItemIcon>
@@ -57,17 +57,23 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Usuario" />
     </ListItem>
+    <ListItem button component={Link} to="/departamento">
+      <ListItemIcon>
+        <PeopleAlt />
+      </ListItemIcon>
+      <ListItemText primary="Departamento" />
+    </ListItem>
     <ListItem button >
       <ListItemIcon>
         <GroupAdd />
       </ListItemIcon>
       <ListItemText primary="Grupos de Perfis" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to="/">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Sair" />
+      <ListItemText primary="Sair"  />
     </ListItem>
   </div>
 );

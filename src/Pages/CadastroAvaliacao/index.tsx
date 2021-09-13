@@ -93,13 +93,15 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
+
 export const CadAvaliacao = () => {
     const params = useParams<{ id: string }>()
     const avaliacaoId = params.id;
-    const { avaliacao, setAvaliacao, enviarAvaliacao, Questions, setQuestion, deletarQuestao, } = useAvaliacoes(avaliacaoId)
+    const { avaliacao, setAvaliacao, enviarAvaliacao, Questions, 
+        setQuestion, deletarQuestao,departamentos } = useAvaliacoes(avaliacaoId)
     const history = useHistory()
-
     const classes = useStyles();
+
 
     return (
         <div className={classes.root}>
@@ -131,18 +133,17 @@ export const CadAvaliacao = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={2}>
+
                                     <FormControl fullWidth >
                                         <InputLabel id="departamento">Departamento</InputLabel>
                                         <Select
                                             label="Departamento"
                                             id="departamento"
                                             className={classes.selectEmpty}
-                                            value={avaliacao.id_usuario}
-                                            onChange={(e) => { const v = e.target.value as string; setAvaliacao({ ...avaliacao, id_usuario: parseInt(v) }) }}
+                                            value={`${avaliacao.id_departamento}`}
+                                            onChange={(e) => { const v = e.target.value as string; setAvaliacao({ ...avaliacao,id_departamento: parseInt(v) }) }}
                                         >
-                                            <MenuItem value='0'>Selecione o Departamento</MenuItem>
-                                            <MenuItem value="1">Suporte</MenuItem>
-                                            <MenuItem value="2">Administrativo</MenuItem>
+                                            { departamentos.map(d=>(<MenuItem id="departamento"  value={d.id_departamento} >{d.nome}</MenuItem>))}
                                         </Select>
                                     </FormControl>
                                 </Grid>
