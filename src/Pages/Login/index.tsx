@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -15,6 +15,8 @@ import Container from '@material-ui/core/Container';
 import { Copyright } from '../../components/Footer';
 import { FormEvent } from 'react-router/node_modules/@types/react';
 import { useHistory } from 'react-router';
+import { api } from '../../service/Api';
+import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/auth';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,16 +37,36 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+
 }));
 
 
-export  function Login() {
+export function Login() {
   const classes = useStyles();
-    const history = useHistory()
-  function handleSumbitLogin(e:FormEvent){
+  const history = useHistory()
+  const [login, setLogin] = useState('')
+  const [senha, setSenha] = useState('')
+  async function handleSumbitLogin(e: FormEvent) {
     e.preventDefault()
-    history.push('/home')
-}
+    const data = {
+      login: login,
+      senha: senha
+    }
+    await api.post('/authenticate',data)
+    .then(res =>{
+        if(res.status===200){
+          loginToken(res.data.token)
+          setIdUsuario(res.data.id_usuario)
+          setLoginUsuario(res.data.login)
+
+          history.push('/home')
+        }else if(res.status===404){
+          alert('Usuario não encontrado!')
+        }else if(res.status===401){
+          alert('Login ou senha não confere!')
+        }
+    })
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -53,7 +75,7 @@ export  function Login() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          KMCOLLABORATOR
         </Typography>
         <form className={classes.form} onSubmit={handleSumbitLogin} noValidate>
           <TextField
@@ -61,11 +83,14 @@ export  function Login() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="login"
+            label="Digite seu Login"
+            name="login"
+            autoComplete="login"
             autoFocus
+          
+            value={login}
+            onChange={e => setLogin(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -73,10 +98,12 @@ export  function Login() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Digite sua senha"
             type="password"
             id="password"
             autoComplete="current-password"
+            value={senha}
+            onChange={e => setSenha(e.target.value)}
           />
           <Button
             type="submit"
