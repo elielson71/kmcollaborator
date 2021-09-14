@@ -13,6 +13,7 @@ import { ListarProfissionais } from './Pages/ListarProfissionais';
 import { ListarDepartamento } from './Pages/ListarDepartamento';
 import { RegistrarDepartamento } from './Pages/RegistrarDepartamento';
 import {Login} from './Pages/Login';
+import  BaseConhecimento  from './Pages/BaseConhecimento/';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/profissionais/:id" exact component={RegistrarProfissional} />
         <Route path="/departamento/:id" exact component={RegistrarDepartamento} />
         <Route path="/departamento" exact component={ListarDepartamento} />
+        <Route path="/base_conhecimento" exact component={BaseConhecimento} />
 
       </Switch>
     </BrowserRouter>
