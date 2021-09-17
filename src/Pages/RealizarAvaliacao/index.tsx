@@ -18,15 +18,9 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
     const classes = useStyles();
     const { backQuestion, nextQuestion, paginacao, itemQuestions, 
         dataQuestions, handleIsTrue, answers, setAnswers, 
-        handleAddAnswer, statusAtividade, setStatusAtividade,avaliacao,
+         statusAtividade, setStatusAtividade,avaliacao,
      } = useRealizarAvaliacao(parseInt(avaliacaoId))
-    const answer = () => {
-        const a = answers.filter(a => a.id_perguntas === itemQuestions.id_perguntas)
-        if (a.length !== 0)
-            return a[0].descricao
 
-        return ''
-    }
 
     return (
         <div className={classes.root}>

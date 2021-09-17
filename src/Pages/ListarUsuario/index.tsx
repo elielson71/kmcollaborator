@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -13,61 +13,12 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import { useState, useEffect } from 'react';
-import { typeUsuario } from '../../components/Interface';
-import { api } from '../../service/Api';
-import { useHistory } from 'react-router';
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: 15,
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  table: {
-    minWidth: 650,
-  },
-}));
+import { useStyles } from './styles';
+import { useUsuario } from '../../Hooks/Usuario/useUsuario';
 
 export function ListarUsuario() {
   const classes = useStyles();
-
-  const [usuarios, setUsuario] = useState<typeUsuario[]>([])
-  const history = useHistory()
-  useEffect(() => {
-    async function recuperarDados() {
-      const resp = await api.get<typeUsuario[]>('/usuario')
-      if (resp.status === 200) {
-        setUsuario(resp.data)
-      } else {
-        alert('Error ao buscar Usuario Atualize a Pagina\n Se persistir entre em contato com desenvolvedor!')
-      }
-    }
-    recuperarDados()
-  }, [])
-
-  async function deleteUsuario(id: number) {
-    if (window.confirm("Deseja realmente excluir usuario?")) {
-      const resp = await api.delete(`/usuario/${id}`)
-      if (resp.status === 204)
-        window.location.reload()
-    }
-  }
+  const {usuarios,history,excluirUsuario} = useUsuario('')
 
   return (
     <div className={classes.root}>
@@ -116,7 +67,7 @@ export function ListarUsuario() {
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
                                   <Button color='primary' onClick={() => { history.push('/usuario/' + usuario.id_usuario) }}>Editar</Button>
-                                  <Button color='secondary' onClick={() => deleteUsuario(usuario.id_usuario)}>Delete</Button>
+                                  <Button color='secondary' onClick={() => excluirUsuario(usuario.id_usuario)}>Delete</Button>
                                 </ButtonGroup>
                               </TableCell>
                             </TableRow>

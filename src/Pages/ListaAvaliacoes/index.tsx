@@ -4,83 +4,19 @@ import { Avaliacao } from "../../components/Avaliacao/";
 import { typeAvaliacao } from "../../components/Interface";
 import { getAvaliacoes } from "../../service/AvaliacoesService";
 import { deleteAvaliacoes } from "../../service/AvaliacoesService";
-
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
 import SearchIcon from '@material-ui/icons/Search'
-
-
-
-import './styles.scss'; import Button from "@material-ui/core/Button";
-import { alpha, InputBase } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { InputBase } from "@material-ui/core";
+import { useStyles } from "./styles";
 ;
 
 
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-    },
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '1% 5% 2% 0%',
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: alpha(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-      },
-      inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-          width: '12ch',
-          '&:focus': {
-            width: '20ch',
-          },
-        },
-      },
-
-}));
 
 
 export function ListaAvaliacoes() {
@@ -88,8 +24,9 @@ export function ListaAvaliacoes() {
     const history = useHistory();
 
     async function dataAvaliacoes() {
-        const data = (await getAvaliacoes()).data
-        setAvaliacoes(data)
+        const resp = await getAvaliacoes()
+        if (resp.status === 200)
+            setAvaliacoes(resp.data)
     }
 
     useEffect(() => {
@@ -129,27 +66,29 @@ export function ListaAvaliacoes() {
                                         input: classes.inputInput,
                                     }}
                                     inputProps={{ 'aria-label': 'search' }}
-                                    //onChange={e=>setAvaliacoes(avaliacoes?avaliacoes.filter(av=> av.titulo.toLowerCase().indexOf(e.target.value.toLowerCase())))}
+                                //onChange={e=>setAvaliacoes(avaliacoes?avaliacoes.filter(av=> av.titulo.toLowerCase().indexOf(e.target.value.toLowerCase())))}
                                 />
                             </div>
                         </Grid>
-                        <Grid container spacing={3}>
-                            {
-                                avaliacoes.map((avaliacao) => (
-                                    <Grid item xs={4}>
-                                        <Avaliacao
-                                            key={avaliacao.id_avaliacoes}
-                                            id_avaliacoes={avaliacao.id_avaliacoes}
-                                            id_departamento={avaliacao.id_departamento}
-                                            titulo={avaliacao.titulo}
-                                            id_usuario={avaliacao.id_usuario}
-                                            editAvaliacao={EditAvaliacao}
-                                            deleteAvaliacao={deleteAvaliacao}
-                                        //avatar={avaliacao.avatar}
-                                        />
-                                    </Grid>
-                                ))}
-                        </Grid>
+                        {avaliacoes.length !== 0 ?
+                            <Grid container spacing={3}>
+                                {
+                                    avaliacoes.map((avaliacao) => (
+                                        <Grid item xs={4}>
+                                            <Avaliacao
+                                                key={avaliacao.id_avaliacoes}
+                                                id_avaliacoes={avaliacao.id_avaliacoes}
+                                                id_departamento={avaliacao.id_departamento}
+                                                titulo={avaliacao.titulo}
+                                                id_usuario={avaliacao.id_usuario}
+                                                editAvaliacao={EditAvaliacao}
+                                                deleteAvaliacao={deleteAvaliacao}
+                                            //avatar={avaliacao.avatar}
+                                            />
+                                        </Grid>
+                                    ))}
+                            </Grid>
+                            : <Grid item xs={12} alignItems='center'><h4>Nenhuma avaliação foi encontrar</h4></Grid>}
                     </Grid>
 
                     <Box pt={4}>

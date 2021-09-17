@@ -42,6 +42,7 @@ export type typeItensAvaliacao = {
 export type typeUsuario = {
     id_usuario: number
     login: string
+    senha:string
     administrador: string
     data_cadastro: string
     nome_completo: string

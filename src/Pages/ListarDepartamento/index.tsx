@@ -17,6 +17,7 @@ import { useState, useEffect } from 'react';
 import { typeDepartamento } from '../../components/Interface';
 import { api } from '../../service/Api';
 import { useHistory } from 'react-router';
+import { getDepartamento } from '../../service/DepartamentoService';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +52,7 @@ export function ListarDepartamento() {
   const history = useHistory()
   useEffect(() => {
     async function recuperarDados() {
-      const resp = await api.get<typeDepartamento[]>('/departamento')
+      const resp = await getDepartamento()
       if (resp.status === 200) {
         setDepartamento(resp.data)
       } else {

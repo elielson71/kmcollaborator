@@ -1,12 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +13,7 @@ import { Copyright } from '../../components/Footer';
 import { FormEvent } from 'react-router/node_modules/@types/react';
 import { useHistory } from 'react-router';
 import { api } from '../../service/Api';
-import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/auth';
+import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/authService';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -48,24 +45,33 @@ export function Login() {
   const [senha, setSenha] = useState('')
   async function handleSumbitLogin(e: FormEvent) {
     e.preventDefault()
+    if (login === ''){
+      alert('Digite seu login!')
+      return
+    }else if (senha === ''){
+      alert('Digite sua senha!')
+      return
+    }
     const data = {
       login: login,
       senha: senha
     }
-    await api.post('/authenticate',data)
-    .then(res =>{
-        if(res.status===200){
+    await api.post('/api/authenticate', data)
+      .then(res => {
+        if (res.status === 200) {
           loginToken(res.data.token)
           setIdUsuario(res.data.id_usuario)
           setLoginUsuario(res.data.login)
 
-          history.push('/home')
-        }else if(res.status===404){
+          history.push('home')
+        } else if (res.status === 404) {
           alert('Usuario não encontrado!')
-        }else if(res.status===401){
-          alert('Login ou senha não confere!')
+        } else if (res.status === 401) {
+          alert('Acesso negado!\n Confere Login e senha e tente novamente!')
+        } else {
+          alert('Erro ao comunicar com Servidor!')
         }
-    })
+      })
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -88,7 +94,7 @@ export function Login() {
             name="login"
             autoComplete="login"
             autoFocus
-          
+
             value={login}
             onChange={e => setLogin(e.target.value)}
           />

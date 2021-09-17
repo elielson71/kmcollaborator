@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { typeDepartamento } from "../../components/Interface";
 import { getDepartamento, getOneDepartamento } from "../../service/DepartamentoService";
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { postDepartamento, putDepartamento } from '../../service/DepartamentoService';
 
 
@@ -15,7 +15,6 @@ export function useDepartamento(departamentoId: string) {
     if (departamentoId !== 'new' && departamentoId !== '') {
       const data = (await getOneDepartamento(parseInt(departamentoId))).data
       setDepartamento(data[0])
-      console.log(data)
     }
 
   }

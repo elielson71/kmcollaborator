@@ -1,53 +1,14 @@
 import './styles.scss'
 import { AnswerInput, ButtonIcon, ListAnswerDiv } from "../../components/componetsStypes";
 import { QuestionInfo } from "../../components/QuestionInfo";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import { Container, Grid, Button,makeStyles} from '@material-ui/core/';
+import { Container, Grid, Button} from '@material-ui/core/';
 import { MenuItens } from "../../components/MenuItens";
 import { Save } from "@material-ui/icons";
 import { useQuestion } from '../../Hooks/Question/useQuestion';
+import { useStyles } from './styles';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-    },
-    paper: {
-        padding: 20,
-        display: 'flex',
-        justifyContent: 'space-evenly',
-        //overflow: 'auto',
-
-    },
-    formControl: {
-        //margin: theme.spacing(1),
-        minWidth: 250,
-
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(6),
-
-        //width: '100%',
-    },
-    botoes: {
-        margin: 10
-    },
-    textField: {
-
-        width: '100%',
-    }
-}));
 type QuestionParams = {
     id: string
 }
@@ -57,7 +18,7 @@ export function RegisterQuestion() {
     const {sendQuestion,handleAddAnswer,handleDeleteAnswer,handleIsTrue,
         descriptionAnswer,setDescriptionAnswer,handleChangeTypeListCard,
         Questions,setQuestions,answers, setAnswers,hiddenInfo, 
-        setHiddenInfo,departamentos}=useQuestion(questionId);
+        setHiddenInfo}=useQuestion(questionId);
 
     const classes = useStyles();
     return (

@@ -2,8 +2,7 @@ import { Card, CardActionArea, CardActions, CardContent, CardHeader, Chip, Grid,
 import { useHistory } from 'react-router-dom'
 import { typeQuestions } from '../Interface'
 import Delete from '@material-ui/icons/Delete';
-import { Edit, Star } from '@material-ui/icons';
-import StarIcon from '@material-ui/icons/Star';
+import { Edit } from '@material-ui/icons';
 type propsQuestion = {
     title: string,
     departamento: number,

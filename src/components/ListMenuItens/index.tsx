@@ -12,6 +12,8 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import {Link} from 'react-router-dom'
+import { api } from '../../service/Api';
+import { getToken, logout } from '../../service/authService';
 
 export const ListMenuItens = (
   <div>
@@ -69,7 +71,7 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Grupos de Perfis" />
     </ListItem>
-    <ListItem button component={Link} to="/">
+    <ListItem button onClick={sair} component={Link} to="/">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
@@ -77,3 +79,14 @@ export const secondaryListItems = (
     </ListItem>
   </div>
 );
+async function sair(){
+  if(window.confirm("Deseja realmente sair do sistema?")){
+    const resp = await api.get('/api/destroyToken',{headers:{"Authorization": `Bearer ${getToken()}`}})
+    if(resp.status==200){
+      logout()
+      window.location.href = '/'
+    }else{
+      alert('não possível sair do sistema')
+    }
+  }
+}
