@@ -82,7 +82,7 @@ export const secondaryListItems = (
 async function sair(){
   if(window.confirm("Deseja realmente sair do sistema?")){
     const resp = await api.get('/api/destroyToken',{headers:{"Authorization": `Bearer ${getToken()}`}})
-    if(resp.status==200){
+    if(resp.status===200){
       logout()
       window.location.href = '/'
     }else{

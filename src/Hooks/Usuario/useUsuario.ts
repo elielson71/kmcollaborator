@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { typeUsuario } from "../../components/Interface"
-import { api } from "../../service/Api"
 import { deleteUsuario, getOneUsuario, getUsuario, postUsuario, putUsuario } from "../../service/UsuarioService"
 
 export function useUsuario(id_usuario: string) {
@@ -16,7 +15,7 @@ export function useUsuario(id_usuario: string) {
     }
 
 
-  }, [])
+  }, [id_usuario])
 
   async function excluirUsuario(id: number) {
     alert(id)

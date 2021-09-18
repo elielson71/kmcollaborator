@@ -11,17 +11,21 @@ export function useDepartamento(departamentoId: string) {
   const [departamento, setDepartamento] = useState<typeDepartamento>({ nome: '' })
 
 
-  async function RecuperarDepartamento() {
-    if (departamentoId !== 'new' && departamentoId !== '') {
-      const data = (await getOneDepartamento(parseInt(departamentoId))).data
-      setDepartamento(data[0])
-    }
 
-  }
   useEffect(() => {
+    async function RecuperarDepartamento() {
+      if (departamentoId !== 'new' && departamentoId !== '') {
+        const data = (await getOneDepartamento(parseInt(departamentoId))).data
+        setDepartamento(data[0])
+
+      }
+
+    }
     RecuperarDepartamento()
+    
     if (departamentoId === '')
       AllDepartamento()
+
   }, [departamentoId])
 
   async function AllDepartamento() {

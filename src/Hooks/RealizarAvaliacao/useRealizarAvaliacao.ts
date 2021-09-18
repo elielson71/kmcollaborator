@@ -12,14 +12,7 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
     const [statusAtividade, setStatusAtividade] = useState('N');
     const { avaliacao } = useAvaliacoes(avaliacaoId as unknown as string)
     
-    async function getQuestion(avaliacaoId: number) {
-        const data = (await getAvaliacoesItenQuestions(avaliacaoId)).data
-        if (data.length !== 0) {
-            setAdataQuestions(data)
-            setItemQuestions(data[0])
-            RecuperarQuestao(data[0].id_perguntas as unknown as string)
-        }
-    }
+
     function carregarOneQuestion(p: number) {
         if (dataQuestions[p]) {
             setItemQuestions(dataQuestions[p])
@@ -28,24 +21,29 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
     }
     useEffect(() => {
         setPaginacao(1)
+        async function getQuestion(avaliacaoId: number) {
+            const data = (await getAvaliacoesItenQuestions(avaliacaoId)).data
+            if (data.length !== 0) {
+                setAdataQuestions(data)
+                setItemQuestions(data[0])
+                RecuperarQuestao(data[0].id_perguntas as unknown as string)
+            }
+        }
         getQuestion(avaliacaoId)
+    }, [avaliacaoId,RecuperarQuestao])
 
-
-    }, [avaliacaoId])
-
-
-    let data = [] as any
+    let dataQ:any
     async function nextQuestion() {
 
         if (!(answers.filter(ans => ans.correta === 'S'))) {
             alert('Responda para prosseguir!')
             return
         }
-        data = {
+        dataQ = {
             'question': itemQuestions,
             'answers': answers
         }
-        console.log(data)
+        console.log(dataQ)
         if (paginacao < dataQuestions.length) {
             setPaginacao(pre => pre + 1)
             carregarOneQuestion(paginacao)

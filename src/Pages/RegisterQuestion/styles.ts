@@ -38,5 +38,10 @@ export const useStyles = makeStyles((theme) => ({
     textField: {
 
         width: '100%',
+    },
+    typeQuestion:{
+        width:'100%',
+        display:'flex',
+        justifyContent:'space-evenly'
     }
 }));

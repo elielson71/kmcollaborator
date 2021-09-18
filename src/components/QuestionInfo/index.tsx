@@ -1,9 +1,9 @@
 import React from 'react';
-
-
-import './styles.scss';
-import {typeQuestions} from '../Interface'
-
+//import './styles.scss';
+import { typeQuestions } from '../Interface'
+import { Card, CardContent, CardHeader, FormControl, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
+import { useStyles } from './styles';
+import { useDepartamento } from '../../Hooks/Departamento/useDepartamento';
 
 type props = {
     hiddenInfo: boolean
@@ -11,51 +11,66 @@ type props = {
     setInfo: React.Dispatch<React.SetStateAction<typeQuestions>>
 }
 
-export function QuestionInfo({  info, setInfo, hiddenInfo }: props) {
-
-
-
+export function QuestionInfo({ info, setInfo, hiddenInfo }: props) {
+    const classes = useStyles();
+    const { departamentos } = useDepartamento('')
     return (
-        <div id="question-data" hidden={hiddenInfo} className="card shadow mb-4">
-            <div className="card-header py-3 ">
-                <h6 className="m-0 font-weight-bold text-primary" >Informações
-                </h6>
 
-            </div>
-            <div className="card-body">
-                <div className="row">
-                    <div className="col-8">
-                        <label htmlFor="status">Senioridade</label>
-                        <select className="form-select" value={info.senioridade}
-                            onChange={event => setInfo({...info,senioridade:event.target.value})}
-                            aria-label="Default select example" >
-                            <option value="">Selecione uma Senioridade</option>
-                            <option value="J">Junior</option>
-                            <option value="P">Pleno</option>
-                            <option value="S">Senior</option>
-                        </select>
-                    </div>
-                    <div className="col-4">
-                        <label htmlFor="nivel">Nível</label>
-                        <select className="form-select" value={info.nivel} 
-                             onChange={event => setInfo({...info,nivel:event.target.value})}
-                             aria-label="Default select example" >
-                            <option value="F" >Facil</option>
-                            <option value="M">Médio</option>
-                            <option value="D">Díficil</option>
-                        </select>
-                    </div>
-                </div>
-                <label htmlFor="Departamento">Departamento</label>
-                <select  value={info.id_departamento} 
-                    onChange={event => setInfo({...info,id_departamento:parseInt(event.target.value)})}
-                    className="form-select" aria-label="Default select example">
-                    <option value={0}>Selecione o Departamento</option>
-                    <option value={1}>Suporte</option>
-                    <option value={2}>Administrativo</option>
-                </select>
-            </div>
-        </div>
+        <Card hidden={hiddenInfo}>
+            <CardHeader
+                title='Informações'
+            />
+            <CardContent>
+                <Grid container >
+                    <Grid item xs={12} sm={7}>
+                        <FormControl fullWidth >
+                            <InputLabel id="senioridade">Senioridade</InputLabel>
+                            <Select
+                                label="senioridade"
+                                id="senioridade"
+                                className={classes.selectEmpty}
+                                value={info.senioridade}
+                                onChange={event => setInfo({ ...info, senioridade: event.target.value as string })}
+                            >
+                                <MenuItem value="">Selecione uma Senioridade</MenuItem>
+                                <MenuItem value="J">Junior</MenuItem>
+                                <MenuItem value="P">Pleno</MenuItem>
+                                <MenuItem value="S">Senior</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={5}>
+                        <FormControl fullWidth >
+                            <InputLabel id="nivel">Nivel</InputLabel>
+                            <Select
+                                label="Nivel"
+                                id="nivel"
+                                className={classes.selectEmpty}
+                                onChange={event => setInfo({ ...info, nivel: event.target.value as string })}
+                            >
+                                <MenuItem value="F" >Facil</MenuItem>
+                                <MenuItem value="M">Médio</MenuItem>
+                                <MenuItem value="D">Díficil</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                        <FormControl fullWidth >
+                            <InputLabel id="departamento">Departamento</InputLabel>
+                            <Select
+                                label="Departamento"
+                                id="departamento"
+                                className={classes.selectEmpty}
+                                value={`${info.id_departamento}`}
+                                onChange={event => setInfo({ ...info, id_departamento: parseInt(event.target.value as string) })}
+                            >
+                                {departamentos.map(d => (<MenuItem id="departamento" value={d.id_departamento} >{d.nome}</MenuItem>))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </CardContent>
+        </Card>
     )
 };
 

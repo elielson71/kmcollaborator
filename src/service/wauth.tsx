@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { logout, getToken } from './authService';
 import { Route, Redirect } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -13,15 +13,19 @@ export default function WAuth({ component: Component, ...rest }: any) {
 
     async function verify() {
         const token = getToken()
-        var res = await api.get('/api/checkToken', {headers:{"Authorization": `Bearer ${token}`}});
-        if (res.status === 200) {
-            setLoading(false);
-            setRedirect(false);
-        } else {
-            logout();
-            setLoading(false);
-            setRedirect(true);
-        }
+        
+            var res = await api.get('/api/checkToken', { headers: { "Authorization": `Bearer ${token}` } });
+            console.log(res)
+            if (res.status === 200) {
+                setLoading(false);
+                setRedirect(false);
+            } else {
+                logout();
+                setLoading(false);
+                setRedirect(true);
+            }
+        
+
     }
 
     useEffect(() => {

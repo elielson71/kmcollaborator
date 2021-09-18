@@ -71,6 +71,8 @@ export function Login() {
         } else {
           alert('Erro ao comunicar com Servidor!')
         }
+      }).catch(e=>{
+        alert('Sem comunicação')
       })
   }
   return (

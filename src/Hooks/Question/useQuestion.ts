@@ -117,6 +117,6 @@ export function useQuestion(questionId: string) {
         sendQuestion, handleAddAnswer, handleDeleteAnswer, handleIsTrue,
         descriptionAnswer, setDescriptionAnswer, handleChangeTypeListCard,
         Questions, setQuestions, answers, setAnswers, hiddenInfo, setHiddenInfo,
-         RecuperarQuestao,departamentos
+         RecuperarQuestao,departamentos,history
     }
 }

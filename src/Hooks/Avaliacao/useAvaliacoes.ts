@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react"
 import { deleteQuestionsAnswer, getQuestions } from '../../service/QuestionsService';
-import { typeAvaliacao, typeDepartamento, typeQuestions } from '../../components/Interface';
+import { typeAvaliacao, typeQuestions } from '../../components/Interface';
 
 import { getOneAvaliacoesQuestion, postAvaliacoes } from '../../service/AvaliacoesService';
 import { useHistory } from "react-router-dom";
