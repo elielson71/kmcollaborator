@@ -1,72 +1,23 @@
-import { makeStyles } from '@material-ui/core/styles';
+
 import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { useState,useEffect } from 'react'
-import {Container,Grid,Box,Button,MenuItem,TextField,FormControl,InputLabel,Select,Paper} from '@material-ui/core/';
-import { useHistory } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Container, Grid, Box, Button, MenuItem, TextField, FormControl, InputLabel, Select, Paper } from '@material-ui/core/';
+import { useHistory, useParams } from 'react-router-dom'
+import { useStyles } from './style';
+import { useProfissional } from '../../Hooks/Profissional/useProfissional';
+type params = {
+    id: string
+}
 
-
-
-
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    content: {
-        flexGrow: 1,
-        height: '100vh',
-        overflow: 'auto',
-    },
-    container: {
-        paddingTop: theme.spacing(4),
-        paddingBottom: theme.spacing(4),
-    },
-    paper: {
-        padding: 15,
-        display: 'flex',
-        overflow: 'auto',
-        flexDirection: 'column',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        width: '100%',
-        minWidth: 120,
-    },
-    selectEmpty: {
-        //marginTop: theme.spacing(6),
-        width: '100%',
-    },
-    botoes: {
-        margin: 15
-    }
-}));
-
-const usuario = ['elielson', 'santos']
 export function RegistrarProfissional() {
     const classes = useStyles();
-    const history = useHistory();
-
-
-    const [nome_completo, setNome_completo] = useState('')
-    const [cpf, setCpf] = useState('')
-    const [endereco, setEndereco] = useState('')
-    const [bairro, setBairro] = useState('')
-    const [complementar, setComplementar] = useState('')
-    const [data_nascimento, setData_nascimento] = useState('')
-    const [telefone, setTelefone] = useState('')
-    const [celular, setCelular] = useState('')
-    const [cargo, setCargo] = useState('')
-    const [id_departamento, setId_departamento] = useState('')
-    const [nivel_senioridade, setNivel_senioridade] = useState('')
-    const [id_usuario, setId_usuario] = useState('')
-    useEffect(() => {
-        console.log('ok')
-
-    }, [])
+    const params = useParams<params>()
+    const id_profissional = params.id
+    const { departamentos, profissional, setProfissional,
+        history, handleSubmint, allUsuario } = useProfissional(id_profissional)
     return (
         <div className={classes.root}>
             <MenuItens titulo='Profissional' />
@@ -78,7 +29,7 @@ export function RegistrarProfissional() {
                             <Paper className={classes.paper}>
                                 <h3>Cadastro Profissional</h3>
                                 <Grid container spacing={3}>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12} sm={8}>
                                         <TextField
                                             required
                                             id="nome"
@@ -86,8 +37,8 @@ export function RegistrarProfissional() {
                                             label="Nome Completo"
                                             fullWidth
                                             autoComplete="given-name"
-                                            value={nome_completo}
-                                            onChange={e => setNome_completo(e.target.value)}
+                                            value={profissional.nome_completo}
+                                            onChange={e => setProfissional({ ...profissional, nome_completo: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -98,22 +49,23 @@ export function RegistrarProfissional() {
                                             label="CPF"
                                             fullWidth
                                             autoComplete="given-name"
-                                            value={cpf}
-                                            onChange={e => setCpf(e.target.value)}
+                                            value={profissional.cpf}
+                                            onChange={e => setProfissional({ ...profissional, cpf: e.target.value })}
                                         />
                                     </Grid>
-                                    <Grid item xs={12} sm={2}>
-                                        <InputLabel id="ativo">Data de Nascimento</InputLabel>
+                                    {/*<Grid item xs={12} sm={2}>
+                                        <InputLabel id="data_nascimento">Data de Nascimento</InputLabel>
                                         <TextField
                                             type='date'
                                             id="data_nascimento"
                                             name="data_nascimento"
                                             fullWidth
                                             autoComplete="data_nascimento"
-                                            value={data_nascimento}
-                                            onChange={e => setData_nascimento(e.target.value)}
+                                            value={profissional.data_nascimento}
+                                            defaultValue={profissional.data_nascimento}
+                                            onChange={e =>setProfissional({...profissional,data_nascimento:e.target.value })}
                                         />
-                                    </Grid>
+                                    </*Grid>*/}
 
                                     <Grid item xs={12} sm={5}>
                                         <TextField
@@ -122,8 +74,8 @@ export function RegistrarProfissional() {
                                             label="Endereco"
                                             fullWidth
                                             autoComplete="endereco"
-                                            value={endereco}
-                                            onChange={e => setEndereco(e.target.value)}
+                                            value={profissional.endereco}
+                                            onChange={e => setProfissional({ ...profissional, endereco: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={3}>
@@ -133,8 +85,8 @@ export function RegistrarProfissional() {
                                             label="Bairro"
                                             fullWidth
                                             autoComplete="bairro"
-                                            value={bairro}
-                                            onChange={e => setBairro(e.target.value)}
+                                            value={profissional.bairro}
+                                            onChange={e => setProfissional({ ...profissional, bairro: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -144,8 +96,8 @@ export function RegistrarProfissional() {
                                             label="Complementar"
                                             fullWidth
                                             autoComplete="complementar"
-                                            value={complementar}
-                                            onChange={e => setComplementar(e.target.value)}
+                                            value={profissional.complementar}
+                                            onChange={e => setProfissional({ ...profissional, complementar: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={3}>
@@ -155,8 +107,8 @@ export function RegistrarProfissional() {
                                             label="Telefone"
                                             fullWidth
                                             autoComplete="telefone"
-                                            value={telefone}
-                                            onChange={e => setTelefone(e.target.value)}
+                                            value={profissional.telefone}
+                                            onChange={e => setProfissional({ ...profissional, telefone: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={3}>
@@ -166,8 +118,9 @@ export function RegistrarProfissional() {
                                             label="Celular"
 
                                             autoComplete="celular"
-                                            value={celular}
-                                            onChange={e => setCelular(e.target.value)}
+                                            value={profissional.celular}
+                                            onChange={e => setProfissional({ ...profissional, celular: e.target.value })}
+
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={6}>
@@ -177,8 +130,8 @@ export function RegistrarProfissional() {
                                             label="Cargo"
                                             fullWidth
                                             autoComplete="cargo"
-                                            value={cargo}
-                                            onChange={e => setCargo(e.target.value)}
+                                            value={profissional.cargo}
+                                            onChange={e => setProfissional({ ...profissional, cargo: e.target.value })}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={3}>
@@ -189,11 +142,13 @@ export function RegistrarProfissional() {
                                                 className={classes.selectEmpty}
                                                 label="id_departamento-label"
                                                 id="id_departamento"
-                                                value={id_departamento}
-                                                onChange={e => { const a = e.target.value as string; setId_departamento(a) }}
+                                                value={profissional.id_departamento}
+                                                onChange={e => { const a = e.target.value as number; setProfissional({ ...profissional, id_departamento: a }) }}
                                             >
-                                                <MenuItem value='S'>Departamento</MenuItem>
-                                                <MenuItem value='N'>Departamento12</MenuItem>
+                                                {departamentos.map(d => (
+                                                    <MenuItem id="departamento" value={d.id_departamento} >
+                                                        {d.nome}
+                                                    </MenuItem>))}
                                             </Select>
                                         </FormControl>
                                     </Grid>
@@ -205,8 +160,8 @@ export function RegistrarProfissional() {
                                                 className={classes.selectEmpty}
                                                 label="nivel_senioridade-label"
                                                 id="nivel_senioridade"
-                                                value={nivel_senioridade}
-                                                onChange={e => { const a = e.target.value as string; setNivel_senioridade(a) }}
+                                                value={profissional.nivel_senioridade}
+                                                onChange={e => { const a = e.target.value as string; setProfissional({ ...profissional, nivel_senioridade: a }) }}
                                             >
                                                 <MenuItem value='J'>Junior</MenuItem>
                                                 <MenuItem value='P'>Pleno</MenuItem>
@@ -222,12 +177,13 @@ export function RegistrarProfissional() {
                                                 className={classes.selectEmpty}
                                                 label="usuario-label"
                                                 id="usuario"
-                                                value={id_usuario}
-                                                onChange={e => { const a = e.target.value as string; setId_usuario(a) }}
+                                                value={profissional.id_usuario}
+                                                onChange={e => { const a = e.target.value as number; setProfissional({ ...profissional, id_usuario: a }) }}
                                             >
-                                                {usuario.map((user) => (
-                                                    <MenuItem key={user} value={user}>
-                                                        {user}
+
+                                                {allUsuario.map((user) => (
+                                                    <MenuItem key={user.id_usuario} id="usuario" value={user.id_usuario}>
+                                                        {user.login}
                                                     </MenuItem>
                                                 )
                                                 )}
@@ -239,7 +195,8 @@ export function RegistrarProfissional() {
                                         <Button variant="contained" onClick={() => history.push('/profissionais')} startIcon={<ArrowBack />} className={classes.botoes}>
                                             Volta
                                         </Button>
-                                        <Button variant="contained" color="primary" startIcon={<SaveIcon />} className={classes.botoes}>
+                                        <Button variant="contained" color="primary" onClick={handleSubmint}
+                                            startIcon={<SaveIcon />} className={classes.botoes}>
                                             Salvar
                                         </Button>
                                     </Grid>
@@ -255,34 +212,3 @@ export function RegistrarProfissional() {
         </div>
     )
 }
-
-/*  id_profissional number,
-  nome_completo string,
-  cpf VARCHAR(13),
-  endereco VARCHAR(100),
-  bairro VARCHAR(50),
-  complementar VARCHAR(100),
-  data_nascimento DATE,
-  telefone VARCHAR(20),
-  celular VARCHAR(20),
-  cargo VARCHAR(50),
-  id_departamento INTEGER,
-  nivel_senioridade VARCHAR(1) DEFAULT 'J'::character varying,
-  id_usuario INTEGER,*/
-
-
-/*
- id_profissional
-
- cpf
- endereco
- bairro
- complementar
- data_nascimento
- telefone
- celular
- cargo
- id_departamento
- nivel_senioridade
- id_usuario
- */

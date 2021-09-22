@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -13,61 +12,13 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-import { useState, useEffect } from 'react';
-import { typeprofissional } from '../../components/Interface';
-import { api } from '../../service/Api';
-import { useHistory } from 'react-router';
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
-  },
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: 15,
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  table: {
-    minWidth: 650,
-  },
-}));
+import { useStyles } from './style';
+import { useProfissional } from '../../Hooks/Profissional/useProfissional';
 
 export function ListarProfissionais() {
   const classes = useStyles();
-
-  const [profissionais, setprofissional] = useState<typeprofissional[]>([])
-  const history = useHistory()
-  useEffect(() => {
-    async function recuperarDados() {
-      const resp = await api.get<typeprofissional[]>('/profissional')
-      if (resp.status === 200) {
-        setprofissional(resp.data)
-      } else {
-        alert('Error ao buscar profissional Atualize a Pagina\n Se persistir entre em contato com desenvolvedor!')
-      }
-    }
-    recuperarDados()
-  }, [])
-
-  async function deleteprofissional(id: number) {
-    if (window.confirm("Deseja realmente excluir profissional?")) {
-      const resp = await api.delete(`/profissional/${id}`)
-      if (resp.status === 204)
-        window.location.reload()
-    }
-  }
+  const {deleteprofissional,allProfissionais,history} = useProfissional('')
 
   return (
     <div className={classes.root}>
@@ -96,27 +47,27 @@ export function ListarProfissionais() {
                         <TableHead>
                           <TableRow>
                             <TableCell></TableCell>
-                            <TableCell>Login</TableCell>
-                            <TableCell align="center">Nome Completo</TableCell>
+                            <TableCell>Nome Completo</TableCell>
+                            <TableCell align="center">CPF</TableCell>
                             <TableCell align="center">Data de cadastro</TableCell>
-                            <TableCell align="center">Email</TableCell>
+                            <TableCell align="center">Endereço</TableCell>
                             <TableCell align="right">Opções</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {profissionais.map((profissional, key) => (
+                          {allProfissionais.map((profissional, key) => (
                             <TableRow key={profissional.id_profissional}>
                               <TableCell component="th" scope="profissional">
                                 {key + 1}</TableCell>
                               <TableCell component="th" scope="profissional">
                                 {profissional.nome_completo}</TableCell>
-                              <TableCell align="center">{profissional.nome_completo}</TableCell>
-                              <TableCell align="center">{new Date(profissional.data_cadastro).toLocaleString('pt-br')}</TableCell>
                               <TableCell align="center">{profissional.cpf}</TableCell>
+                              <TableCell align="center">{new Date(profissional.data_cadastro).toLocaleString('pt-br')}</TableCell>
+                              <TableCell align="center">{profissional.endereco}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
                                   <Button color='primary' onClick={() => { history.push('/profissionais/' + profissional.id_profissional) }}>Editar</Button>
-                                  <Button color='secondary' onClick={() => deleteprofissional(profissional.id_profissional)}>Delete</Button>
+                                  <Button color='secondary' onClick={() => deleteprofissional(profissional.id_profissional?profissional.id_profissional:0)}>Delete</Button>
                                 </ButtonGroup>
                               </TableCell>
                             </TableRow>

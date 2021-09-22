@@ -49,8 +49,8 @@ export type typeUsuario = {
     email: string
 }
 
-export type typeprofissional = {
-    id_profissional: number
+export type typeProfissional = {
+    id_profissional?: number
     nome_completo: string
     cpf: string,
     endereco: string,
@@ -63,7 +63,7 @@ export type typeprofissional = {
     id_departamento: number
     nivel_senioridade: string
     id_usuario: number
-    data_cadastro:Date
+    data_cadastro:string
 
 }
 export type typeDepartamento ={

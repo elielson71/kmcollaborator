@@ -18,7 +18,6 @@ export function useUsuario(id_usuario: string) {
   }, [id_usuario])
 
   async function excluirUsuario(id: number) {
-    alert(id)
     const resp = await deleteUsuario(id)
     if (resp.status === 204)
       window.location.reload()
@@ -79,13 +78,13 @@ export function useUsuario(id_usuario: string) {
       setEmail(resp.data[0].email)
     }
   }
+  const [allUsuario,setAllUsuario] = useState<typeUsuario[]>([])
   async function recuperarTodosUsuario() {
     const resp = await getUsuario()
     if (resp.status === 200) {
       setUsuario(resp.data)
-    } else {
-      alert('Error ao buscar Usuario Atualize a Pagina\n Se persistir entre em contato com desenvolvedor!')
-    }
+      setAllUsuario(resp.data)
+    } 
   }
 
 
@@ -96,5 +95,6 @@ export function useUsuario(id_usuario: string) {
     usuarios, setUsuario, history, excluirUsuario,
     login, setLogin, senha, setSenha, nome, setNome,
     administrador, setAdministrador, email, setEmail, handleSubmint,
+    allUsuario
   }
 }

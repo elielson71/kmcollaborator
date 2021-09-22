@@ -11,7 +11,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { ListMenuItens, secondaryListItems } from '../ListMenuItens';
+
+import { getLoginUsuario } from '../../service/authService';
+import { useListaMenu } from '../ListMenuItens';
 
 const drawerWidth = 240;
 
@@ -94,9 +96,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 type props = {
-  titulo:string
+  titulo: string
 }
-export function MenuItens({titulo}:props) {
+export function MenuItens({ titulo }: props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -105,7 +107,7 @@ export function MenuItens({titulo}:props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const {ListMenuItens,secondaryListItems} = useListaMenu()
   return (
     <>
       <CssBaseline />
@@ -123,7 +125,7 @@ export function MenuItens({titulo}:props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {titulo}
           </Typography>
-
+          <h4>{getLoginUsuario()}</h4>
         </Toolbar>
       </AppBar>
       <Drawer
