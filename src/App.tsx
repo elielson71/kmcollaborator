@@ -13,7 +13,9 @@ import { ListarDepartamento } from './Pages/ListarDepartamento';
 import { RegistrarDepartamento } from './Pages/RegistrarDepartamento';
 import {Login} from './Pages/Login';
 import  BaseConhecimento  from './Pages/BaseConhecimento/';
-import PrivateRoute from './service/wauth';
+import PrivateRoute from './conext/authContext';
+import { ListarGrupo } from './Pages/ListaGrupo';
+import { RegistrarGrupo } from './Pages/RegistrarGrupo';
 
 
 function App() {
@@ -33,6 +35,8 @@ function App() {
         <PrivateRoute path="/profissionais/:id" exact component={RegistrarProfissional} />
         <PrivateRoute path="/departamento/:id" exact component={RegistrarDepartamento} />
         <PrivateRoute path="/departamento" exact component={ListarDepartamento} />
+        <PrivateRoute path="/grupo" exact component={ListarGrupo} />
+        <PrivateRoute path="/grupo/:id" exact component={RegistrarGrupo} />
         <PrivateRoute path="/base_conhecimento" exact component={BaseConhecimento} />
 
       </Switch>

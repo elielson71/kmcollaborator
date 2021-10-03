@@ -68,7 +68,7 @@ export function useListaMenu() {
         </ListItemIcon>
         <ListItemText primary="Departamento" />
       </ListItem>
-      <ListItem button >
+      <ListItem button component={Link} to="/grupo" >
         <ListItemIcon>
           <GroupAdd />
         </ListItemIcon>

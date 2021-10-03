@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { typeUsuario } from "../../components/Interface"
+import { validarEmail } from "../../functions/validarEmail"
 import { deleteUsuario, getOneUsuario, getUsuario, postUsuario, putUsuario } from "../../service/UsuarioService"
 
 export function useUsuario(id_usuario: string) {
@@ -33,7 +34,10 @@ export function useUsuario(id_usuario: string) {
   const [nome, setNome] = useState('')
   const [administrador, setAdministrador] = useState('N')
   const [email, setEmail] = useState('')
-  async function handleSubmint() {
+  async function handleSubmint(emailRef:any) {
+    if (!validarEmail(email,emailRef))
+      return
+
     const data = {
       id_usuario: id_usuario ? id_usuario : '',
       login: login,
@@ -49,6 +53,7 @@ export function useUsuario(id_usuario: string) {
         data.id_usuario = ''
         resp = await postUsuario(data)
       } else if (id_usuario !== 'new' && id_usuario !== '') {
+
         resp = await putUsuario(parseInt(id_usuario), data)
       } else return
 
@@ -78,13 +83,13 @@ export function useUsuario(id_usuario: string) {
       setEmail(resp.data[0].email)
     }
   }
-  const [allUsuario,setAllUsuario] = useState<typeUsuario[]>([])
+  const [allUsuario, setAllUsuario] = useState<typeUsuario[]>([])
   async function recuperarTodosUsuario() {
     const resp = await getUsuario()
     if (resp.status === 200) {
       setUsuario(resp.data)
       setAllUsuario(resp.data)
-    } 
+    }
   }
 
 
@@ -98,3 +103,4 @@ export function useUsuario(id_usuario: string) {
     allUsuario
   }
 }
+

@@ -19,21 +19,7 @@ export const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
       flexDirection: 'column',
     },
-    formControl: {
-      margin: theme.spacing(1),
-      width: 100,
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-    botoes: {
-      margin: 15
-    },
     table: {
       minWidth: 650,
     },
-    tablehead: {
-      backgroundColor: 'darkgrey',
-      }
   }));

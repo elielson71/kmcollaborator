@@ -26,7 +26,6 @@ export function useAvaliacoes(avaliacaoId: string) {
             setQuestion(data)
         } else if (avaliacaoId !== '') {
             const data = (await getOneAvaliacoesQuestion(parseInt(avaliacaoId))).data
-
             data['avaliacao'].map(v =>setAvaliacao(v))
             setQuestion(data['questions'].sort((a) => a.situacao ? -1 : 1))
             
@@ -66,7 +65,7 @@ export function useAvaliacoes(avaliacaoId: string) {
             } else {
                 if(await UpdateAvaliacoes(avaliacaoId, Questions, avaliacao)){
                     alert('Avaliação Atualizada com Sucesso!')
-                    //history.push('/avaliacao')
+                    history.push('/avaliacao')
                 } else {
                     alert('Erro ao Registrar Avaliação!')
                 }

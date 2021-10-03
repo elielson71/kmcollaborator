@@ -30,10 +30,4 @@ export const useStyles = makeStyles((theme) => ({
     botoes: {
       margin: 15
     },
-    table: {
-      minWidth: 650,
-    },
-    tablehead: {
-      backgroundColor: 'darkgrey',
-      }
   }));

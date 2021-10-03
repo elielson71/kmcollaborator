@@ -1,65 +1,83 @@
-import { useQuestion } from "../Question/useQuestion";
 import { useAvaliacoes } from "../../Hooks/Avaliacao/useAvaliacoes";
-import { typeQuestions } from "../../components/Interface";
+import { typeAnswer, typeCorrecao, typeQuestions } from "../../components/Interface";
 import { useEffect, useState } from "react";
 import { getAvaliacoesItenQuestions } from "../../service/AvaliacoesService";
+import useTemporizador from "./useTemporizador";
+import { getQuestionsAnswer } from "../../service/QuestionsService";
+import { useSaveQuestion } from "./useSaveQuestion";
+import { useNavegacao } from "./useNavegacao";
+import { useFinalizarAvaliacao } from "./useFinalizarAvaliacao";
+
 
 export function useRealizarAvaliacao(avaliacaoId: number) {
-    const [paginacao, setPaginacao] = useState(1)
-    const { handleIsTrue, answers, setAnswers, RecuperarQuestao, handleAddAnswer } = useQuestion('')
-    const [itemQuestions, setItemQuestions] = useState<typeQuestions>({ conteudo: '', tipo_resposta: '', id_responsavel: 0, senioridade: '', id_departamento: 0, nivel: '' });
-    const [dataQuestions, setAdataQuestions] = useState<typeQuestions[]>([])
-    const [statusAtividade, setStatusAtividade] = useState('N');
-    const { avaliacao } = useAvaliacoes(avaliacaoId as unknown as string)
-    
 
-    function carregarOneQuestion(p: number) {
-        if (dataQuestions[p]) {
-            setItemQuestions(dataQuestions[p])
-            RecuperarQuestao(dataQuestions[p].id_perguntas as unknown as string)
-        }
+    const [itemQuestions, setItemQuestions] = useState<typeQuestions>({ conteudo: '', tipo_resposta: '', id_responsavel: 0, senioridade: '', id_departamento: 0, nivel: '' });
+    const [answers, setAnswers] = useState<typeAnswer[]>([])
+
+    const [dataQuestions, setDataQuestions] = useState<typeQuestions[]>([])
+    const { avaliacao } = useAvaliacoes(avaliacaoId as unknown as string)
+    const tempo = avaliacao.tempo
+    const id_profissional = 4
+
+    const { dataQ, saveQuestions } = useSaveQuestion(itemQuestions, answers, id_profissional, avaliacao, handleDataQuestion)
+    
+    //const {  finalizouContagem} = useTemporizador(parseInt(tempo[0]), parseInt(tempo[1]), parseInt(tempo[2]))
+    const { backQuestion, nextQuestion, setPaginacao, paginacao } = useNavegacao(dataQuestions,
+        setItemQuestions, setAnswers, saveQuestions)
+
+    const { finalizar, statusAtividade, setStatusAtividade } = 
+    useFinalizarAvaliacao(dataQ);
+
+    function handleDataQuestion(id_perguntas: number, questions: typeQuestions) {
+        setDataQuestions(prev => prev.map
+            (item => item.id_perguntas === id_perguntas ?
+                 { ...item,answers:questions.answers  } : item))
+
     }
+
     useEffect(() => {
         setPaginacao(1)
         async function getQuestion(avaliacaoId: number) {
             const data = (await getAvaliacoesItenQuestions(avaliacaoId)).data
+            const ans = data.map(async function (value) {
+                const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(value.id_perguntas as unknown as number)).data
+                if (dataAnswer.length !== 0) {
+                    value.answers = dataAnswer
+                } else {
+                    value.answers = [{ descricao: '', correta: '', id_perguntas: value.id_perguntas, id_respostas: 1 }]
+                }
+            })
             if (data.length !== 0) {
-                setAdataQuestions(data)
+                setDataQuestions(data)
                 setItemQuestions(data[0])
-                RecuperarQuestao(data[0].id_perguntas as unknown as string)
+                if (data[0].answers) {
+                    setAnswers(data[0].answers.filter(item => item.id_perguntas === data[0].id_perguntas))
+                } else {
+                    setAnswers([{ descricao: '', correta: '', id_perguntas: data[0].id_perguntas, id_respostas: 1 }])
+                }
+
             }
         }
+
         getQuestion(avaliacaoId)
-    }, [avaliacaoId,RecuperarQuestao])
+        return () => { getQuestion(avaliacaoId) }
+    }, [avaliacaoId])
 
-    let dataQ:any
-    async function nextQuestion() {
 
-        if (!(answers.filter(ans => ans.correta === 'S'))) {
-            alert('Responda para prosseguir!')
-            return
-        }
-        dataQ = {
-            'question': itemQuestions,
-            'answers': answers
-        }
-        console.log(dataQ)
-        if (paginacao < dataQuestions.length) {
-            setPaginacao(pre => pre + 1)
-            carregarOneQuestion(paginacao)
-        }
+
+
+
+
+    function handleIsTrue(id_respostas: number) {
+        setAnswers(prev => prev.map(item => item.id_respostas === id_respostas ? { ...item, correta: 'S' } : item))
+        setAnswers(prev => prev.map(item => item.id_respostas !== id_respostas ? { ...item, correta: 'N' } : item))
     }
-    async function backQuestion(pag: number) {
-        if (pag >= 0) {
-            const p = pag - 1
-            setPaginacao(p)
-            carregarOneQuestion(p - 1)
-        }
 
-    }
+    const respostaAberta = answers.filter(item => item.id_perguntas === itemQuestions.id_perguntas)
     return {
         backQuestion, nextQuestion, paginacao, itemQuestions,
-        dataQuestions, handleIsTrue, answers, setAnswers, handleAddAnswer,
-        statusAtividade, setStatusAtividade,avaliacao
+        dataQuestions, answers, setAnswers, handleIsTrue,
+        statusAtividade, setStatusAtividade, avaliacao,
+        tempo,finalizar, respostaAberta, 
     }
 }

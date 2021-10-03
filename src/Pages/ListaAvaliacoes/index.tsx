@@ -13,11 +13,6 @@ import SearchIcon from '@material-ui/icons/Search'
 import Button from "@material-ui/core/Button";
 import { InputBase } from "@material-ui/core";
 import { useStyles } from "./styles";
-;
-
-
-
-
 
 export function ListaAvaliacoes() {
     const [avaliacoes, setAvaliacoes] = useState<typeAvaliacao[]>([])
@@ -74,7 +69,7 @@ export function ListaAvaliacoes() {
                             <Grid container spacing={3}>
                                 {
                                     avaliacoes.map((avaliacao) => (
-                                        <Grid item xs={4}>
+                                        <Grid key={avaliacao.id_avaliacoes} item xs={4}>
                                             <Avaliacao
                                                 key={avaliacao.id_avaliacoes}
                                                 id_avaliacoes={avaliacao.id_avaliacoes}
@@ -88,7 +83,7 @@ export function ListaAvaliacoes() {
                                         </Grid>
                                     ))}
                             </Grid>
-                            : <Grid item xs={12} alignItems='center'><h4>Nenhuma avaliação foi encontrar</h4></Grid>}
+                            : <Grid container  alignItems='center'><h4>Nenhuma avaliação foi encontrar</h4></Grid>}
                     </Grid>
 
                     <Box pt={4}>

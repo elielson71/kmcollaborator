@@ -52,18 +52,18 @@ export function Login() {
       alert('Digite sua senha!')
       return
     }
-    const data = {
-      login: login,
-      senha: senha
-    }
-    await api.post('/api/authenticate', data)
+
+    await api.post('/api/authenticate', {
+       login,
+      senha
+    })
       .then(res => {
         if (res.status === 200) {
           loginToken(res.data.token)
           setIdUsuario(res.data.id_usuario)
           setLoginUsuario(res.data.login)
 
-          history.push('home')
+          history.push('/home')
         } else if (res.status === 404) {
           alert('Usuario não encontrado!')
         } else if (res.status === 401) {

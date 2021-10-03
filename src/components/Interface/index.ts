@@ -14,9 +14,9 @@ export type typeQuestions = {
     id_responsavel: number
     senioridade: string
     id_departamento: number
-    descricao_depart?:string
+    descricao_depart?: string
     nivel: string
-    answers?: typeAnswer
+    answers?: typeAnswer[]
     situacao?: string
     nota_pergunta?: number
 
@@ -42,7 +42,7 @@ export type typeItensAvaliacao = {
 export type typeUsuario = {
     id_usuario: number
     login: string
-    senha:string
+    senha: string
     administrador: string
     data_cadastro: string
     nome_completo: string
@@ -63,10 +63,25 @@ export type typeProfissional = {
     id_departamento: number
     nivel_senioridade: string
     id_usuario: number
-    data_cadastro:string
+    data_cadastro: string
 
 }
-export type typeDepartamento ={
-    id_departamento?:number
+export type typeDepartamento = {
+    id_departamento?: number
+    nome: string
+}
+export type typeCorrecao = {
+    id_correcao?:number
+    id_perguntas:number
+    id_profissional:number
+    id_resposta:number
+    id_avaliacao:number
+    nota:number
+    situacao:string
+    data_correcao:string
+    resposta:string
+}
+export type typeGrupo={
+    id_grupo?:number
     nome:string
 }

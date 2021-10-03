@@ -3,11 +3,12 @@ import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBack from '@material-ui/icons/ArrowBack';
-import { useState, useEffect } from 'react'
 import { Container, Grid, Box, Button, MenuItem, TextField, FormControl, InputLabel, Select, Paper } from '@material-ui/core/';
-import { useHistory, useParams } from 'react-router-dom'
+import {  useParams } from 'react-router-dom'
 import { useStyles } from './style';
 import { useProfissional } from '../../Hooks/Profissional/useProfissional';
+import { validarCpf } from '../../functions/validarCpf';
+import { mascararNumeros } from '../../functions/mascararNumeros';
 type params = {
     id: string
 }
@@ -50,6 +51,7 @@ export function RegistrarProfissional() {
                                             fullWidth
                                             autoComplete="given-name"
                                             value={profissional.cpf}
+                                            onBlur={(e)=>setProfissional({ ...profissional, cpf:validarCpf(e.target.value)})}
                                             onChange={e => setProfissional({ ...profissional, cpf: e.target.value })}
                                         />
                                     </Grid>
@@ -108,6 +110,7 @@ export function RegistrarProfissional() {
                                             fullWidth
                                             autoComplete="telefone"
                                             value={profissional.telefone}
+                                            onBlur={(e)=>setProfissional({ ...profissional, telefone:mascararNumeros(e.target.value)})}
                                             onChange={e => setProfissional({ ...profissional, telefone: e.target.value })}
                                         />
                                     </Grid>
@@ -120,6 +123,7 @@ export function RegistrarProfissional() {
                                             autoComplete="celular"
                                             value={profissional.celular}
                                             onChange={e => setProfissional({ ...profissional, celular: e.target.value })}
+                                            onBlur={(e)=>setProfissional({ ...profissional, celular:mascararNumeros(e.target.value)})}
 
                                         />
                                     </Grid>

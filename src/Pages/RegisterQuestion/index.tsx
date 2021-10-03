@@ -122,7 +122,7 @@ export function RegisterQuestion() {
                                                                 defaultValue=""
                                                                 className="form-check-input"
                                                                 type="radio" name='correta' id="flexRadioDefault1"
-                                                                onChange={(e) => handleIsTrue(value.id_respostas)}
+                                                                onChange={(e) => handleIsTrue(value.id_respostas?value.id_respostas:0)}
                                                                 checked={value.correta === 'S'}
                                                             />
                                                         </div>
@@ -146,7 +146,7 @@ export function RegisterQuestion() {
                                                 />
                                                 <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
                                                     <button ><i className="far fa-images"></i></button>
-                                                    <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas, value.id_respostas,)}><i className="far fa-times-circle"></i></button>
+                                                    <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas?value.id_respostas:0,value.id_respostas?value.id_respostas:0)}><i className="far fa-times-circle"></i></button>
                                                 </ButtonIcon>
                                             </ListAnswerDiv>))
                                         }

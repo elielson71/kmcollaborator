@@ -1,22 +1,24 @@
 import { useDepartamento } from "../Departamento/useDepartamento";
 import { useState, useEffect } from 'react';
 import { typeProfissional } from '../../components/Interface';
-import { api } from '../../service/Api';
 import { useHistory } from 'react-router';
 import { deleteProfissional, getOneProfissional, getProfissional, postProfissional, putProfissional } from "../../service/Profissional";
 import { useUsuario } from "../Usuario/useUsuario";
+import { validarCpf } from "../../functions/validarCpf";
 export function useProfissional(id_profissional: string) {
     const { departamentos } = useDepartamento('')
     const { allUsuario } = useUsuario('')
 
     //listar
     const [allProfissionais, setAllProfissionais] = useState<typeProfissional[]>([])
-    const [profissional, setProfissional] = useState<typeProfissional>({nome_completo:'', cpf:'', endereco:'', bairro:'',
-    complementar:'', data_nascimento:'', telefone:'', celular:'',
-    cargo:'', id_departamento:0, nivel_senioridade:'',data_cadastro:'', id_usuario:0})
+    const [profissional, setProfissional] = useState<typeProfissional>({
+        nome_completo: '', cpf: '', endereco: '', bairro: '',
+        complementar: '', data_nascimento: '', telefone: '', celular: '',
+        cargo: '', id_departamento: 0, nivel_senioridade: '', data_cadastro: '', id_usuario: 0
+    })
     const history = useHistory()
     useEffect(() => {
-        
+
         if (id_profissional === '') {
             recuperarTodosProfissionais()
         } else if (id_profissional !== '') {
@@ -26,14 +28,14 @@ export function useProfissional(id_profissional: string) {
     }, [id_profissional])
 
     async function deleteprofissional(id: number) {
-            const resp = await deleteProfissional(id)
-            if (resp.status === 204)
-                window.location.reload()
+        const resp = await deleteProfissional(id)
+        if (resp.status === 204)
+            window.location.reload()
     }
     async function recuperarOneProfissional(id: number) {
-        
+
         const resp = await getOneProfissional(id)
-        resp.data[0].data_nascimento=(new Date(resp.data[0].data_nascimento).toLocaleString()).replaceAll('/','-')
+        resp.data[0].data_nascimento = (new Date(resp.data[0].data_nascimento).toLocaleString()).replaceAll('/', '-')
         console.log(resp.data[0].data_nascimento)
         if (resp.status === 200) {
             setProfissional(resp.data[0])
@@ -47,8 +49,10 @@ export function useProfissional(id_profissional: string) {
     }
 
     async function handleSubmint() {
-        
         const pro = profissional
+        if (validarCpf(pro.cpf)==='')
+            return
+        pro.cpf=pro.cpf.replaceAll('.','').replace('-','')
         if (pro)
             if (pro.nome_completo !== '') {
                 let resp
@@ -71,11 +75,11 @@ export function useProfissional(id_profissional: string) {
                 alert('Preencha todos os campos Obrigatório!')
             }
         else
-        alert('não salvou')
+            alert('não salvou')
     }
-    
+
     return {
         departamentos, deleteprofissional, profissional, setProfissional,
-        history, handleSubmint, allUsuario,allProfissionais
+        history, handleSubmint, allUsuario, allProfissionais
     }
 }
