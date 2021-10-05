@@ -20,18 +20,18 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
     const id_profissional = 4
 
     const { dataQ, saveQuestions } = useSaveQuestion(itemQuestions, answers, id_profissional, avaliacao, handleDataQuestion)
-    
+
     //const {  finalizouContagem} = useTemporizador(parseInt(tempo[0]), parseInt(tempo[1]), parseInt(tempo[2]))
     const { backQuestion, nextQuestion, setPaginacao, paginacao } = useNavegacao(dataQuestions,
         setItemQuestions, setAnswers, saveQuestions)
 
-    const { finalizar, statusAtividade, setStatusAtividade } = 
-    useFinalizarAvaliacao(dataQ);
+    const { finalizar, statusAtividade, setStatusAtividade } =
+        useFinalizarAvaliacao(dataQ);
 
     function handleDataQuestion(id_perguntas: number, questions: typeQuestions) {
         setDataQuestions(prev => prev.map
             (item => item.id_perguntas === id_perguntas ?
-                 { ...item,answers:questions.answers  } : item))
+                { ...item, answers: questions.answers } : item))
 
     }
 
@@ -42,16 +42,20 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
             const ans = data.map(async function (value) {
                 const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(value.id_perguntas as unknown as number)).data
                 if (dataAnswer.length !== 0) {
+                    dataAnswer.map(item => item.correta = 'N')
                     value.answers = dataAnswer
                 } else {
                     value.answers = [{ descricao: '', correta: '', id_perguntas: value.id_perguntas, id_respostas: 1 }]
                 }
+                return value
             })
             if (data.length !== 0) {
                 setDataQuestions(data)
                 setItemQuestions(data[0])
-                if (data[0].answers) {
-                    setAnswers(data[0].answers.filter(item => item.id_perguntas === data[0].id_perguntas))
+                if (data[0].tipo_resposta === 'C' || data[0].tipo_resposta === 'R') {
+                    const answers = (await ans[0]).answers
+                    if (answers)
+                        setAnswers(answers.filter(item => item.id_perguntas === data[0].id_perguntas))
                 } else {
                     setAnswers([{ descricao: '', correta: '', id_perguntas: data[0].id_perguntas, id_respostas: 1 }])
                 }
@@ -78,6 +82,6 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
         backQuestion, nextQuestion, paginacao, itemQuestions,
         dataQuestions, answers, setAnswers, handleIsTrue,
         statusAtividade, setStatusAtividade, avaliacao,
-        tempo,finalizar, respostaAberta, 
+        tempo, finalizar, respostaAberta,
     }
 }

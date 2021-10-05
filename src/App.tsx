@@ -16,6 +16,7 @@ import  BaseConhecimento  from './Pages/BaseConhecimento/';
 import PrivateRoute from './conext/authContext';
 import { ListarGrupo } from './Pages/ListaGrupo';
 import { RegistrarGrupo } from './Pages/RegistrarGrupo';
+import { ListarCorrecao } from './Pages/ListarCorrecao';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <PrivateRoute path="/usuario" exact component={ListarUsuario} />
         <PrivateRoute path="/usuario/:id" exact component={RegistrarUsuario} />
         <PrivateRoute path="/avaliacao" exact component={ListaAvaliacoes} />
+        <PrivateRoute path="/correcao" exact component={ListarCorrecao} />
         <PrivateRoute path="/avaliacao/:id" component={CadAvaliacao} />
         <PrivateRoute path="/question/:id" component={RegisterQuestion} />
         <PrivateRoute path="/profissionais" exact component={ListarProfissionais} />

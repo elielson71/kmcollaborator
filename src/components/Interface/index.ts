@@ -80,6 +80,7 @@ export type typeCorrecao = {
     situacao:string
     data_correcao:string
     resposta:string
+    nota_pacial?:number
 }
 export type typeGrupo={
     id_grupo?:number

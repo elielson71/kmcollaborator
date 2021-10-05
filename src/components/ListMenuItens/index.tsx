@@ -31,6 +31,12 @@ export function useListaMenu() {
         </ListItemIcon>
         <ListItemText primary="Avaliações" />
       </ListItem>
+      <ListItem button component={Link} to='/correcao'>
+        <ListItemIcon>
+          <EventAvailable />
+        </ListItemIcon>
+        <ListItemText primary="Correcão" />
+      </ListItem>
       <ListItem button component={Link} to='/profissionais'>
         <ListItemIcon>
           <PeopleIcon />

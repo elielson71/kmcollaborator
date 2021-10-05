@@ -47,7 +47,7 @@ export function useAvaliacoes(avaliacaoId: string) {
 
         avaliacao.itensAvaliacao = questionsSelecionadas
 
-        if (validarAvaliacao(avaliacaoId, avaliacao.titulo, questionsSelecionadas)) {
+        if (validarAvaliacao(avaliacaoId, avaliacao, questionsSelecionadas)) {
             if (await postAvaliacoes(avaliacao)) {
                 alert('Avaliação Registrada com Sucesso!')
                 history.push('/avaliacao')
@@ -59,7 +59,7 @@ export function useAvaliacoes(avaliacaoId: string) {
 
     const enviarAvaliacao = async (e: FormEvent) => {
         const questionsSelecionadas = Questions.filter(value => value.situacao==='AB'||value.situacao==='AB+')
-        if (validarAvaliacao(avaliacaoId, avaliacao.titulo, questionsSelecionadas)) {
+        if (validarAvaliacao(avaliacaoId, avaliacao, questionsSelecionadas)) {
             if (avaliacaoId === 'new') {
                 salvarAvaliacoes(questionsSelecionadas)
             } else {
