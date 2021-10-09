@@ -1,12 +1,10 @@
 import { useState } from "react"
-import { typeAnswer, typeAvaliacao, typeCorrecao, typeQuestions } from "../../components/Interface"
+import { typeAnswer, typeAvaliacao, typeCorrecao, typeItensCorrecao, typeQuestions } from "../../components/Interface"
 
 export function useSaveQuestion(itemQuestions: typeQuestions,
-    answers: typeAnswer[],
-    id_profissional: number,
-    avaliacao: typeAvaliacao,handleDataQuestion:any) {
-    const data = {} as typeCorrecao
-    const [dataQ, setDataQ] = useState<typeCorrecao[]>([])
+    answers: typeAnswer[],handleDataQuestion:any) {
+    const data = {} as typeItensCorrecao
+    const [dataItensCorrecao, setDataItensCorrecao] = useState<typeItensCorrecao[]>([])
     function saveQuestions() {
         if (!itemQuestions)
             return false
@@ -32,15 +30,15 @@ export function useSaveQuestion(itemQuestions: typeQuestions,
             data.resposta = resposta[0].descricao
 
         }
-        const existemQuestion = dataQ.filter(
+        const existemQuestion = dataItensCorrecao.filter(
             item => item.id_perguntas === itemQuestions.id_perguntas)
-        data.id_profissional = id_profissional
-        data.id_avaliacao = avaliacao.id_avaliacoes ? avaliacao.id_avaliacoes : 0
+        
+
 
         if (existemQuestion.length === 0) {
-            setDataQ([...dataQ, data])
+            setDataItensCorrecao([...dataItensCorrecao, data])
         } else {
-            setDataQ(prev => prev.map
+            setDataItensCorrecao(prev => prev.map
                 (item => item.id_perguntas === itemQuestions.id_perguntas ?
                     {
                         ...item, id_perguntas: data.id_perguntas, resposta:
@@ -50,5 +48,5 @@ export function useSaveQuestion(itemQuestions: typeQuestions,
         handleDataQuestion(itemQuestions.id_perguntas,{...itemQuestions,answers})
         return true
     }
-    return { dataQ, saveQuestions }
+    return { dataQ: dataItensCorrecao, saveQuestions }
 }

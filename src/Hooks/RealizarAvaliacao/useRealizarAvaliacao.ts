@@ -1,6 +1,6 @@
 import { useAvaliacoes } from "../../Hooks/Avaliacao/useAvaliacoes";
 import { typeAnswer, typeCorrecao, typeQuestions } from "../../components/Interface";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAvaliacoesItenQuestions } from "../../service/AvaliacoesService";
 import useTemporizador from "./useTemporizador";
 import { getQuestionsAnswer } from "../../service/QuestionsService";
@@ -19,14 +19,14 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
     const tempo = avaliacao.tempo
     const id_profissional = 4
 
-    const { dataQ, saveQuestions } = useSaveQuestion(itemQuestions, answers, id_profissional, avaliacao, handleDataQuestion)
+    const { dataQ, saveQuestions } = useSaveQuestion(itemQuestions, answers, handleDataQuestion)
 
     //const {  finalizouContagem} = useTemporizador(parseInt(tempo[0]), parseInt(tempo[1]), parseInt(tempo[2]))
     const { backQuestion, nextQuestion, setPaginacao, paginacao } = useNavegacao(dataQuestions,
         setItemQuestions, setAnswers, saveQuestions)
 
     const { finalizar, statusAtividade, setStatusAtividade } =
-        useFinalizarAvaliacao(dataQ);
+        useFinalizarAvaliacao(dataQ,id_profissional, avaliacao);
 
     function handleDataQuestion(id_perguntas: number, questions: typeQuestions) {
         setDataQuestions(prev => prev.map
@@ -34,6 +34,7 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
                 { ...item, answers: questions.answers } : item))
 
     }
+    const podeFinalizar = useCallback(()=>dataQ.every(item=>item.resposta===null || item.resposta===undefined),[dataQ])
 
     useEffect(() => {
         setPaginacao(1)
@@ -82,6 +83,6 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
         backQuestion, nextQuestion, paginacao, itemQuestions,
         dataQuestions, answers, setAnswers, handleIsTrue,
         statusAtividade, setStatusAtividade, avaliacao,
-        tempo, finalizar, respostaAberta,
+        tempo, finalizar, respostaAberta,podeFinalizar
     }
 }

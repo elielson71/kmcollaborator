@@ -19,7 +19,8 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
     const { backQuestion, nextQuestion, paginacao, itemQuestions,
         dataQuestions, answers, setAnswers,
         statusAtividade, setStatusAtividade, avaliacao,
-        finalizar, handleIsTrue, respostaAberta, tempo
+        finalizar, handleIsTrue, respostaAberta, tempo,
+        podeFinalizar
     } = useRealizarAvaliacao(parseInt(avaliacaoId))
 
     return (
@@ -123,7 +124,7 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                                             Voltar
                                         </Button>
                                         <Button color='primary' variant='outlined' onClick={nextQuestion}>Responder</Button>
-                                        <Button color='primary' variant='contained' hidden={dataQuestions.length !== paginacao} onClick={finalizar}>Finalizar</Button>
+                                        <Button color='primary' variant='contained' disabled={podeFinalizar()} hidden={dataQuestions.length !== paginacao} onClick={finalizar}>Finalizar</Button>
 
                                     </Grid>
 

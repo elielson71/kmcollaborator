@@ -1,10 +1,10 @@
-import { typeCorrecao } from '../components/Interface'
+import { typeAnswer, typeCorrecao, typeQuestions } from '../components/Interface'
 import { api } from './Api'
 import { getToken } from './authService'
 export async function getCorrecao() {
     return await api.get<typeCorrecao[]>('/api/correcao')
 }
-export async function postCorrecao(correcao:typeCorrecao[]) {
+export async function postCorrecao(correcao:typeCorrecao) {
     console.log(correcao)
     const resp = await api.post('/api/correcao', correcao)
     return resp
@@ -12,6 +12,13 @@ export async function postCorrecao(correcao:typeCorrecao[]) {
 
 export async function getOneCorrecao(id_correcao: number) {
     return await api.get<typeCorrecao[]>(`/api/correcao/${id_correcao}`)
+}
+export async function getCorrecaoItensQuestions(id_correcao: number) {
+    return await api.get<typeQuestions[]>(`/api/correcao/itensquestions/${id_correcao}`)
+}
+
+export async function getCorrecaoQuestionsAnswer(id_pergunta:number,id_correcao: number) {
+    return await api.post(`/api/correcao/itensrespostas/}`,{'id_pergunta':id_pergunta,'id_correcao':id_correcao})
 }
 
 export async function putCorrecao(id_correcao: number, correcao: {}) {

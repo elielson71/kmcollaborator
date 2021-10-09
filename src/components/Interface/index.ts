@@ -72,17 +72,21 @@ export type typeDepartamento = {
 }
 export type typeCorrecao = {
     id_correcao?:number
-    id_perguntas:number
     id_profissional:number
-    id_resposta:number
     id_avaliacao:number
-    nota:number
     situacao:string
     data_correcao:string
-    resposta:string
-    nota_pacial?:number
+    itens_correcao:typeItensCorrecao[]
+    
 }
 export type typeGrupo={
     id_grupo?:number
     nome:string
+}
+export type typeItensCorrecao={
+    id_itens_correcao?:number
+    id_perguntas:number
+    id_resposta:number
+    nota:number
+    resposta:string
 }

@@ -51,7 +51,7 @@ const useStyles = makeStyles({
 });
 
 
-export function Avaliacao({ id_usuario, titulo, id_avaliacoes, id_departamento, editAvaliacao, deleteAvaliacao }: propsAvaliacao) {
+export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, deleteAvaliacao }: propsAvaliacao) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);

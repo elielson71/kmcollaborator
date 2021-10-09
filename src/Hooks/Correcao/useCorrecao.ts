@@ -2,76 +2,71 @@ import { useHistory } from "react-router"
 import { typeCorrecao } from "../../components/Interface"
 import { useEffect, useState } from "react"
 import { validarEmail } from "../../functions/validarEmail"
-import { deleteUsuario, getOneUsuario, getUsuario, postUsuario, putUsuario } from "../../service/UsuarioService"
-import { getCorrecao, getOneCorrecao, postCorrecao, putCorrecao } from "../../service/CorrecaoService"
+import { deleteCorrecao, getCorrecao, getOneCorrecao, postCorrecao, putCorrecao } from "../../service/CorrecaoService"
+import { useProfissional } from "../Profissional/useProfissional";
+import { useAvaliacoes } from "../Avaliacao/useAvaliacoes"
 
-export function useCorrecao(id_correcao:string){
 
-    const [correcoes, setCorrecao] = useState<typeCorrecao[]>([])
+export function useCorrecao(id_correcao: string) {
 
-    useEffect(() => {
-      if (id_correcao === '') {
-        recuperarTodosCorrecao()
-      } else if (id_correcao !== '') {
-        RecuperarOneCorrecao(parseInt(id_correcao))
-      }
-  
-  
-    }, [id_correcao])
-  
-    //Registrar
-    const [login, setLogin] = useState('')
-    const [senha, setSenha] = useState('')
-    const [nome, setNome] = useState('')
-    const [administrador, setAdministrador] = useState('N')
-    const [email, setEmail] = useState('')
-    async function handleSubmint(emailRef:any) {
-      if (!validarEmail(email,emailRef))
-        return
-  
+  const [correcao, setCorrecao] = useState<typeCorrecao>({
+    id_profissional: 0,
+    id_avaliacao: 0,
+    situacao: 'a',
+    data_correcao: '',
+    itens_correcao: [],
+  })
 
-    const data = correcoes
-      if (login !== '' && senha !== '' && nome !== '' && administrador !== '' && email !== '') {
-        let resp
-        if (id_correcao === 'new') {
-          //data.id_correcao = ''
-          resp = await postCorrecao(data)
-        } else if (id_correcao !== 'new' && id_correcao !== '') {
-  
-          resp = await putCorrecao(parseInt(id_correcao), data)
-        } else return
-  
-        if (resp.status === 201 || resp.status === 204) {
-          if (resp.status === 204) {
-            alert("Dados Atualizados com Sucesso!")
-          }
-          history.push('/correcao')
-        } else if (resp.status === 404) {
-          alert('Email ou Login já existe!')
-        } else {
-          alert('Errro ao cadastrar Correcao!')
-        }
-      } else {
-        alert('Preencha todos os campos!')
-      }
+  const { allProfissionais } = useProfissional('')
+  const { allAvaliacao } = useAvaliacoes('')
+
+
+  useEffect(() => {
+    if (id_correcao === '') {
+      recuperarTodosCorrecao()
+    } else if (id_correcao !== '') {
+      RecuperarOneCorrecao(parseInt(id_correcao))
     }
-  
-  
-    async function RecuperarOneCorrecao(id: number) {
-      const resp = await getOneCorrecao(id)
-      if (resp.status === 200) {
 
-      }
+
+  }, [id_correcao])
+
+
+
+  async function RecuperarOneCorrecao(id: number) {
+    const resp = await getOneCorrecao(id)
+    if (resp.status === 200) {
+
     }
-    const [allCorrecao, setAllCorrecao] = useState<typeCorrecao[]>([])
-    async function recuperarTodosCorrecao() {
-      const resp = await getCorrecao()
-      if (resp.status === 200) {
-        setCorrecao(resp.data)
-        setAllCorrecao(resp.data)
-      }
+  }
+  const [allCorrecao, setAllCorrecao] = useState<typeCorrecao[]>([])
+  async function recuperarTodosCorrecao() {
+    const resp = await getCorrecao()
+    if (resp.status === 200) {
+      //setCorrecao(resp.data[])
+      setAllCorrecao(resp.data)
     }
-  
-    const history = useHistory()
-    return{correcoes,history}
+  }
+  async function excluirCorrecao(id: number) {
+    const resp = await deleteCorrecao(id)
+    if (resp.status === 204)
+      window.location.reload()
+    else if (resp.status >= 400) {
+      alert(`Erro ao excluir!${resp.status}\n ${resp.data.message}`)
+    }
+    else {
+    }
+  }
+  const nome_profissional = (id_profissional: number) => {
+    const prof = allProfissionais.filter(item => item.id_profissional === id_profissional)[0]
+    const nome_profissional =prof ? prof.nome_completo : 'Sem nome'
+    return nome_profissional
+  }
+  const avaliacaoDesc=(id_avaliacao:number)=>{
+    const avaliacao = allAvaliacao.filter(item=>item.id_avaliacoes===id_avaliacao)[0]
+    const aval = avaliacao?avaliacao.titulo:''
+    return aval
+  }
+  const history = useHistory()
+  return { allCorrecao, correcao, history, excluirCorrecao, nome_profissional,avaliacaoDesc}
 }

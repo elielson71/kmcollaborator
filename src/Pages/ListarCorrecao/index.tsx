@@ -18,11 +18,11 @@ import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
 
 export function ListarCorrecao() {
   const classes = useStyles();
-  const {history,correcoes} = useCorrecao('')
+  const {history,allCorrecao: correcoes,excluirCorrecao,nome_profissional,avaliacaoDesc} = useCorrecao('')
 
   return (
     <div className={classes.root}>
-      <MenuItens titulo='Correcao' />
+      <MenuItens titulo='Correcão' />
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
@@ -31,12 +31,12 @@ export function ListarCorrecao() {
               <Paper className={classes.paper}>
                 <Grid container spacing={3}>
                   <Grid item sm={10}>
-                    <h2>Listagem de Usuário</h2>
+                    <h2>Listagem de Correção</h2>
                   </Grid>
                   <Grid item sm={2}>
                     <ButtonGroup arial-label=''>
                       
-                      <Button  variant="contained" color='primary' onClick={() => history.push('/correcao/new')}>Novo Correcao</Button>
+                      <Button  variant="contained" color='primary' onClick={() => history.push('/correcao/new')}>Novo Correção</Button>
                     </ButtonGroup>
                   </Grid>
                 </Grid>
@@ -51,7 +51,7 @@ export function ListarCorrecao() {
                             <TableCell align="center">Profissional</TableCell>
                             <TableCell align="center">Data de Correção</TableCell>
                             <TableCell align="center">Situacão</TableCell>
-                            <TableCell align="center">Nota Pacial</TableCell>
+                            <TableCell align="center">Nota</TableCell>
                             <TableCell align="right">Opções</TableCell>
                           </TableRow>
                         </TableHead>
@@ -61,13 +61,14 @@ export function ListarCorrecao() {
                               <TableCell component="th" scope="correcao">
                                 {key + 1}</TableCell>
                               <TableCell component="th" scope="correcao">
-                                {correcao.id_avaliacao}</TableCell>
-                              <TableCell align="center">{correcao.id_profissional}</TableCell>
+                                {avaliacaoDesc(correcao.id_avaliacao)}</TableCell>
+                              <TableCell align="center">{nome_profissional(correcao.id_profissional)}</TableCell>
                               <TableCell align="center">{new Date(correcao.data_correcao).toLocaleString('pt-br')}</TableCell>
                               <TableCell align="center">{correcao.situacao}</TableCell>
-                              <TableCell align="center">{correcao.nota_pacial}</TableCell>
+                              <TableCell align="center">{}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
+                                  <Button color='secondary' onClick={() => { excluirCorrecao(correcao.id_correcao?correcao.id_correcao:0)}}>Apagar</Button>
                                   <Button color='primary' onClick={() => { history.push('/correcao/' + correcao.id_correcao)}}>Corrigir</Button>
                                 </ButtonGroup>
                               </TableCell>

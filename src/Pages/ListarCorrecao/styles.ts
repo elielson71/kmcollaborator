@@ -22,4 +22,12 @@ export const useStyles = makeStyles((theme) => ({
     table: {
       minWidth: 650,
     },
+    principal: {
+        minHeight:'100%',
+        display: 'flex',
+        justifyContent: 'center',
+        backgroundColor: '#fff',
+    }
+
+    
   }));
