@@ -9,10 +9,10 @@ import { useAvaliacoes } from "../Avaliacao/useAvaliacoes"
 
 export function useCorrecao(id_correcao: string) {
 
-  const [correcao, setCorrecao] = useState<typeCorrecao>({
+  const [correcao] = useState<typeCorrecao>({
     id_profissional: 0,
     id_avaliacao: 0,
-    situacao: 'a',
+    situacao: 'A',
     data_correcao: '',
     itens_correcao: [],
   })

@@ -17,8 +17,10 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
 
     const { backQuestion, nextQuestion, setPaginacao, paginacao } = useNavegacao(dataQuestions,
         setItemQuestions, setAnswers, saveQuestions)
-
+    
+    
     const { finalizar } = useFinalizarCorrecao(dataQ, correcaoId)
+
     const history = useHistory()
 
     function handleDataQuestion(id_perguntas: number, questions: typeQuestions) {

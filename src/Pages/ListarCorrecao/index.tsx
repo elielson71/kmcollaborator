@@ -15,10 +15,12 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useStyles } from './styles';
 import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
+import { Chip } from '@material-ui/core';
+
 
 export function ListarCorrecao() {
   const classes = useStyles();
-  const {history,allCorrecao: correcoes,excluirCorrecao,nome_profissional,avaliacaoDesc} = useCorrecao('')
+  const { history, allCorrecao: correcoes, excluirCorrecao, nome_profissional, avaliacaoDesc } = useCorrecao('')
 
   return (
     <div className={classes.root}>
@@ -35,8 +37,8 @@ export function ListarCorrecao() {
                   </Grid>
                   <Grid item sm={2}>
                     <ButtonGroup arial-label=''>
-                      
-                      <Button  variant="contained" color='primary' onClick={() => history.push('/correcao/new')}>Novo Correção</Button>
+
+                      <Button variant="contained" color='primary' onClick={() => history.push('/correcao/new')}>Novo Correção</Button>
                     </ButtonGroup>
                   </Grid>
                 </Grid>
@@ -49,8 +51,6 @@ export function ListarCorrecao() {
                             <TableCell></TableCell>
                             <TableCell>Avaliacoes</TableCell>
                             <TableCell align="center">Profissional</TableCell>
-                            <TableCell align="center">Data de Correção</TableCell>
-                            <TableCell align="center">Situacão</TableCell>
                             <TableCell align="center">Nota</TableCell>
                             <TableCell align="right">Opções</TableCell>
                           </TableRow>
@@ -63,13 +63,23 @@ export function ListarCorrecao() {
                               <TableCell component="th" scope="correcao">
                                 {avaliacaoDesc(correcao.id_avaliacao)}</TableCell>
                               <TableCell align="center">{nome_profissional(correcao.id_profissional)}</TableCell>
-                              <TableCell align="center">{new Date(correcao.data_correcao).toLocaleString('pt-br')}</TableCell>
-                              <TableCell align="center">{correcao.situacao}</TableCell>
-                              <TableCell align="center">{}</TableCell>
+                              <TableCell align="center">{<Chip label={correcao.nota ? correcao.nota : 'N'} color='primary' />}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
-                                  <Button color='secondary' onClick={() => { excluirCorrecao(correcao.id_correcao?correcao.id_correcao:0)}}>Apagar</Button>
-                                  <Button color='primary' onClick={() => { history.push('/correcao/' + correcao.id_correcao)}}>Corrigir</Button>
+                                  <Button color='secondary' hidden={correcao.situacao === 'C'} onClick={() => { excluirCorrecao(correcao.id_correcao ? correcao.id_correcao : 0) }}>Apagar</Button>
+                                  {correcao.situacao === 'C' ?
+                                    <Button color='primary'
+                                      variant='contained'
+                                      disabled
+                                      //onClick={() => { history.push('/correcao/' + correcao.id_correcao+'&C') }}
+                                      >
+                                      Corrigida
+                                    </Button>
+                                    : <Button
+                                      color='primary'
+                                      onClick={() => { history.push('/correcao/' + correcao.id_correcao) }}>
+                                      Corrigir
+                                    </Button>}
                                 </ButtonGroup>
                               </TableCell>
                             </TableRow>

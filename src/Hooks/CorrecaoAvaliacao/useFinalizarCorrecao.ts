@@ -3,11 +3,14 @@ import {  typeCorrecao, typeItensCorrecao } from "../../components/Interface"
 import {  putCorrecao } from "../../service/CorrecaoService";
 
 export function useFinalizarCorrecao(dataQ: typeItensCorrecao[],
-    id_correcao:number) {
+    id_correcao:number,
+    ) {
         const history = useHistory()
     
     async function finalizar() {
+
         const date = new Date()
+        
         const dataCorrecao = {
             situacao: 'C',
             data_correcao: date as unknown as string,

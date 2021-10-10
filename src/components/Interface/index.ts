@@ -75,6 +75,7 @@ export type typeCorrecao = {
     id_profissional:number
     id_avaliacao:number
     situacao:string
+    nota?:number
     data_correcao:string
     itens_correcao:typeItensCorrecao[]
     

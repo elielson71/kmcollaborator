@@ -23,11 +23,7 @@ export function useSaveCorrecao(itemQuestions: typeQuestions,
         }
 
         useEffect(()=>{
-            setDataItensCorrecao([ {
-                id_perguntas:0,
-                id_resposta:0,
-                nota:0,
-                resposta:''}])
+            saveQuestions()
         },[])
         return { dataQ: dataItensCorrecao, saveQuestions, setDataQ:setDataItensCorrecao}
     
