@@ -1,5 +1,5 @@
 import { useAvaliacoes } from "../Avaliacao/useAvaliacoes";
-import { typeAnswer, typeCorrecao, typeQuestions } from "../../components/Interface";
+import { typeAnswer, typeQuestions } from "../../components/Interface";
 import { useEffect, useState,useCallback } from "react";
 import { useSaveCorrecao } from "./useSaveCorrecao";
 import { useNavegacao } from "./useNavegacaoCorrecao";

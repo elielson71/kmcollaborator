@@ -18,7 +18,7 @@ export function useCorrecao(id_correcao: string) {
   })
 
   const { allProfissionais } = useProfissional('')
-  const { allAvaliacao } = useAvaliacoes('')
+
 
 
   useEffect(() => {
@@ -62,11 +62,7 @@ export function useCorrecao(id_correcao: string) {
     const nome_profissional =prof ? prof.nome_completo : 'Sem nome'
     return nome_profissional
   }
-  const avaliacaoDesc=(id_avaliacao:number)=>{
-    const avaliacao = allAvaliacao.filter(item=>item.id_avaliacoes===id_avaliacao)[0]
-    const aval = avaliacao?avaliacao.titulo:''
-    return aval
-  }
+
   const history = useHistory()
-  return { allCorrecao, correcao, history, excluirCorrecao, nome_profissional,avaliacaoDesc}
+  return { allCorrecao, correcao, history, excluirCorrecao, nome_profissional}
 }

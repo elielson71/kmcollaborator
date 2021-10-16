@@ -16,11 +16,12 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useStyles } from './styles';
 import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
 import { Chip } from '@material-ui/core';
+import { avaliacaoDesc } from '../../Hooks/Avaliacao/DescricaoAvaliacao';
 
 
 export function ListarCorrecao() {
   const classes = useStyles();
-  const { history, allCorrecao: correcoes, excluirCorrecao, nome_profissional, avaliacaoDesc } = useCorrecao('')
+  const { history, allCorrecao: correcoes, excluirCorrecao, nome_profissional} = useCorrecao('')
 
   return (
     <div className={classes.root}>
