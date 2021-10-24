@@ -1,6 +1,6 @@
 import { useHistory } from "react-router"
 import { typeCorrecao } from "../../components/Interface"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { validarEmail } from "../../functions/validarEmail"
 import { deleteCorrecao, getCorrecao, getOneCorrecao, postCorrecao, putCorrecao } from "../../service/CorrecaoService"
 import { useProfissional } from "../Profissional/useProfissional";
@@ -18,8 +18,7 @@ export function useCorrecao(id_correcao: string) {
   })
 
   const { allProfissionais } = useProfissional('')
-
-
+  const { allAvaliacao } = useAvaliacoes('')
 
   useEffect(() => {
     if (id_correcao === '') {
@@ -62,7 +61,24 @@ export function useCorrecao(id_correcao: string) {
     const nome_profissional =prof ? prof.nome_completo : 'Sem nome'
     return nome_profissional
   }
+   function avaliacaoDesc(id_avaliacao:number){
+    const avaliacao = allAvaliacao.filter(item=>item.id_avaliacoes===id_avaliacao)[0]
+    const aval = avaliacao?avaliacao.titulo:''
+    return aval
+  }
+
+  const [busca,setBusca]=useState('')
+  const filterBusca = useMemo(()=>{
+    if(busca){
+      const lowerBusca = busca.toLocaleLowerCase();
+      return allCorrecao.filter(item=>
+          avaliacaoDesc(item.id_avaliacao).toLocaleLowerCase().includes(lowerBusca)
+          )
+      }
+      return allCorrecao
+  },[allCorrecao,busca])
+
 
   const history = useHistory()
-  return { allCorrecao, correcao, history, excluirCorrecao, nome_profissional}
+  return { allCorrecao, correcao, history, excluirCorrecao, nome_profissional,setBusca,filterBusca,avaliacaoDesc}
 }

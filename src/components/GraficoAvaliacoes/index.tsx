@@ -1,14 +1,17 @@
 import {  Paper } from '@material-ui/core';
 import { Bar } from 'react-chartjs-2'
-import { avaliacaoDesc } from '../../Hooks/Avaliacao/DescricaoAvaliacao';
+import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
 import { typeCorrecao } from '../Interface';
 import { useStyles } from './styles';
 
 type props = {
-  correcao: typeCorrecao[]
+  prof:number
 }
-export function GraficoAvaliacoes({ correcao }: props) {
+export function GraficoAvaliacoes({ prof }: props) {
   const classes = useStyles();
+  const {allCorrecao} = useCorrecao('')
+  const {avaliacaoDesc} = useCorrecao('')
+  const correcao = allCorrecao.filter(item=>item.id_profissional===prof && item.situacao==='C')
   const data = correcao.map(item=>item.nota) as number[]
   const labels = correcao.map(item=>avaliacaoDesc(item.id_avaliacao)) 
   
@@ -17,7 +20,8 @@ export function GraficoAvaliacoes({ correcao }: props) {
       <Bar
       className={classes.bar}
       width={900}
-      height={500}
+      height={250}
+      
       data={{
           labels: labels,
           datasets: [

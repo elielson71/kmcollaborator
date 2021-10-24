@@ -15,13 +15,14 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useStyles } from './styles';
 import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
-import { Chip } from '@material-ui/core';
-import { avaliacaoDesc } from '../../Hooks/Avaliacao/DescricaoAvaliacao';
+import { Chip, InputBase } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 
 
 export function ListarCorrecao() {
   const classes = useStyles();
-  const { history, allCorrecao: correcoes, excluirCorrecao, nome_profissional} = useCorrecao('')
+  const { history, allCorrecao: correcoes, excluirCorrecao,
+    filterBusca, nome_profissional, avaliacaoDesc,setBusca} = useCorrecao('')
 
   return (
     <div className={classes.root}>
@@ -36,11 +37,28 @@ export function ListarCorrecao() {
                   <Grid item sm={10}>
                     <h2>Listagem de Correção</h2>
                   </Grid>
+                  <Grid item sm={12}>
+                    <Grid  className={classes.search}>
+                      <div className={classes.searchIcon}>
+                        <SearchIcon />
+                      </div>
+                      <InputBase
+                        placeholder="Pesquisar…"
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                        onChange={e => setBusca(e.target.value)}
+                      />
+                    </Grid>
+                    
+                  </Grid>
                   <Grid item sm={2}>
-                    <ButtonGroup arial-label=''>
+                    {/*<ButtonGroup arial-label=''>
 
                       <Button variant="contained" color='primary' onClick={() => history.push('/correcao/new')}>Novo Correção</Button>
-                    </ButtonGroup>
+  </ButtonGroup>*/}
                   </Grid>
                 </Grid>
                 <Grid container spacing={3}>
@@ -57,14 +75,14 @@ export function ListarCorrecao() {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {correcoes.map((correcao, key) => (
+                          {filterBusca.map((correcao, key) => (
                             <TableRow key={correcao.id_correcao}>
                               <TableCell component="th" scope="correcao">
                                 {key + 1}</TableCell>
                               <TableCell component="th" scope="correcao">
                                 {avaliacaoDesc(correcao.id_avaliacao)}</TableCell>
                               <TableCell align="center">{nome_profissional(correcao.id_profissional)}</TableCell>
-                              <TableCell align="center">{<Chip label={correcao.nota ? correcao.nota : 'N'} color='primary' />}</TableCell>
+                              <TableCell align="center">{correcao.situacao === 'C' ? <Chip label={correcao.nota} color='primary' /> : ''}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
                                   <Button color='secondary' hidden={correcao.situacao === 'C'} onClick={() => { excluirCorrecao(correcao.id_correcao ? correcao.id_correcao : 0) }}>Apagar</Button>
@@ -72,8 +90,8 @@ export function ListarCorrecao() {
                                     <Button color='primary'
                                       variant='contained'
                                       disabled
-                                      //onClick={() => { history.push('/correcao/' + correcao.id_correcao+'&C') }}
-                                      >
+                                    //onClick={() => { history.push('/correcao/' + correcao.id_correcao+'&C') }}
+                                    >
                                       Corrigida
                                     </Button>
                                     : <Button

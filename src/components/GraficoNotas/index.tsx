@@ -1,18 +1,36 @@
-import { Paper } from '@material-ui/core';
-import { Doughnut, } from 'react-chartjs-2'
-import Chart from 'react-google-charts';
+import { Paper, Typography} from '@material-ui/core';
+
+import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
+
 import { useStyles } from './styles';
 import './styles.scss'
 type props = {
-  media:number
+  prof: number
 }
-export function GraficoNotas({ media }: props) {
+type acum = {
+  nota: number
+}
+export function GraficoNotas({ prof }: props) {
   const classes = useStyles();
+  const { allCorrecao } = useCorrecao('')
+  
+
+  let media = 0 
+  let qt =0
+  allCorrecao.forEach(item => {
+    if (item.id_profissional === prof){
+      media += item.nota ? item.nota : 0
+
+      qt+=1
+  }})
+
   return (
     <Paper className={classes.paper}>
-      <h3>Média Geral</h3>
-      <span className={`c-circular-progress c-circular-progress--${media}`} ></span>
+      <Typography variant='h4' align='center'>Média </Typography>
+      <br/>
+      <Typography variant='h2' align='center'>{(media/qt).toFixed(0)}</Typography>
     </Paper >
   );
-
+  
 }
+//<span className={`c-circular-progress c-circular-progress--${(media/qt).toFixed(0)}`} ></span>

@@ -25,7 +25,7 @@ import { useGrupo } from '../../Hooks/Grupo/useGrupo';
 import { useParams } from 'react-router-dom';
 import { validarEmail } from '../../functions/validarEmail';
 import { ButtonGroup } from '@material-ui/core';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 type typeparams = {
   id: string
@@ -37,14 +37,17 @@ export function RegistrarUsuario() {
   const id_usuario = parms.id
   const { login, setLogin, senha, setSenha, nome,
     setNome, administrador, setAdministrador,
-    email, setEmail, history, handleSubmint } = useUsuario(id_usuario)
+    email, setEmail, history, handleSubmint,
+    handleAddGrupo, id_grupo, setId_Grupo,
+    usuariogrupo, excluirUsuarioGrupo,} = useUsuario(id_usuario)
 
   const { grupos } = useGrupo('')
-  const [grupo, setGrupo] = useState('')
+  //const grupos_usuario = 
+
   const emailRef = useRef<HTMLInputElement>(null)
-function focusEmail (){
-  emailRef.current?.focus()
-}
+  function focusEmail() {
+    emailRef.current?.focus()
+  }
   return (
     <div className={classes.root}>
       <MenuItens titulo='Usuario' />
@@ -54,7 +57,11 @@ function focusEmail (){
           <Grid container spacing={3}>
             <Grid item sm={12}>
               <Paper className={classes.paper}>
-                <h3>Formulario de Usuario</h3>
+                <Grid>
+                  <h3>Formulario de Usuario</h3>
+                </Grid>
+                <Grid>
+                </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={5}>
                     <TextField
@@ -119,30 +126,29 @@ function focusEmail (){
                       value={email}
                       ref={emailRef}
                       onChange={e => setEmail(e.target.value)}
-                      onBlur={e => validarEmail(e.target.value,focusEmail)}
+                      onBlur={e => validarEmail(e.target.value, focusEmail)}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={4} >
-                  <Grid container alignItems='flex-end'  direction='row'>
-                    <Grid item xs={12} sm={5}>
-                      <FormControl className={classes.formControl} fullWidth>
-                        <InputLabel id="grupo-label" >Grupo</InputLabel>
-                        <Select fullWidth labelId="grupo-label" id="grupo"
-                          value={grupo}
-                          onChange={e => setGrupo(e.target.value as string)}>
-                          {grupos.map((g) => (
-                            <MenuItem id="grupo" key={g.id_grupo}
-                              value={g.id_grupo}>{g.nome}</MenuItem>
-                          ))
-                          }
-                        </Select>
-                      </FormControl>
+                  <Grid item xs={12} sm={4} hidden={id_usuario === 'new'}>
+                    <Grid container alignItems='flex-end' direction='row' >
+                      <Grid item xs={12} sm={5}>
+                        <FormControl className={classes.formControl} fullWidth>
+                          <InputLabel id="grupo-label" >Grupo</InputLabel>
+                          <Select fullWidth labelId="grupo-label" id="grupo"
+                            value={id_grupo}
+                            onChange={e => setId_Grupo(e.target.value as string)}>
+                            {grupos.map((g) => (
+                              <MenuItem id="grupo" key={g.id_grupo}
+                                value={g.id_grupo}>{g.nome}</MenuItem>
+                            ))
+                            }
+                          </Select>
+                        </FormControl>
+                      </Grid>
+                      <Grid item xs={12} sm={7}>
+                        <Button variant='contained' color='primary' onClick={() => { handleAddGrupo() }}>Adicionar</Button>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={7}>
-                      <Button variant='contained' color='primary' onClick={() => { }}>Adicionar</Button>
-
-                    </Grid>
-                  </Grid>
                   </Grid>
 
                   <Grid item xs={12} sm={8} >
@@ -156,14 +162,14 @@ function focusEmail (){
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {grupos.map((grupo, key) => (
+                          {usuariogrupo.map((grupo, key) => (
                             <TableRow key={grupo.id_grupo}>
                               <TableCell component="th" scope="grupo">
                                 {key + 1}</TableCell>
                               <TableCell align="center">{grupo.nome}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
-                                  <Button color='secondary' onClick={() => alert('excluir')}>Delete</Button>
+                                  <Button color='secondary' onClick={() => excluirUsuarioGrupo(grupo.id_grupo)}>Delete</Button>
                                 </ButtonGroup>
                               </TableCell>
                             </TableRow>
@@ -176,7 +182,7 @@ function focusEmail (){
                     <Button variant="contained" onClick={() => history.push('/usuario')} startIcon={<ArrowBack />} className={classes.botoes}>
                       Volta
                     </Button>
-                    <Button variant="contained" color="primary" onClick={()=>handleSubmint(focusEmail)} startIcon={<SaveIcon />} className={classes.botoes}>
+                    <Button variant="contained" color="primary" onClick={() => handleSubmint(focusEmail)} startIcon={<SaveIcon />} className={classes.botoes}>
                       Salvar
                     </Button>
                   </Grid>

@@ -1,23 +1,39 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { logout, getToken } from '../service/authService';
-import { Route, Redirect } from 'react-router-dom';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { logout, getToken, getIdUsuario, loginToken, setLoginUsuario } from '../service/authService';
+//import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/authService';
+import {  useHistory } from 'react-router-dom';
+
 import { api } from '../service/Api';
-import { typeUsuario } from '../components/Interface';
+import { getOneUsuario } from '../service/UsuarioService';
+
 type AuthContextState = {
-    token: TokenState;
-    signIn({ login, senha }: typeUsuario): Promise<void>;
-    userLogged(): boolean;
+    tipoUsuarioLogado: boolean
+    idUsuarioLogado: number
+    token: TokenState
+    idProfissionalLogado: number
+    userLogged(): boolean
+    signIn({ login, senha }: UserData): Promise<void>;
+    //inicializar: () => void
 }
 type TokenState = {
     token: string;
 }
+interface UserData {
+    login: string;
+    senha: string;
+}
 
-const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
-export default function AuthProvider({ component: Component, role,...rest }: any) {
-    const [redirect, setRedirect] = useState(false);
-    const [loading, setLoading] = useState(true);
+export const AuthContext = createContext<AuthContextState>({} as AuthContextState);
+
+export const AuthProvider: React.FC = ({ children }) => {
+
+    const [tipoUsuarioLogado, setTipoUsuarioLogado] = useState(false)
+    const [idUsuarioLogado, setIdUsuarioLogado] = useState(0)
+    const [idProfissionalLogado, setIdProfissionalLogado] = useState(0)
+    const history = useHistory()
+
+
     const [token] = useState<TokenState>(() => {
         const token = getToken()
         if (token) {
@@ -27,40 +43,67 @@ export default function AuthProvider({ component: Component, role,...rest }: any
         return {} as TokenState
     })
 
-    async function valid() {
-        var res = await api.get('/api/checkToken')
-        if (res.status === 200) {
-            setLoading(false);
-            setRedirect(false);
-        } else {
-            logout();
-            setLoading(false);
-            setRedirect(true);
+    const tipoUsuario = async (id_usuario: number) => {
+        if (id_usuario === null || id_usuario === undefined)
+            return
+        const response = await getOneUsuario(id_usuario);
+        if (response.status === 200) {
+            setTipoUsuarioLogado(response.data[0].administrador === 'S')
         }
-
-
     }
-    async function carregarRoles() {
-        const resp = await api.get('/api/roles')
-    }
-
     useEffect(() => {
-        //setTimeout(() => verify(),1000);
-        valid();
+        const checarToken = async () => {
+            var res = await api.get('/api/checkToken');
+            if (res.status === 200) {
+                setIdUsuarioLogado(res.data.id)
+                setIdProfissionalLogado(res.data.id_profissional)
+                tipoUsuario(res.data.id)
+            }
+        };
+        checarToken()
+    }, []
+    )
+    const signIn = useCallback(async ({ login, senha }: UserData) => {
+        await api.post('/api/authenticate', {
+            login,
+            senha
+        })
+            .then(res => {
+                
+                if (res.status === 200) {
+                    loginToken(res.data.token)
+                    setIdUsuarioLogado(res.data.id_usuario)
+                    setLoginUsuario(res.data.login)
+                    setIdProfissionalLogado(res.data.id_profissional)
+                    setTipoUsuarioLogado(res.data.tipo === 'S')
+                    history.push('/home')
+                } else if (res.status === 404) {
+                    alert('Usuario não encontrado!')
+                } else if (res.status === 401) {
+                    alert('Acesso negado!\n Confere Login e senha e tente novamente!')
+                } else {
+                    alert('Erro ao comunicar com Servidor!')
+                }
+            }).catch(e => {
+                alert('Sem comunicação')
+            })
     }, [])
 
+    const userLogged = useCallback(() => {
+        const token = getToken()
+        if (token) {
+            return true;
+        }
+        return false;
+    }, []);
+
     return (
-        loading ?
-            <LinearProgress style={{ width: '50%', margin: '80px auto' }} />
-            :
-            <Route {...rest}
-                render={props => !redirect ? (
-                    <Component {...props} />
-                ) : <Redirect to={{ pathname: "/", state: { from: props.location } }} />
-                } />
-    )
+        <AuthContext.Provider value={{ token, tipoUsuarioLogado, idUsuarioLogado, userLogged, idProfissionalLogado, signIn }}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
 export function useAuth(): AuthContextState {
     const context = useContext(AuthContext);
     return context;
-  }
+}

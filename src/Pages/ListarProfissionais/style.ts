@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { alpha, makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,4 +23,5 @@ export const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+
 }));

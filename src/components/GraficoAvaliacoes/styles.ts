@@ -8,7 +8,7 @@ export const useStyles = makeStyles((theme) => ({
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
-      
+      height:'100%'
     },
     bar:{
       height:'10px'

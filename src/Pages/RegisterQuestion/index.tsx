@@ -1,25 +1,31 @@
 import './styles.scss'
 import { AnswerInput, ButtonIcon, ListAnswerDiv } from "../../components/componetsStypes";
 import { QuestionInfo } from "../../components/QuestionInfo";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import { Radio, Container, Grid, Button, Card, CardHeader, CardContent,  RadioGroup, FormControlLabel } from '@material-ui/core/';
+import { Radio, Container, Grid, Button, Card, CardHeader, CardContent, RadioGroup, FormControlLabel } from '@material-ui/core/';
 import { MenuItens } from "../../components/MenuItens";
-import {  Save } from "@material-ui/icons";
+import { Save } from "@material-ui/icons";
 import { useQuestion } from '../../Hooks/Question/useQuestion';
 import { useStyles } from './styles';
 
 type QuestionParams = {
     id: string
 }
-export function RegisterQuestion() {
+type props = {
+    id_avaliacao?: number
+}
+export function RegisterQuestion(props: any) {
     const params = useParams<QuestionParams>()
+
+    if(props.location.state)
+        var id_avaliacao= props.location.state.id_avaliacao
     const questionId = params.id;
     const { sendQuestion, handleAddAnswer, handleDeleteAnswer, handleIsTrue,
         descriptionAnswer, setDescriptionAnswer, handleChangeTypeListCard,
         Questions, setQuestions, answers, setAnswers, hiddenInfo,
-        setHiddenInfo, history } = useQuestion(questionId);
-
+        setHiddenInfo, history } = useQuestion(questionId, id_avaliacao);
+    //alert(id_avaliacao)
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -28,12 +34,18 @@ export function RegisterQuestion() {
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-                        
-                    <Grid container  justifyContent='flex-end' sm={12}>
-                        <Button variant='contained' color='primary' startIcon={<Save />} onClick={sendQuestion} >Salvar</Button>
-                        <Button onClick={() => history.push('/avaliacao/new')} variant='outlined' className='btn btn-seccundary' >Voltar</Button>
-                    </Grid>
-                        <Grid item xs={12} sm={hiddenInfo?12:8}>
+
+                        <Grid container justifyContent='flex-end' sm={12}>
+                            <Button variant='contained' color='primary' startIcon={<Save />} onClick={sendQuestion} >Salvar</Button>
+                            <Button onClick={() => {
+                                if (id_avaliacao) {
+                                    history.push('/avaliacao/' + id_avaliacao)
+                                } else {
+                                    history.push('/avaliacao/new')
+                                }
+                            }} variant='outlined' className='btn btn-seccundary' >Voltar</Button>
+                        </Grid>
+                        <Grid item xs={12} sm={hiddenInfo ? 12 : 8}>
                             <Card>
                                 <CardHeader
                                     title='Questão'
@@ -91,7 +103,8 @@ export function RegisterQuestion() {
 
 
                                         <Grid item xs={12} sm={12}>
-                                            <form onSubmit={(e) => handleAddAnswer(e, descriptionAnswer, Questions.tipo_resposta, Questions.id_perguntas)} id="answer">
+                                            <form onSubmit={(e) => handleAddAnswer(e, descriptionAnswer,
+                                                 Questions.tipo_resposta, Questions.id_perguntas)} id="answer">
                                                 <ListAnswerDiv>
                                                     <AnswerInput
                                                         name="descricao"
@@ -100,7 +113,8 @@ export function RegisterQuestion() {
                                                         disabled={
                                                             Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"
                                                         }
-                                                        placeholder={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L" ? "" : "Digite a Resposta"}
+                                                        placeholder={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L" ?
+                                                         "" : "Digite a Resposta"}
                                                         onChange={(e) => setDescriptionAnswer(e.target.value)}
                                                         //onBlur={e => done(answer.id_respostas, e.target.value)}
                                                         value={Questions.tipo_resposta === "B" ? "Resposta Curta ---" : Questions.tipo_resposta === "L" ? "Resposta Longa ---------" : descriptionAnswer}
@@ -122,7 +136,7 @@ export function RegisterQuestion() {
                                                                 defaultValue=""
                                                                 className="form-check-input"
                                                                 type="radio" name='correta' id="flexRadioDefault1"
-                                                                onChange={(e) => handleIsTrue(value.id_respostas?value.id_respostas:0)}
+                                                                onChange={(e) => handleIsTrue(value.id_respostas ? value.id_respostas : 0)}
                                                                 checked={value.correta === 'S'}
                                                             />
                                                         </div>
@@ -134,7 +148,9 @@ export function RegisterQuestion() {
                                                                     type="checkbox"
                                                                     id="flexCheckIndeterminate"
                                                                     name='correta'
-                                                                    onChange={e => setAnswers(prev => prev.map(item => item.id_respostas === value.id_respostas ? { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
+                                                                    onChange={e => setAnswers(prev => prev.map(item =>
+                                                                         item.id_respostas === value.id_respostas ?
+                                                                         { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
                                                                     checked={value.correta === 'S'}
                                                                 />
                                                             </div> : ''
@@ -142,11 +158,15 @@ export function RegisterQuestion() {
                                                 <AnswerInput
                                                     type="text"
                                                     value={value.descricao}
-                                                    onChange={e => setAnswers(prev => prev.map(item => item.id_respostas === value.id_respostas ? { ...item, descricao: e.target.value } : item))}
+                                                    onChange={e => setAnswers(prev => prev.map(item =>
+                                                         item.id_respostas === value.id_respostas ?
+                                                          { ...item, descricao: e.target.value } : item))}
                                                 />
                                                 <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
                                                     <button ><i className="far fa-images"></i></button>
-                                                    <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas?value.id_respostas:0,value.id_respostas?value.id_respostas:0)}><i className="far fa-times-circle"></i></button>
+                                                    <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas ? 
+                                                        value.id_respostas : 0, value.id_respostas ? value.id_respostas : 0)}>
+                                                            <i className="far fa-times-circle"></i></button>
                                                 </ButtonIcon>
                                             </ListAnswerDiv>))
                                         }
@@ -164,9 +184,9 @@ export function RegisterQuestion() {
                             />
                         </Grid>
 
-                </Grid>
-            </Container>
-        </main>
+                    </Grid>
+                </Container>
+            </main>
         </div >
     )
 }

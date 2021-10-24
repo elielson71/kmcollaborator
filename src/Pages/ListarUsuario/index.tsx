@@ -15,10 +15,11 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useStyles } from './styles';
 import { useUsuario } from '../../Hooks/Usuario/useUsuario';
+import { Buscar } from '../../components/Buscar';
 
 export function ListarUsuario() {
   const classes = useStyles();
-  const {usuarios,history,excluirUsuario} = useUsuario('')
+  const {usuarios,history,excluirUsuario,setBusca,filterBusca} = useUsuario('')
 
   return (
     <div className={classes.root}>
@@ -33,6 +34,7 @@ export function ListarUsuario() {
                   <Grid item sm={10}>
                     <h2>Listagem de Usuário</h2>
                   </Grid>
+                  
                   <Grid item sm={2}>
                     <ButtonGroup arial-label=''>
                       
@@ -40,6 +42,7 @@ export function ListarUsuario() {
                     </ButtonGroup>
                   </Grid>
                 </Grid>
+                <Buscar setBusca={setBusca} />
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={12} >
                     <TableContainer component={Paper}>
@@ -55,7 +58,7 @@ export function ListarUsuario() {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {usuarios.map((usuario, key) => (
+                          {filterBusca.map((usuario, key) => (
                             <TableRow key={usuario.id_usuario}>
                               <TableCell component="th" scope="usuario">
                                 {key + 1}</TableCell>

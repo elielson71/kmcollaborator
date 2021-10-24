@@ -15,10 +15,11 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import { useStyles } from './style';
 import { useProfissional } from '../../Hooks/Profissional/useProfissional';
+import { Buscar } from '../../components/Buscar';
 
 export function ListarProfissionais() {
   const classes = useStyles();
-  const {deleteprofissional,allProfissionais,history} = useProfissional('')
+  const {deleteprofissional,allProfissionais,history,setBusca,filterBusca} = useProfissional('')
 
   return (
     <div className={classes.root}>
@@ -39,6 +40,7 @@ export function ListarProfissionais() {
                       <Button  variant="contained" color='primary' onClick={() => history.push('/profissionais/new')}>Novo Profissional</Button>
                     </ButtonGroup>
                   </Grid>
+                  <Buscar setBusca={setBusca}/>
                 </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={12} >
@@ -55,7 +57,7 @@ export function ListarProfissionais() {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {allProfissionais.map((profissional, key) => (
+                          {filterBusca.map((profissional, key) => (
                             <TableRow key={profissional.id_profissional}>
                               <TableCell component="th" scope="profissional">
                                 {key + 1}</TableCell>

@@ -91,3 +91,8 @@ export type typeItensCorrecao={
     nota:number
     resposta:string
 }
+export type typeUsuarioGrupo={
+    id_usuario:number
+    id_grupo:number
+    nome:string
+}

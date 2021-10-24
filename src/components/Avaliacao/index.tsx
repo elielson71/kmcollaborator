@@ -1,5 +1,5 @@
 import Avatar from "@material-ui/core/Avatar";
-import {  makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import { Edit, Delete } from '@material-ui/icons/'
 
@@ -12,7 +12,9 @@ import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
-import {  Grid, IconButton, Typography } from "@material-ui/core";
+import { Grid, IconButton, Typography } from "@material-ui/core";
+import PermissionComponent from "../PermissionComponent";
+import { useAuth } from "../../conext/authContext";
 type propsAvaliacao = {
     id_avaliacoes?: number
     titulo: string
@@ -42,7 +44,7 @@ const useStyles = makeStyles({
         justifyContent: 'center'
     },
     principal: {
-        minHeight:'100%',
+        minHeight: '100%',
         display: 'flex',
         justifyContent: 'center',
         backgroundColor: '#fff',
@@ -53,10 +55,16 @@ const useStyles = makeStyles({
 
 export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, deleteAvaliacao }: propsAvaliacao) {
     const classes = useStyles();
-
+    const {idProfissionalLogado} = useAuth()
     const [open, setOpen] = useState(false);
 
     const handleOpen = () => {
+        if(idProfissionalLogado===0){
+            alert(`Usuario logado não tem vinculo com Profissional! \n
+            Faça o vinculo antes de Responder!`)
+            return
+        }
+
         setOpen(true);
     };
 
@@ -70,8 +78,11 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
                 avatar={<Avatar aria-label="recipe" className={classes.avatar}>R</Avatar>}
                 action={
                     <Grid>
-                        <IconButton onClick={() => editAvaliacao(id_avaliacoes)}><Edit /></IconButton>
-                        <IconButton onClick={() => deleteAvaliacao(id_avaliacoes)}><Delete /></IconButton>
+                        <PermissionComponent>
+                            <IconButton onClick={() => editAvaliacao(id_avaliacoes)}><Edit /></IconButton>
+                            <IconButton onClick={() => deleteAvaliacao(id_avaliacoes)}><Delete /></IconButton>
+                        </PermissionComponent>
+
                     </Grid>
                 }
 
@@ -82,11 +93,10 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
                     {titulo}
                 </Typography>
             </CardContent>
-            <CardActions className={classes.actions}>
 
+            <CardActions className={classes.actions}>
                 <Button variant="outlined" fullWidth color="primary" onClick={handleOpen} >RESPONDER </Button>
             </CardActions>
-
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -95,7 +105,7 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
             >
                 {
                     <div className={classes.principal}>
-                        <RealizarAvaliacao avaliacaoId={id_avaliacoes?id_avaliacoes as unknown as string:'0'}/>
+                        <RealizarAvaliacao avaliacaoId={id_avaliacoes ? id_avaliacoes as unknown as string : '0'} />
                         <div>
                             <Button variant="outlined" color="primary" onClick={handleClose}>x</Button>
                         </div>

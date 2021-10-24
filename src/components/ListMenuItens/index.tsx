@@ -13,9 +13,9 @@ import PeopleAlt from '@material-ui/icons/PeopleAlt';
 import GroupAdd from '@material-ui/icons/GroupAdd';
 import { Link } from 'react-router-dom'
 import { useMenu } from '../../Hooks/Menu/useMenu';
+import PermissionComponent from '../PermissionComponent';
 export function useListaMenu() {
-  const { permissao,sair } = useMenu();
-  
+  const {  sair } = useMenu();
 
   const ListMenuItens = (
     <div>
@@ -31,6 +31,7 @@ export function useListaMenu() {
         </ListItemIcon>
         <ListItemText primary="Avaliações" />
       </ListItem>
+      <PermissionComponent >
       <ListItem button component={Link} to='/correcao'>
         <ListItemIcon>
           <EventAvailable />
@@ -49,6 +50,7 @@ export function useListaMenu() {
         </ListItemIcon>
         <ListItemText primary="Relatórios" />
       </ListItem>
+      </PermissionComponent>
       <ListItem button component={Link} to='/home'>
         <ListItemIcon>
           <LayersIcon />
@@ -62,12 +64,15 @@ export function useListaMenu() {
 
     <div>
       <ListSubheader inset>Opções</ListSubheader>
-      <ListItem hidden={permissao} button component={Link} to="/usuario">
-        <ListItemIcon>
-          <PeopleAlt />
-        </ListItemIcon>
-        <ListItemText primary="Usuario" />
-      </ListItem>
+      <PermissionComponent >
+        <ListItem button component={Link} to="/usuario">
+          <ListItemIcon>
+            <PeopleAlt />
+          </ListItemIcon>
+          <ListItemText primary="Usuario" />
+        </ListItem>
+      
+
       <ListItem button component={Link} to="/departamento">
         <ListItemIcon>
           <PeopleAlt />
@@ -80,7 +85,8 @@ export function useListaMenu() {
         </ListItemIcon>
         <ListItemText primary="Grupos de Perfis" />
       </ListItem>
-      <ListItem button onClick={sair} component={Link} to="/">
+      </PermissionComponent>
+      <ListItem button onClick={()=>sair()} >
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
@@ -88,5 +94,5 @@ export function useListaMenu() {
       </ListItem>
     </div>
   );
-  return {ListMenuItens,secondaryListItems}
+  return { ListMenuItens, secondaryListItems }
 }

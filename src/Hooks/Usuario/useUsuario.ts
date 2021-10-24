@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useHistory } from "react-router-dom"
-import { typeUsuario } from "../../components/Interface"
+import { typeUsuario, typeUsuarioGrupo } from "../../components/Interface"
 import { validarEmail } from "../../functions/validarEmail"
-import { deleteUsuario, getOneUsuario, getUsuario, postUsuario, putUsuario } from "../../service/UsuarioService"
+import { deleteUsuario, deleteUsuarioGrupo, getOneUsuario, getUsuario, getUsuarioGrupo, postUsuario, postUsuarioGrupo, putUsuario } from "../../service/UsuarioService"
 
 export function useUsuario(id_usuario: string) {
   //Listar
@@ -13,6 +13,7 @@ export function useUsuario(id_usuario: string) {
       recuperarTodosUsuario()
     } else if (id_usuario !== '') {
       RecuperarOneUsuario(parseInt(id_usuario))
+      recuperarUsuarioGrupo(parseInt(id_usuario))
     }
 
 
@@ -34,8 +35,8 @@ export function useUsuario(id_usuario: string) {
   const [nome, setNome] = useState('')
   const [administrador, setAdministrador] = useState('N')
   const [email, setEmail] = useState('')
-  async function handleSubmint(emailRef:any) {
-    if (!validarEmail(email,emailRef))
+  async function handleSubmint(emailRef: any) {
+    if (!validarEmail(email, emailRef))
       return
 
     const data = {
@@ -91,16 +92,58 @@ export function useUsuario(id_usuario: string) {
       setAllUsuario(resp.data)
     }
   }
+  const [id_grupo, setId_Grupo] = useState('')
+  async function handleAddGrupo() {
+    if (id_grupo === ''){
+      alert('Selecione um Grupo para vincular!')
+      return
+    }
+    if(id_usuario==='new'){
+      return
+    }
 
+    const resp = await postUsuarioGrupo({ id_usuario, id_grupo })
+    if (resp.status === 201) {
+      alert("Grupo vinculado com sucesso")
+      window.location.reload()
+    } else if (resp.status === 404) {
+      alert("Existe grupo vinculado ao usuarios")
+    } else {
+      alert("Erro não indentificado!")
+    }
+  }
+  const [usuariogrupo, setUsuariogrupo] = useState<typeUsuarioGrupo[]>([])
+  async function recuperarUsuarioGrupo(id_usuario: number) {
+    if (id_usuario) {
+      const resp = await getUsuarioGrupo(id_usuario)
+      setUsuariogrupo(resp.data)
+      
+    }
 
+  }
+  async function excluirUsuarioGrupo(id_grupo: number) {
+    const resp = await deleteUsuarioGrupo({ id_usuario, id_grupo })
+    if (resp.status===204){
+      window.location.reload()
+    }else {
+        alert('Error ao excluir')
+    }
+  }
 
-
-
+  const [busca,setBusca]=useState('')
+  const filterBusca = useMemo(()=>{
+      const lowerBusca = busca.toLocaleLowerCase();
+      return allUsuario.filter(item=>
+          item.login.toLocaleLowerCase().includes(lowerBusca)
+          )
+  },[allUsuario,busca])
   return {
     usuarios, setUsuario, history, excluirUsuario,
     login, setLogin, senha, setSenha, nome, setNome,
-    administrador, setAdministrador, email, setEmail, handleSubmint,
-    allUsuario
+    administrador, setAdministrador, email, setEmail,
+    handleSubmint, allUsuario, handleAddGrupo, id_grupo,
+    setId_Grupo, usuariogrupo, excluirUsuarioGrupo,
+    setBusca,filterBusca
   }
 }
 

@@ -7,7 +7,7 @@ import { postDepartamento, putDepartamento } from '../../service/DepartamentoSer
 
 export function useDepartamento(departamentoId: string) {
 
-  const [departamentos, setDepartamentos] = useState<typeDepartamento[]>([])
+  const [departamentos, setDepartamentos] = useState<typeDepartamento[]>([{nome:''}])
   const [departamento, setDepartamento] = useState<typeDepartamento>({ nome: '' })
 
 
@@ -15,8 +15,9 @@ export function useDepartamento(departamentoId: string) {
   useEffect(() => {
     async function RecuperarDepartamento() {
       if (departamentoId !== 'new' && departamentoId !== '') {
-        const data = (await getOneDepartamento(parseInt(departamentoId))).data
-        setDepartamento(data[0])
+        const resp = (await getOneDepartamento(parseInt(departamentoId)))
+        if(resp.status===200)
+        setDepartamento(resp.data[0])
 
       }
 

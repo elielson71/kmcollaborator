@@ -12,8 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Copyright } from '../../components/Footer';
 import { FormEvent } from 'react-router/node_modules/@types/react';
 import { useHistory } from 'react-router';
-import { api } from '../../service/Api';
-import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/authService';
+import { useAuth } from '../../conext/authContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -43,6 +42,7 @@ export function Login() {
   const history = useHistory()
   const [login, setLogin] = useState('')
   const [senha, setSenha] = useState('')
+  const {signIn} = useAuth()
   async function handleSumbitLogin(e: FormEvent) {
     e.preventDefault()
     if (login === ''){
@@ -52,28 +52,8 @@ export function Login() {
       alert('Digite sua senha!')
       return
     }
-
-    await api.post('/api/authenticate', {
-       login,
-      senha
-    })
-      .then(res => {
-        if (res.status === 200) {
-          loginToken(res.data.token)
-          setIdUsuario(res.data.id_usuario)
-          setLoginUsuario(res.data.login)
-
-          history.push('/home')
-        } else if (res.status === 404) {
-          alert('Usuario não encontrado!')
-        } else if (res.status === 401) {
-          alert('Acesso negado!\n Confere Login e senha e tente novamente!')
-        } else {
-          alert('Erro ao comunicar com Servidor!')
-        }
-      }).catch(e=>{
-        alert('Sem comunicação')
-      })
+    
+    signIn({login,senha})
   }
   return (
     <Container component="main" maxWidth="xs">

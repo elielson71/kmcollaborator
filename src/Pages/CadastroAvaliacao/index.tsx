@@ -14,9 +14,10 @@ export const CadAvaliacao = () => {
     const params = useParams<{ id: string }>()
     const avaliacaoId = params.id;
     const { avaliacao, setAvaliacao, enviarAvaliacao, Questions, 
-        setQuestion, deletarQuestao,departamentos } = useAvaliacoes(avaliacaoId)
+        setQuestion, deletarQuestao,departamentos,filterBusca,setBusca } = useAvaliacoes(avaliacaoId)
     const history = useHistory()
     const classes = useStyles();
+    
 
 
     return (
@@ -76,7 +77,7 @@ export const CadAvaliacao = () => {
 
                         <Grid container spacing={2} className={classes.paper}>
                         <Grid sm={12} xs={12} className={classes.headerQuestion}>
-                                <Button variant='contained' color='primary' onClick={() => history.push('/question/new')}>CRIAR NOVA QUESTÃO </Button>
+                                <Button variant='contained' color='primary' onClick={() => history.push('/question/new',{id_avaliacao:avaliacaoId})}>CRIAR NOVA QUESTÃO </Button>
                             <div className={classes.search}>
                             <div className={classes.searchIcon}>
                                     <SearchIcon />
@@ -88,13 +89,13 @@ export const CadAvaliacao = () => {
                                         input: classes.inputInput,
                                     }}
                                     inputProps={{ 'aria-label': 'search' }}
-                                //onChange={e=>setAvaliacoes(avaliacoes?avaliacoes.filter(av=> av.titulo.toLowerCase().indexOf(e.target.value.toLowerCase())))}
+                                onChange={e=>setBusca(e.target.value)}
                                 />
                                 
                             </div>
                         </Grid>
                             {
-                                Questions.map((question, key) => (
+                                filterBusca.map((question, key) => (
                                     <Grid item xs={12} sm={5}>
                                         <CardQuestion
                                             key={key}

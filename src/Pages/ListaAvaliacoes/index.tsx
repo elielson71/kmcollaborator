@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Avaliacao } from "../../components/Avaliacao/";
 import { typeAvaliacao } from "../../components/Interface";
@@ -13,6 +13,8 @@ import SearchIcon from '@material-ui/icons/Search'
 import Button from "@material-ui/core/Button";
 import { InputBase } from "@material-ui/core";
 import { useStyles } from "./styles";
+import PermissionComponent from "../../components/PermissionComponent";
+import { Buscar } from "../../components/Buscar";
 
 export function ListaAvaliacoes() {
     const [avaliacoes, setAvaliacoes] = useState<typeAvaliacao[]>([])
@@ -39,6 +41,13 @@ export function ListaAvaliacoes() {
         if (id_avaliacoes)
             history.push(`/avaliacao/${id_avaliacoes}`)
     }
+    const [busca, setBusca] = useState('')
+    const filterBusca = useMemo(() => {
+        const lowerBusca = busca.toLocaleLowerCase();
+        return avaliacoes.filter(item =>
+            item.titulo.toLocaleLowerCase().includes(lowerBusca)
+        )
+    }, [avaliacoes, busca])
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -49,26 +58,15 @@ export function ListaAvaliacoes() {
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
                         <Grid container justifyContent="center" className={classes.header}>
-                            <Button variant="contained" color="primary" onClick={() => { history.push('/avaliacao/new') }}>NOVA AVALIAÇÃO</Button>
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <SearchIcon />
-                                </div>
-                                <InputBase
-                                    placeholder="Search…"
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                    inputProps={{ 'aria-label': 'search' }}
-                                //onChange={e=>setAvaliacoes(avaliacoes?avaliacoes.filter(av=> av.titulo.toLowerCase().indexOf(e.target.value.toLowerCase())))}
-                                />
-                            </div>
+                            <PermissionComponent>
+                                <Button variant="contained" color="primary" onClick={() => { history.push('/avaliacao/new') }}>NOVA AVALIAÇÃO</Button>
+                            </PermissionComponent>
+                            <Buscar  setBusca={setBusca} />
                         </Grid>
-                        {avaliacoes.length !== 0 ?
+                        {filterBusca.length !== 0 ?
                             <Grid container spacing={3}>
                                 {
-                                    avaliacoes.map((avaliacao) => (
+                                    filterBusca.map((avaliacao) => (
                                         <Grid key={avaliacao.id_avaliacoes} item xs={4}>
                                             <Avaliacao
                                                 key={avaliacao.id_avaliacoes}
@@ -83,7 +81,7 @@ export function ListaAvaliacoes() {
                                         </Grid>
                                     ))}
                             </Grid>
-                            : <Grid container  alignItems='center'><h4>Nenhuma avaliação foi encontrar</h4></Grid>}
+                            : <Grid container alignItems='center'><h4>Nenhuma avaliação foi encontrar</h4></Grid>}
                     </Grid>
 
                     <Box pt={4}>

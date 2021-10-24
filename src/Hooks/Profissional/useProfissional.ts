@@ -1,5 +1,5 @@
 import { useDepartamento } from "../Departamento/useDepartamento";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { typeProfissional } from '../../components/Interface';
 import { useHistory } from 'react-router';
 import { deleteProfissional, getOneProfissional, getProfissional, postProfissional, putProfissional } from "../../service/Profissional";
@@ -16,9 +16,16 @@ export function useProfissional(id_profissional: string) {
         complementar: '', data_nascimento: '', telefone: '', celular: '',
         cargo: '', id_departamento: 0, nivel_senioridade: '', data_cadastro: '', id_usuario: 0
     })
+    const [busca,setBusca]=useState('')
+    const filterBusca = useMemo(()=>{
+        const lowerBusca = busca.toLocaleLowerCase();
+        return allProfissionais.filter(item=>
+            item.nome_completo.toLocaleLowerCase().includes(lowerBusca)
+            )
+    },[allProfissionais,busca])
     const history = useHistory()
     useEffect(() => {
-
+        
         if (id_profissional === '') {
             recuperarTodosProfissionais()
         } else if (id_profissional !== '') {
@@ -35,8 +42,8 @@ export function useProfissional(id_profissional: string) {
     async function recuperarOneProfissional(id: number) {
 
         const resp = await getOneProfissional(id)
+        if (resp.data[0])
         resp.data[0].data_nascimento = (new Date(resp.data[0].data_nascimento).toLocaleString()).replaceAll('/', '-')
-        console.log(resp.data[0].data_nascimento)
         if (resp.status === 200) {
             setProfissional(resp.data[0])
         }
@@ -45,14 +52,21 @@ export function useProfissional(id_profissional: string) {
         const resp = await getProfissional()
         if (resp.status === 200) {
             setAllProfissionais(resp.data)
+
         }
     }
-
+    async function recuperarProfissionalUsario(id_usuario: number) {
+        const resp = await getProfissional()
+        if (resp.status === 200) {
+            const profissional = (resp.data.filter(item => item.id_usuario === id_usuario))
+            setProfissional(profissional[0])
+        }
+    }
     async function handleSubmint() {
         const pro = profissional
-        if (validarCpf(pro.cpf)==='')
+        if (validarCpf(pro.cpf) === '')
             return
-        pro.cpf=pro.cpf.replaceAll('.','').replace('-','')
+        pro.cpf = pro.cpf.replaceAll('.', '').replace('-', '')
         if (pro)
             if (pro.nome_completo !== '') {
                 let resp
@@ -80,6 +94,7 @@ export function useProfissional(id_profissional: string) {
 
     return {
         departamentos, deleteprofissional, profissional, setProfissional,
-        history, handleSubmint, allUsuario, allProfissionais
+        history, handleSubmint, allUsuario, allProfissionais,
+        recuperarProfissionalUsario,setBusca,filterBusca
     }
 }

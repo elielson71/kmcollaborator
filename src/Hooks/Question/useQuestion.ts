@@ -1,4 +1,4 @@
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { typeAnswer, typeQuestions } from "../../components/Interface";
 import { getOneQuestions, getQuestionsAnswer, postQuestions, putQuestionsAnswer } from "../../service/QuestionsService";
 import { ValidQuestion } from "./ValidQuestion";
@@ -8,12 +8,12 @@ import { useDepartamento } from "../Departamento/useDepartamento";
 
 let countAnswer = 1;
 
-export function useQuestion(questionId: string) {
+export function useQuestion(questionId: string, id_avaliacao?: number) {
     const [Questions, setQuestions] = useState<typeQuestions>({ conteudo: '', tipo_resposta: '', id_departamento: 0, senioridade: '', nivel: 'F', id_responsavel: 0 })
     const [answers, setAnswers] = useState<typeAnswer[]>([])
     const [hiddenInfo, setHiddenInfo] = useState<boolean>(false)
     const history = useHistory()
-    const {departamentos} =useDepartamento('')
+    const { departamentos } = useDepartamento('')
 
 
     if (!(Questions.tipo_resposta === 'B' || Questions.tipo_resposta === 'L')) {
@@ -29,7 +29,11 @@ export function useQuestion(questionId: string) {
             const resp = postQuestions(Questions)
             if (await resp) {
                 alert("Questões Salvas com Sucesso!")
-                history.push('/avaliacao/new')
+                if (id_avaliacao) {
+                    history.push('/avaliacao/' + id_avaliacao)
+                } else {
+                    history.push('/avaliacao/new')
+                }
             } else {
                 alert("Erro ao Salvar Questões!")
                 console.error(resp)
@@ -44,7 +48,11 @@ export function useQuestion(questionId: string) {
             const resp = putQuestionsAnswer(parseInt(questionId), Questions)
             if (await resp) {
                 alert("Questões atualizadas com Sucesso!")
-                history.push('/avaliacao/new')
+                if (id_avaliacao) {
+                    history.push('/avaliacao/' + id_avaliacao)
+                } else {
+                    history.push('/avaliacao/new')
+                }
             } else {
                 alert("Erro ao atualizar Questões!")
                 console.error(resp)
@@ -57,13 +65,16 @@ export function useQuestion(questionId: string) {
 
 
     async function RecuperarQuestao(id: string) {
-        const dataQuestion: typeQuestions[] = (await getOneQuestions(parseInt(id))).data
-        const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
-        dataQuestion.map(value => {
-            setQuestions(value)
-            return null
-        })
-        setAnswers(dataAnswer)
+        if (id!=='new') {
+            const dataQuestion: typeQuestions[] = (await getOneQuestions(parseInt(id))).data
+            const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
+
+            dataQuestion.map(value => {
+                setQuestions(value)
+                return null
+            })
+            setAnswers(dataAnswer)
+        }
     }
     useEffect(() => {
         if (questionId)
@@ -86,7 +97,7 @@ export function useQuestion(questionId: string) {
         if ((selectedType === "R" || selectedType === "C") && descriptionAnswer !== "") {
             const newAnswer: typeAnswer = { correta: 'N', descricao: descriptionAnswer, id_respostas: countAnswer++, id_perguntas, status: 'AB' }
             setAnswers([...answers, newAnswer])
-        }else if((selectedType === "B" || selectedType === "L") && descriptionAnswer !== ""){
+        } else if ((selectedType === "B" || selectedType === "L") && descriptionAnswer !== "") {
             const newAnswer: typeAnswer = { correta: 'S', descricao: descriptionAnswer, id_respostas: countAnswer++, id_perguntas, status: 'AB' }
             setAnswers([...answers, newAnswer])
         }
@@ -117,6 +128,6 @@ export function useQuestion(questionId: string) {
         sendQuestion, handleAddAnswer, handleDeleteAnswer, handleIsTrue,
         descriptionAnswer, setDescriptionAnswer, handleChangeTypeListCard,
         Questions, setQuestions, answers, setAnswers, hiddenInfo, setHiddenInfo,
-         RecuperarQuestao,departamentos,history
+        RecuperarQuestao, departamentos, history
     }
 }

@@ -17,9 +17,11 @@ export function ValidQuestion(Questions: typeQuestions, answers: typeAnswer[]) {
     } else {
         let nullrespota = false
         let umverdadeiro = false
+
         answers.map(value => {
             nullrespota = value.descricao === ""
-            umverdadeiro = value.correta==='S'
+            if (!umverdadeiro)
+                umverdadeiro = value.correta === 'S'
             return null
         })
         if (nullrespota) {
@@ -27,7 +29,7 @@ export function ValidQuestion(Questions: typeQuestions, answers: typeAnswer[]) {
             return
         }
 
-        if (umverdadeiro) {
+        if (!umverdadeiro) {
             alert("Marque a resposta verdadeira!")
             return
         }

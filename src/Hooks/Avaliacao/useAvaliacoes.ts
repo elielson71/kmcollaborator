@@ -7,12 +7,20 @@ import { useHistory } from "react-router-dom";
 import { useUpdateAvaliacoes } from "./useUpdateAvaliacoes";
 import { useValidarAvaliacao } from "./useValidarAvaliacao";
 import { useDepartamento } from "../Departamento/useDepartamento";
+import { useMemo } from "react";
 
 export function useAvaliacoes(avaliacaoId: string) {
 
     const [avaliacao, setAvaliacao] = useState<typeAvaliacao>({ id_usuario: 1, tempo: '00:00:00', titulo: '', itensAvaliacao: [] });
     const [allAvaliacao, setAllAvaliacao] = useState<typeAvaliacao[]>([]);
     const [Questions, setQuestion] = useState<typeQuestions[]>([]);
+    const [busca,setBusca]=useState('')
+    const filterBusca = useMemo(()=>{
+        const lowerBusca = busca.toLocaleLowerCase();
+        return Questions.filter(item=>
+            item.conteudo.toLocaleLowerCase().includes(lowerBusca)
+            )
+    },[Questions,busca])
 
     const { departamentos } = useDepartamento('')
 
@@ -86,6 +94,6 @@ export function useAvaliacoes(avaliacaoId: string) {
 
     return { avaliacao, setAvaliacao, enviarAvaliacao, Questions, 
         setQuestion, deletarQuestao, RecuperandoDadosQuestions, 
-        departamentos,allAvaliacao }
+        departamentos,allAvaliacao,filterBusca,setBusca }
 }
 

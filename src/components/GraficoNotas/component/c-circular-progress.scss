@@ -19,7 +19,7 @@ $component-name: "c-circular-progress";
         linear-gradient(#{$deg}, $color-fill 50%, $color-background 50%);
 
       &::before {
-        content: quote("#{$i}%");
+        content: quote("#{$i}");
         
       }
     }

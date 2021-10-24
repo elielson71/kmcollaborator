@@ -49,7 +49,7 @@ export function CardQuestion({ title, departamento, id_perguntas, nivel, deletar
                 }
                 action={
                     <Grid >
-                        <IconButton onClick={() => history.push(`/question/${id_perguntas}`)}><Edit /></IconButton>
+                        <IconButton onClick={() => history.push(`/question/${id_perguntas}`,{id_avaliacao:id_avaliacao})}><Edit /></IconButton>
                         <IconButton onClick={(e) => deletarQuestao(e, id_perguntas)}><Delete /></IconButton>
                     </Grid>}
             />

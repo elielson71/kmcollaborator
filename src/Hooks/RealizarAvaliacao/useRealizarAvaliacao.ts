@@ -7,6 +7,7 @@ import { getQuestionsAnswer } from "../../service/QuestionsService";
 import { useSaveQuestion } from "./useSaveQuestion";
 import { useNavegacao } from "./useNavegacao";
 import { useFinalizarAvaliacao } from "./useFinalizarAvaliacao";
+import { useAuth } from "../../conext/authContext";
 
 
 export function useRealizarAvaliacao(avaliacaoId: number) {
@@ -17,7 +18,8 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
     const [dataQuestions, setDataQuestions] = useState<typeQuestions[]>([])
     const { avaliacao } = useAvaliacoes(avaliacaoId as unknown as string)
     const tempo = avaliacao.tempo
-    const id_profissional = 4
+    const {idProfissionalLogado}=useAuth()
+    const id_profissional = idProfissionalLogado
 
     const { dataQ, saveQuestions } = useSaveQuestion(itemQuestions, answers, handleDataQuestion)
 
