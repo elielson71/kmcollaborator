@@ -36,8 +36,15 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
                 { ...item, answers: questions.answers } : item))
 
     }
-    const podeFinalizar = useCallback(()=>dataQ.every(item=>item.resposta===null || item.resposta===undefined),[dataQ])
+    const podeFinalizar = useCallback(
+        ()=>dataQ.every(item=>item.resposta===null || item.resposta===undefined || verificaRespostaMarcada(item.id_perguntas))
+        ,[dataQ])
 
+        function verificaRespostaMarcada(id_perguntas:number){
+            const correta = answers.filter(item=>item.id_perguntas===id_perguntas && item.correta==='S')
+            return correta.length===0
+            
+        }
     useEffect(() => {
         setPaginacao(1)
         async function getQuestion(avaliacaoId: number) {

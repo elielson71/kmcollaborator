@@ -1,3 +1,4 @@
+import { green } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles((theme) => ({
     root: {
@@ -73,8 +74,17 @@ export const useStyles = makeStyles((theme) => ({
         border: 'solid #000000 2px;border-radius: 20px',
         margin: '20px',
     
+    },
+    btnCheck:{
+        color:'green',
+        height:'36px',
+        },
+    Rverdeiro:{
+        borderColor:'green',
+        color:'green'
+    },
+    Rfalse:{
+        borderColor:'red',
+        color:'red'
     }
-
-
-
 }));

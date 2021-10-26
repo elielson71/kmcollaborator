@@ -32,10 +32,18 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
                                     <h1>{avaliacao.titulo}</h1>
-
                                 </Grid>
                                 <Grid item xs={12}>
-                                    Texto explicativo
+                                    <Grid container alignContent='center' justifyContent='center'>
+                                        <div className={classes.msg}><h4>
+                                            Realize a atividade respondendo as questões e 
+                                            clicando no botão <b>Responder</b>, apenas 
+                                            na ultima pergunta aparecerá o botão <b>Finalizar </b> 
+                                            para concluír.<br/><br /> Fique atento ao tempo determidado ao finaliza esse a avaliação concluirá
+                                            automaticamente. <br /> <br /> O tempo para realizar essa avaliação é de {tempo}
+                                            <br /> <br /> <br />Boa Avaliação!</h4></div>
+                                            
+                                    </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button variant='contained' color='primary' onClick={() => { setStatusAtividade('I'); }}>Iniciar a Avaliação</Button>
@@ -57,7 +65,7 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                                             <Temporarizador quandoStop={finalizar} tempo={tempo} />
                                         </div>
                                     </Grid>
-        
+
                                     <Grid item xs={12} sm={12}>
                                         <h5 className={classes.contentQuestion}>{itemQuestions.conteudo}</h5>
                                     </Grid>
@@ -74,7 +82,7 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                                                 />))
                                             : itemQuestions.tipo_resposta === 'L' ?
                                                 respostaAberta.map(value => (<TextareaAutosize
-                                                key={value.id_respostas}
+                                                    key={value.id_respostas}
                                                     className={classes.txtarea}
                                                     placeholder={`Digite sua Resposta aqui`}
                                                     value={value.descricao}
@@ -134,6 +142,10 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                             <Grid container className={classes.paper} alignContent="center">
                                 <Grid item sm={12} xl={12}>
                                     <h1>Avialiação concluida</h1>
+                                    <br/>
+                                    <Grid container justifyContent="center">
+                                    <div className={classes.msg}><h3> Aguarde a correção da Avaliação e acompanhe seu desempenho pela tela de <b>Dashboard</b>!</h3></div>
+                                    </Grid>
                                 </Grid>
                             </Grid>
                     }

@@ -5,6 +5,7 @@ export type typeAnswer = {
     correta: string
     id_perguntas?: number
     status?: string
+    selecao?:string
 }
 
 export type typeQuestions = {

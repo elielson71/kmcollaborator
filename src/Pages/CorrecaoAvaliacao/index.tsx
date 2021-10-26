@@ -14,8 +14,8 @@ export function CorrecaoAvaliacao() {
     const correcaoId = params.id;
 
     const { backQuestion, nextQuestion, paginacao, itemQuestions,
-        answers, setAnswers,setItemQuestions,
-        respostaAberta, history,finalizar,podeFinalizar,
+        answers, setAnswers, setItemQuestions,
+        respostaAberta, history, finalizar, podeFinalizar,
         dataQuestions
     } = useCorrecaoAvaliacao(parseInt(correcaoId))
 
@@ -38,15 +38,19 @@ export function CorrecaoAvaliacao() {
                             <Grid item xs={12} sm={8} className={classes.contentAnswer}>
                                 {itemQuestions.tipo_resposta === 'B' ?
                                     respostaAberta.map(value => (
-                                        <TextField key={value.id_respostas}
-                                            placeholder='Digite sua Resposta aqui'
-                                            className={classes.txtarea}
-                                            value={value.descricao}
-                                            onChange={e => setAnswers(prev => prev.map
-                                                (item => item.id_perguntas === itemQuestions.id_perguntas ?
-                                                    { ...item, descricao: e.target.value } : item))}
-                                            disabled
-                                        />))
+                                        <Grid>
+                                            <TextField key={value.id_respostas}
+                                                placeholder='Digite sua Resposta aqui'
+                                                className={classes.txtarea}
+                                                value={value.descricao}
+                                                onChange={e => setAnswers(prev => prev.map
+                                                    (item => item.id_perguntas === itemQuestions.id_perguntas ?
+                                                        { ...item, descricao: e.target.value } : item))}
+                                                disabled
+                                            />
+                                        </Grid>
+                                    ))
+
                                     : itemQuestions.tipo_resposta === 'L' ?
                                         respostaAberta.map(value => (<TextareaAutosize
                                             key={value.id_respostas}
@@ -58,7 +62,10 @@ export function CorrecaoAvaliacao() {
                                                     { ...item, descricao: e.target.value } : item))}
                                             disabled
                                         />)) : answers.map(value => (
-                                            <ListAnswerLabel key={value.id_respostas} id="flexRadioDefault1">
+                                            <ListAnswerLabel key={value.id_respostas} id="flexRadioDefault1" 
+                                            className={value.selecao==='S'&& value.correta==='S'?
+                                            classes.Rverdeiro:value.selecao==='S'?classes.Rfalse:''+''+value.correta==='S'?classes.Rverdeiro:''}
+                                            >
                                                 {
 
                                                     itemQuestions.tipo_resposta === 'R' ?
@@ -67,7 +74,7 @@ export function CorrecaoAvaliacao() {
                                                                 defaultValue=""
                                                                 className="form-check-input"
                                                                 type="radio" name='correta' id="flexRadioDefault1"
-                                                                checked={value.correta === 'S'}
+                                                                checked={value.selecao === 'S'}
                                                                 disabled
                                                             />
                                                         </div>
@@ -82,43 +89,45 @@ export function CorrecaoAvaliacao() {
                                                                     onChange={e => setAnswers(prev => prev.map
                                                                         (item => item.id_respostas === value.id_respostas ?
                                                                             { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
-                                                                    checked={value.correta === 'S'}
+                                                                    checked={value.selecao === 'S'}
                                                                     disabled
                                                                 />
                                                             </div> : ''
                                                 }
-                                                <h6>
+                                                <h6 >
                                                     {value.descricao}
 
                                                 </h6>
                                             </ListAnswerLabel>))
                                 }
+
                             </Grid>
                             <Grid item xs={12} sm={3}>
 
-                            <Grid container className={classes.btn} >
-                                <Grid item xs={12} sm={12}>
-                                    <input
-                                        //label='NOTA'
-                                        type='number'
-                                        id="nota"
-                                        className={classes.MuiInputformControl}
-                                        //placeholder="Da nota a Resposta!"
-                                        defaultValue={itemQuestions.nota_pergunta!==null?itemQuestions.nota_pergunta:''}
-                                        value={itemQuestions.nota_pergunta!==null?itemQuestions.nota_pergunta:''}
-                                        onChange={(e)=>setItemQuestions({...itemQuestions,nota_pergunta:parseInt(e.target.value)})}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={12} >
+                                <Grid container className={classes.btn} >
 
-                                    <Button color='default' variant='outlined' hidden={paginacao < 2} onClick={() => backQuestion(paginacao)}>
-                                        Voltar
-                                    </Button>
-                                    <Button color='primary' hidden={dataQuestions.length === paginacao} variant='outlined' onClick={nextQuestion}>Próximo</Button>
-                                    <Button color='primary' disabled={podeFinalizar()} hidden={dataQuestions.length !== paginacao} variant='contained' onClick={finalizar}>Processar Correcao</Button>
+                                    <Grid item xs={12} sm={12}>
+                                        <input
+                                            //label='NOTA'
+                                            type='number'
+                                            id="nota"
+                                            className={classes.MuiInputformControl}
+                                            //placeholder="Da nota a Resposta!"
+                                            defaultValue={itemQuestions.nota_pergunta !== null ? itemQuestions.nota_pergunta : ''}
+                                            value={itemQuestions.nota_pergunta !== null ? itemQuestions.nota_pergunta : ''}
+                                            onChange={(e) => setItemQuestions({ ...itemQuestions, nota_pergunta: parseInt(e.target.value) })}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={12} >
 
+                                        <Button color='default' variant='outlined' hidden={paginacao < 2} onClick={() => backQuestion(paginacao)}>
+                                            Voltar
+                                        </Button>
+                                        <Button color='primary' hidden={dataQuestions.length === paginacao} variant='outlined' onClick={nextQuestion}>Próximo</Button>
+                                        <Button color='primary' disabled={podeFinalizar()} hidden={dataQuestions.length !== paginacao}
+                                            variant='contained' onClick={finalizar}>Processar Correcao</Button>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
                             </Grid>
 
                         </Grid>

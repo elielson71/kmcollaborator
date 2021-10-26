@@ -17,7 +17,7 @@ export function useNavegacao(dataQuestions:typeQuestions[],
         }
     }
     function nextQuestion() {
-        if (!saveQuestions())
+        if (!saveQuestions(true))
             return
         if (paginacao < dataQuestions.length) {
             setPaginacao(pre => pre + 1)

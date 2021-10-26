@@ -50,6 +50,14 @@ export const useStyles = makeStyles((theme) => ({
         alignItems: 'flex-end',
         marginBottom: 20
 
+    },
+    msg: {
+        borderColor: 'azure',
+        borderStyle: 'groove',
+        borderRadius: '20px',
+        width: '80%',
+        textAlign: 'center',
+        padding:'40px'
     }
 
 

@@ -1,6 +1,6 @@
 import { useAvaliacoes } from "../Avaliacao/useAvaliacoes";
 import { typeAnswer, typeQuestions } from "../../components/Interface";
-import { useEffect, useState,useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSaveCorrecao } from "./useSaveCorrecao";
 import { useNavegacao } from "./useNavegacaoCorrecao";
 import { getCorrecaoItensQuestions, getCorrecaoQuestionsAnswer } from "../../service/CorrecaoService";
@@ -13,13 +13,13 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
     const [answers, setAnswers] = useState<typeAnswer[]>([])
     const [dataQuestions, setDataQuestions] = useState<typeQuestions[]>([])
     const { avaliacao } = useAvaliacoes(correcaoId as unknown as string)
-    const { dataQ, saveQuestions } = useSaveCorrecao(itemQuestions, answers, handleDataQuestion)
+    const { dataQ, saveQuestions } = useSaveCorrecao(handleDataQuestion)
 
     const { backQuestion, nextQuestion, setPaginacao, paginacao } = useNavegacao(dataQuestions,
-        setItemQuestions, setAnswers, saveQuestions)
-    
-    
-    const { finalizar } = useFinalizarCorrecao(dataQ, correcaoId)
+        setItemQuestions, setAnswers, CallsaveQuestions)
+
+
+    const { finalizar } = useFinalizarCorrecao(dataQ, correcaoId, CallsaveQuestions)
 
     const history = useHistory()
 
@@ -29,12 +29,11 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
                 { ...item, nota_pergunta: questions.nota_pergunta } : item))
 
     }
-    const podeFinalizar = useCallback(()=>{
-        return dataQ.every(item=>item.nota===null || item.nota===undefined)
-    },[dataQ])
+    const podeFinalizar = useCallback(() => {
+        return dataQ.every(item => item.nota === null || item.nota === undefined)
+    }, [dataQ])
 
     useEffect(() => {
-        
         setPaginacao(1)
         async function getQuestion(correcaoId: number) {
             const data = (await getCorrecaoItensQuestions(correcaoId)).data
@@ -48,27 +47,29 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
             if (data.length !== 0) {
                 setDataQuestions(data)
                 setItemQuestions(data[0])
-                if (data[0].tipo_resposta === 'C' || data[0].tipo_resposta === 'R') {
-                    const answers = (await ans[0]).answers
-                    if (answers)
-                        setAnswers(answers.filter(item => item.id_perguntas === data[0].id_perguntas))
-                }
-
+                const answers = (await ans[0]).answers
+                if (answers)
+                    setAnswers(answers.filter(item => item.id_perguntas === data[0].id_perguntas))
             }
         }
-
         getQuestion(correcaoId)
         return () => { getQuestion(correcaoId) }
     }, [correcaoId])
+    function CallsaveQuestions(mostrar:boolean) {
+        return saveQuestions(itemQuestions, answers,mostrar)
+    }
 
-
+    useEffect(() => {
+        if (dataQuestions.length === 1)
+                CallsaveQuestions(false)
+    }, [itemQuestions])
 
     const respostaAberta = answers.filter(item => item.id_perguntas === itemQuestions.id_perguntas)
     return {
         backQuestion, nextQuestion, paginacao, itemQuestions,
         dataQuestions, answers, setAnswers,
         avaliacao, respostaAberta, history, setItemQuestions,
-        finalizar, podeFinalizar
+        finalizar, podeFinalizar,
     }
 }
 
