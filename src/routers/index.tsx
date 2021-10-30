@@ -16,6 +16,8 @@ import { ListarGrupo } from '../Pages/ListaGrupo';
 import { RegistrarGrupo } from '../Pages/RegistrarGrupo';
 import { ListarCorrecao } from '../Pages/ListarCorrecao';
 import { CorrecaoAvaliacao } from '../Pages/CorrecaoAvaliacao';
+import { RelatorioProfissional } from '../Pages/RelatorioPorProfissional';
+import { RelatorioDepartamento } from '../Pages/RelatorioPorDepartamento';
 export function Routes() {
     return (
         <Switch>
@@ -29,6 +31,8 @@ export function Routes() {
             <PrivateRoute path="/avaliacao/:id" component={CadAvaliacao} role='ADM' />
             <PrivateRoute path="/question/:id" component={RegisterQuestion} role='ADM' />
             <PrivateRoute path="/profissionais" exact component={ListarProfissionais} role='ADM' />
+            <PrivateRoute path="/relatorioprofissionais" exact component={RelatorioProfissional} role='ADM' />
+            <PrivateRoute path="/relatoriodepartamento" exact component={RelatorioDepartamento} role='ADM' />
             <PrivateRoute path="/profissionais/:id" exact component={RegistrarProfissional} role='ADM' />
             <PrivateRoute path="/departamento/:id" exact component={RegistrarDepartamento} role='ADM' />
             <PrivateRoute path="/departamento" exact component={ListarDepartamento} role='ADM' />

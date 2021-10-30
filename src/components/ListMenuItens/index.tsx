@@ -14,8 +14,9 @@ import GroupAdd from '@material-ui/icons/GroupAdd';
 import { Link } from 'react-router-dom'
 import { useMenu } from '../../Hooks/Menu/useMenu';
 import PermissionComponent from '../PermissionComponent';
+import { ListItemSecondaryAction } from '@material-ui/core';
 export function useListaMenu() {
-  const {  sair } = useMenu();
+  const { sair, open, handleDrawerOpen } = useMenu();
 
   const ListMenuItens = (
     <div>
@@ -32,31 +33,40 @@ export function useListaMenu() {
         <ListItemText primary="Avaliações" />
       </ListItem>
       <PermissionComponent >
-      <ListItem button component={Link} to='/correcao'>
-        <ListItemIcon>
-          <EventAvailable />
-        </ListItemIcon>
-        <ListItemText primary="Correcão" />
-      </ListItem>
-      <ListItem button component={Link} to='/profissionais'>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Profissionais" />
-      </ListItem>
-      <ListItem button component={Link} to='/home'>
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Relatórios" />
-      </ListItem>
+        <ListItem button component={Link} to='/correcao'>
+          <ListItemIcon>
+            <EventAvailable />
+          </ListItemIcon>
+          <ListItemText primary="Correcão" />
+        </ListItem>
+        <ListItem button component={Link} to='/profissionais'>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Profissionais" />
+        </ListItem>
+        <ListItem button component={Link} to='/home'>
+          <ListItemIcon>
+            <LayersIcon />
+          </ListItemIcon>
+          <ListItemText primary="Base de Conhecimento" />
+        </ListItem>
+        <ListItem button component='button' onClick={handleDrawerOpen}>
+          <ListItemIcon>
+            <BarChartIcon />
+          </ListItemIcon>
+          <ListItemText primary="Relatórios" />
+        </ListItem>
+        <ListItem button hidden={open} component={Link} to='/relatorioprofissionais'>
+          <ListSubheader/>
+          <ListItemText secondary={<>Desempenho por <br /> Profissional</>} />
+        </ListItem>
+        <ListItem button  hidden={open} component={Link} to='/relatoriodepartamento'>
+          <ListSubheader/>
+          <ListItemText secondary={<>Desempenho por <br /> Departamento</>} />
+          
+        </ListItem>
       </PermissionComponent>
-      <ListItem button component={Link} to='/home'>
-        <ListItemIcon>
-          <LayersIcon />
-        </ListItemIcon>
-        <ListItemText primary="Base de Conhecimento" />
-      </ListItem>
     </div>
   );
 
@@ -71,22 +81,20 @@ export function useListaMenu() {
           </ListItemIcon>
           <ListItemText primary="Usuario" />
         </ListItem>
-      
-
-      <ListItem button component={Link} to="/departamento">
-        <ListItemIcon>
-          <PeopleAlt />
-        </ListItemIcon>
-        <ListItemText primary="Departamento" />
-      </ListItem>
-      <ListItem button component={Link} to="/grupo" >
-        <ListItemIcon>
-          <GroupAdd />
-        </ListItemIcon>
-        <ListItemText primary="Grupos de Perfis" />
-      </ListItem>
+        <ListItem button component={Link} to="/departamento">
+          <ListItemIcon>
+            <PeopleAlt />
+          </ListItemIcon>
+          <ListItemText primary="Departamento" />
+        </ListItem>
+        <ListItem button component={Link} to="/grupo" >
+          <ListItemIcon>
+            <GroupAdd />
+          </ListItemIcon>
+          <ListItemText primary="Grupos de Perfis" />
+        </ListItem>
       </PermissionComponent>
-      <ListItem button onClick={()=>sair()} >
+      <ListItem button onClick={() => sair()} >
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
@@ -94,5 +102,6 @@ export function useListaMenu() {
       </ListItem>
     </div>
   );
-  return { ListMenuItens, secondaryListItems }
+
+  return { ListMenuItens, secondaryListItems, }
 }

@@ -5,7 +5,6 @@ export default function useTemporizador(hora: number, minuto: number, segundo: n
     const [minutoLeft, setMinutoLeft] = useState(minuto);
     const [hoursLeft, setHoursLeft] = useState(hora);
     const [timer, setTimer] = useState<NodeJS.Timeout>();
-    const [stop, setStop] = useState(false)
     const start = useCallback(() => {
         const timer2 = setInterval(() => {
             setSecondsLeft((secondsLeft) => {

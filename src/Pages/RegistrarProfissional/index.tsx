@@ -4,7 +4,7 @@ import { Copyright } from '../../components/Footer';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { Container, Grid, Box, Button, MenuItem, TextField, FormControl, InputLabel, Select, Paper } from '@material-ui/core/';
-import {  useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useStyles } from './style';
 import { useProfissional } from '../../Hooks/Profissional/useProfissional';
 import { validarCpf } from '../../functions/validarCpf';
@@ -51,7 +51,7 @@ export function RegistrarProfissional() {
                                             fullWidth
                                             autoComplete="given-name"
                                             value={profissional.cpf}
-                                            onBlur={(e)=>setProfissional({ ...profissional, cpf:validarCpf(e.target.value)})}
+                                            onBlur={(e) => setProfissional({ ...profissional, cpf: validarCpf(e.target.value) })}
                                             onChange={e => setProfissional({ ...profissional, cpf: e.target.value })}
                                         />
                                     </Grid>
@@ -110,7 +110,7 @@ export function RegistrarProfissional() {
                                             fullWidth
                                             autoComplete="telefone"
                                             value={profissional.telefone}
-                                            onBlur={(e)=>setProfissional({ ...profissional, telefone:mascararNumeros(e.target.value)})}
+                                            onBlur={(e) => setProfissional({ ...profissional, telefone: mascararNumeros(e.target.value) })}
                                             onChange={e => setProfissional({ ...profissional, telefone: e.target.value })}
                                         />
                                     </Grid>
@@ -123,7 +123,7 @@ export function RegistrarProfissional() {
                                             autoComplete="celular"
                                             value={profissional.celular}
                                             onChange={e => setProfissional({ ...profissional, celular: e.target.value })}
-                                            onBlur={(e)=>setProfissional({ ...profissional, celular:mascararNumeros(e.target.value)})}
+                                            onBlur={(e) => setProfissional({ ...profissional, celular: mascararNumeros(e.target.value) })}
 
                                         />
                                     </Grid>
@@ -149,6 +149,9 @@ export function RegistrarProfissional() {
                                                 value={profissional.id_departamento}
                                                 onChange={e => { const a = e.target.value as number; setProfissional({ ...profissional, id_departamento: a }) }}
                                             >
+
+                                                <MenuItem id="departamento">
+                                                    </MenuItem>
                                                 {departamentos.map(d => (
                                                     <MenuItem id="departamento" value={d.id_departamento} >
                                                         {d.nome}

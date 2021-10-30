@@ -6,8 +6,8 @@ import { TextField, TextareaAutosize } from "@material-ui/core";
 import { ListAnswerLabel } from "../../components/componetsStypes";
 import { useStyles } from "./style";
 import { useRealizarAvaliacao } from '../../Hooks/RealizarAvaliacao/useRealizarAvaliacao'
-import Temporarizador, { FormRef } from '../../components/Temporizador';
-import { useRef } from 'react';
+import Temporarizador from '../../components/Temporizador';
+
 
 type props = {
     avaliacaoId: string

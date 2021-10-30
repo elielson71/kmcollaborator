@@ -17,7 +17,12 @@ export function useMenu() {
       }
     }
   }
+
+    const [open, setOpen] = useState(true);
+    const handleDrawerOpen = () => {
+      setOpen(prev=>!prev);
+    };
   return {
-   sair
+    sair,open,handleDrawerOpen
   }
 }

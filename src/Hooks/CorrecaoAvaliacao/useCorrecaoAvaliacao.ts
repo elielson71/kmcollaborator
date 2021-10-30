@@ -19,7 +19,7 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
         setItemQuestions, setAnswers, CallsaveQuestions)
 
 
-    const { finalizar } = useFinalizarCorrecao(dataQ, correcaoId, CallsaveQuestions)
+    const { finalizar } = useFinalizarCorrecao(correcaoId,dataQ)
 
     const history = useHistory()
 
@@ -30,7 +30,7 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
 
     }
     const podeFinalizar = useCallback(() => {
-        return dataQ.every(item => item.nota === null || item.nota === undefined)
+        return dataQ.every(item => item.nota === null || item.nota === undefined) || dataQ.length!==dataQuestions.length
     }, [dataQ])
 
     useEffect(() => {
@@ -60,8 +60,8 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
     }
 
     useEffect(() => {
-        if (dataQuestions.length === 1)
-                CallsaveQuestions(false)
+        //if (dataQuestions.length === 1)
+               // CallsaveQuestions(false)
     }, [itemQuestions])
 
     const respostaAberta = answers.filter(item => item.id_perguntas === itemQuestions.id_perguntas)

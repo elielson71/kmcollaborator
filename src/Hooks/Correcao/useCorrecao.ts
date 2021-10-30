@@ -13,7 +13,7 @@ export function useCorrecao(id_correcao: string) {
     id_profissional: 0,
     id_avaliacao: 0,
     situacao: 'A',
-    data_correcao: '',
+    //data_correcao: new Date(),
     itens_correcao: [],
   })
 

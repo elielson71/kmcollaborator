@@ -13,7 +13,7 @@ import { useStyles } from './style';
 export const CadAvaliacao = () => {
     const params = useParams<{ id: string }>()
     const avaliacaoId = params.id;
-    const { avaliacao, setAvaliacao, enviarAvaliacao, Questions, 
+    const { avaliacao, setAvaliacao, enviarAvaliacao, 
         setQuestion, deletarQuestao,departamentos,filterBusca,setBusca } = useAvaliacoes(avaliacaoId)
     const history = useHistory()
     const classes = useStyles();

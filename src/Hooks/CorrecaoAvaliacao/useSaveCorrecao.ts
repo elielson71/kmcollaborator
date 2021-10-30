@@ -3,7 +3,7 @@ import { typeAnswer, typeItensCorrecao, typeQuestions } from "../../components/I
 
 export function useSaveCorrecao(handleDataQuestion: any) {
     const data = {} as typeItensCorrecao
-    const [dataItensCorrecao, setDataItensCorrecao] = useState<typeItensCorrecao[]>([])
+    const [dataQ, setDataQ] = useState<typeItensCorrecao[]>([])
     function saveQuestions(itemQuestions: typeQuestions,
         answers: typeAnswer[], mostra: boolean) {
         if (!itemQuestions)
@@ -17,15 +17,12 @@ export function useSaveCorrecao(handleDataQuestion: any) {
         } else {
             data.nota = itemQuestions.nota_pergunta
         }
-        setDataItensCorrecao([...dataItensCorrecao, data])
+        setDataQ([...dataQ, data])
 
         handleDataQuestion(itemQuestions.id_perguntas, { ...itemQuestions, answers })
         return true
     }
-    function getDataQ() {
-        return dataItensCorrecao
-    }
 
-    return { dataQ: dataItensCorrecao, saveQuestions, setDataQ: setDataItensCorrecao, getDataQ }
+    return { dataQ: dataQ, saveQuestions, setDataQ: setDataQ }
 
 }

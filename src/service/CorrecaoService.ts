@@ -13,6 +13,9 @@ export async function postCorrecao(correcao:typeCorrecao) {
 export async function getOneCorrecao(id_correcao: number) {
     return await api.get<typeCorrecao[]>(`/api/correcao/${id_correcao}`)
 }
+export async function getRelatorioProfissonal(id_profissional: number) {
+    return await api.get(`/api/relatorioprofissonal/${id_profissional}`)
+}
 export async function getCorrecaoItensQuestions(id_correcao: number) {
     return await api.get<typeQuestions[]>(`/api/correcao/itensquestions/${id_correcao}`)
 }

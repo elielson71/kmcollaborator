@@ -123,7 +123,7 @@ export function CorrecaoAvaliacao() {
                                         <Button color='default' variant='outlined' hidden={paginacao < 2} onClick={() => backQuestion(paginacao)}>
                                             Voltar
                                         </Button>
-                                        <Button color='primary' hidden={dataQuestions.length === paginacao} variant='outlined' onClick={nextQuestion}>Próximo</Button>
+                                        <Button color='primary' variant='outlined' onClick={nextQuestion}>Avaliar</Button>
                                         <Button color='primary' disabled={podeFinalizar()} hidden={dataQuestions.length !== paginacao}
                                             variant='contained' onClick={finalizar}>Processar Correcao</Button>
                                     </Grid>

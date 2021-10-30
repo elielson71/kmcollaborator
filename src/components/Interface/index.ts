@@ -77,7 +77,7 @@ export type typeCorrecao = {
     id_avaliacao:number
     situacao:string
     nota?:number
-    data_correcao:string
+    data_correcao?:Date
     itens_correcao:typeItensCorrecao[]
     
 }

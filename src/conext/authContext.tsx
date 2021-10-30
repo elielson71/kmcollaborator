@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { logout, getToken, getIdUsuario, loginToken, setLoginUsuario } from '../service/authService';
 //import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/authService';
-import {  useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { api } from '../service/Api';
 import { getOneUsuario } from '../service/UsuarioService';
@@ -48,7 +48,8 @@ export const AuthProvider: React.FC = ({ children }) => {
             return
         const response = await getOneUsuario(id_usuario);
         if (response.status === 200) {
-            setTipoUsuarioLogado(response.data[0].administrador === 'S')
+            if (response.data[0])
+                setTipoUsuarioLogado(response.data[0].administrador === 'S')
         }
     }
     useEffect(() => {
@@ -69,7 +70,7 @@ export const AuthProvider: React.FC = ({ children }) => {
             senha
         })
             .then(res => {
-                
+
                 if (res.status === 200) {
                     loginToken(res.data.token)
                     setIdUsuarioLogado(res.data.id_usuario)

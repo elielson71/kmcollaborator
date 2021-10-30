@@ -11,11 +11,11 @@ export function useFinalizarAvaliacao(dataQ: typeItensCorrecao[], id_profissiona
             id_profissional:id_profissional,
             id_avaliacao:avaliacao.id_avaliacoes ? avaliacao.id_avaliacoes : 0,
             situacao:'A',
-            data_correcao:'',
+            //data_correcao:'',
             itens_correcao:dataQ
         } as typeCorrecao
 
-
+        alert("finalizou")
 
         if (dataQ.length !== 0)
             await postCorrecao(dataCorrecao)

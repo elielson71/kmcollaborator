@@ -14,7 +14,7 @@ export function ValidQuestion(Questions: typeQuestions, answers: typeAnswer[]) {
     } else if (Questions.senioridade === '') {
         alert("O campo senioridade é Obrigatório")
         return
-    } else {
+    } else if(Questions.tipo_resposta==='R' || Questions.tipo_resposta==='C'){
         let nullrespota = false
         let umverdadeiro = false
 

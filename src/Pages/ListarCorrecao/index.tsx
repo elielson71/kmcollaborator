@@ -102,7 +102,7 @@ export function ListarCorrecao() {
                                 </ButtonGroup>
                               </TableCell>
                             </TableRow>
-                          ))}
+                          )).sort(() => 1)}
                         </TableBody>
                       </Table>
                     </TableContainer>
