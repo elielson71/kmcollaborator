@@ -15,7 +15,6 @@ export function useFinalizarAvaliacao(dataQ: typeItensCorrecao[], id_profissiona
             itens_correcao:dataQ
         } as typeCorrecao
 
-        alert("finalizou")
 
         if (dataQ.length !== 0)
             await postCorrecao(dataCorrecao)

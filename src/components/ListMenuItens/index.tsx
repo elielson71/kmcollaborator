@@ -45,7 +45,7 @@ export function useListaMenu() {
           </ListItemIcon>
           <ListItemText primary="Profissionais" />
         </ListItem>
-        <ListItem button component={Link} to='/home'>
+        <ListItem button component={Link} to='/base_conhecimento'>
           <ListItemIcon>
             <LayersIcon />
           </ListItemIcon>

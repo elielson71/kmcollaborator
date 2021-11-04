@@ -8,6 +8,7 @@ import { MenuItens } from "../../components/MenuItens";
 import { Save } from "@material-ui/icons";
 import { useQuestion } from '../../Hooks/Question/useQuestion';
 import { useStyles } from './styles';
+import { AdicionarMidia } from '../../components/AdicionarMidia';
 
 type QuestionParams = {
     id: string
@@ -18,8 +19,8 @@ type props = {
 export function RegisterQuestion(props: any) {
     const params = useParams<QuestionParams>()
 
-    if(props.location.state)
-        var id_avaliacao= props.location.state.id_avaliacao
+    if (props.location.state)
+        var id_avaliacao = props.location.state.id_avaliacao
     const questionId = params.id;
     const { sendQuestion, handleAddAnswer, handleDeleteAnswer, handleIsTrue,
         descriptionAnswer, setDescriptionAnswer, handleChangeTypeListCard,
@@ -51,8 +52,8 @@ export function RegisterQuestion(props: any) {
                                     title='Questão'
                                     action={
                                         <ButtonIcon>
-                                            <button ><i className="far fa-images"></i></button>
-                                            <button ><i className="fas fa-trash-alt"></i></button>
+                                            {/*<button ><i className="far fa-images"></i></button>*/}
+
                                             <button onClick={() => { setHiddenInfo(prev => !prev) }}><i className="fas fa-info"></i></button>
                                         </ButtonIcon >
                                     }
@@ -104,7 +105,7 @@ export function RegisterQuestion(props: any) {
 
                                         <Grid item xs={12} sm={12}>
                                             <form onSubmit={(e) => handleAddAnswer(e, descriptionAnswer,
-                                                 Questions.tipo_resposta, Questions.id_perguntas)} id="answer">
+                                                Questions.tipo_resposta, Questions.id_perguntas)} id="answer">
                                                 <ListAnswerDiv>
                                                     <AnswerInput
                                                         name="descricao"
@@ -114,14 +115,14 @@ export function RegisterQuestion(props: any) {
                                                             Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"
                                                         }
                                                         placeholder={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L" ?
-                                                         "" : "Digite a Resposta"}
+                                                            "" : "Digite a Resposta"}
                                                         onChange={(e) => setDescriptionAnswer(e.target.value)}
                                                         //onBlur={e => done(answer.id_respostas, e.target.value)}
                                                         value={Questions.tipo_resposta === "B" ? "Resposta Curta ---" : Questions.tipo_resposta === "L" ? "Resposta Longa ---------" : descriptionAnswer}
                                                     />
                                                     <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
                                                         <button type="submit" ><i className="fas fa-plus-circle " aria-hidden="true"></i></button>
-                                                        <button ><i className="far fa-images"></i></button>
+                                                        {/*<button ><i className="far fa-images"></i></button>*/}
                                                         <button type="reset"><i className="far fa-times-circle"></i></button>
                                                     </ButtonIcon>
                                                 </ListAnswerDiv>
@@ -149,8 +150,8 @@ export function RegisterQuestion(props: any) {
                                                                     id="flexCheckIndeterminate"
                                                                     name='correta'
                                                                     onChange={e => setAnswers(prev => prev.map(item =>
-                                                                         item.id_respostas === value.id_respostas ?
-                                                                         { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
+                                                                        item.id_respostas === value.id_respostas ?
+                                                                            { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
                                                                     checked={value.correta === 'S'}
                                                                 />
                                                             </div> : ''
@@ -159,14 +160,14 @@ export function RegisterQuestion(props: any) {
                                                     type="text"
                                                     value={value.descricao}
                                                     onChange={e => setAnswers(prev => prev.map(item =>
-                                                         item.id_respostas === value.id_respostas ?
-                                                          { ...item, descricao: e.target.value } : item))}
+                                                        item.id_respostas === value.id_respostas ?
+                                                            { ...item, descricao: e.target.value } : item))}
                                                 />
                                                 <ButtonIcon hidden={Questions.tipo_resposta === "B" || Questions.tipo_resposta === "L"}>
-                                                    <button ><i className="far fa-images"></i></button>
-                                                    <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas ? 
+                                                    {/*<button ><i className="far fa-images"></i></button>*/}
+                                                    <button className="button" onClick={() => handleDeleteAnswer(value.id_respostas ?
                                                         value.id_respostas : 0, value.id_respostas ? value.id_respostas : 0)}>
-                                                            <i className="far fa-times-circle"></i></button>
+                                                        <i className="far fa-times-circle"></i></button>
                                                 </ButtonIcon>
                                             </ListAnswerDiv>))
                                         }
@@ -177,11 +178,18 @@ export function RegisterQuestion(props: any) {
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
-                            <QuestionInfo
-                                info={Questions}
-                                setInfo={setQuestions}
-                                hiddenInfo={hiddenInfo}
-                            />
+                            <Grid container direction='column'>
+                                <Grid item xs={12}>
+                                    <QuestionInfo
+                                        info={Questions}
+                                        setInfo={setQuestions}
+                                        hiddenInfo={hiddenInfo}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <AdicionarMidia />
+                                </Grid>
+                            </Grid>
                         </Grid>
 
                     </Grid>

@@ -97,3 +97,11 @@ export type typeUsuarioGrupo={
     id_grupo:number
     nome:string
 }
+export type typeBaseConhecimento={
+    id_midia?:number
+    nome:string
+    tipo:string
+    id_responsavel?:string
+    data_cadastro:string,
+    url?:string
+}

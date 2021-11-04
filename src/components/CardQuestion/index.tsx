@@ -43,7 +43,7 @@ export function CardQuestion({ title, departamento, id_perguntas, nivel, deletar
             <CardHeader
                 avatar={
                     <>
-                        {departamento === 1 ? <Chip color='secondary' label='Suporte' /> : <Chip color='primary' label={'Suporte'} />}
+                        { <Chip color='primary' label={'Suporte'} />}
                         
                     </>
                 }

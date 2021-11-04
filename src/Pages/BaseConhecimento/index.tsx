@@ -1,13 +1,48 @@
+import { Button, Container, Grid, Modal, Paper } from "@material-ui/core";
+import { useState } from "react";
+import { DocumentosLista } from "../../components/DocumentosLista";
+import { ExibirDocumento } from "../../components/ExibirDocumentos";
+import { UploadArquivo } from "../../components/importarArquivo";
+import { MenuItens } from "../../components/MenuItens";
+import { ProfissionalLista } from "../../components/ProfissionaisLista";
+import { useStyles } from "./styles";
 
 const BaseConhecimento = () => {
-return (
-    // basic bootstrap classes. you can change with yours.
-    <div className="col-md-12">
-        <div className="emdeb-responsive" >
-        <iframe title="PDF" src="https://drive.google.com/file/d/1bQpm29afFI8Rfqtq776dFe7SFif1ewPI/preview" width="640" height="480" allow="autoplay"></iframe>
+    const classes = useStyles();
+
+    const [open, setOpen] = useState(false);
+
+
+    const handleOpen = () => {
+
+        setOpen(true);
+    };
+
+
+
+    const [documento, setDocumento] = useState({ id: 0, nome: '' })
+    return (
+        <div className={classes.root}>
+            <MenuItens titulo={`Base de Conhecimento`} />
+            <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                    <Grid container>
+                        <Grid item sm={4}>
+                            <Button variant='contained' color='primary' onClick={handleOpen}>UpLoad Arquivos</Button>
+                            <Grid item sm={10}>
+                                <DocumentosLista setDocumento={setDocumento} />
+                            </Grid>
+                        </Grid>
+                        <Grid item sm={8}>
+                            <ExibirDocumento id_midia={documento.id as unknown as string}/>
+                        </Grid>
+                    </Grid>
+                    <UploadArquivo open={open} setOpen={setOpen} />
+                </Container>
+            </main>
         </div>
-    </div>
-);
+    )
 };
 
 export default BaseConhecimento;

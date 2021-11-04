@@ -26,8 +26,7 @@ export function useUsuario(id_usuario: string) {
     else if (resp.status >= 400) {
       alert(`Erro ao excluir!${resp.status}\n ${resp.data.message}`)
     }
-    else {
-    }
+    
   }
   //Registrar
   const [login, setLogin] = useState('')
