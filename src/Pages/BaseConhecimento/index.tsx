@@ -1,10 +1,10 @@
-import { Button, Container, Grid, Modal, Paper } from "@material-ui/core";
+import { Button, Container, Grid } from "@material-ui/core";
 import { useState } from "react";
 import { DocumentosLista } from "../../components/DocumentosLista";
 import { ExibirDocumento } from "../../components/ExibirDocumentos";
 import { UploadArquivo } from "../../components/importarArquivo";
 import { MenuItens } from "../../components/MenuItens";
-import { ProfissionalLista } from "../../components/ProfissionaisLista";
+
 import { useStyles } from "./styles";
 
 const BaseConhecimento = () => {
