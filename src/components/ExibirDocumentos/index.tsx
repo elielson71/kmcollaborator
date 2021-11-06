@@ -40,7 +40,7 @@ export function ExibirDocumento({ id_midia }: props) {
                 </Grid>
                 <Grid className={classes.content} item sm={12}>
                     {
-                        <iframe title="PDF" src={url ? `${process.env.REACT_APP_API_URL}/midias/` + url : ''} width="100%" height="100%" allow="autoplay"></iframe>}
+                        <iframe title="PDF" src={url ? `${process.env.REACT_APP_API_URL}midias/` + url : ''} width="100%" height="100%" allow="autoplay"></iframe>}
                 </Grid>
             </Grid>
         </Paper>
