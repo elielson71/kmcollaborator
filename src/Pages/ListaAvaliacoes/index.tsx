@@ -9,9 +9,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
-import SearchIcon from '@material-ui/icons/Search'
 import Button from "@material-ui/core/Button";
-import { InputBase } from "@material-ui/core";
 import { useStyles } from "./styles";
 import PermissionComponent from "../../components/PermissionComponent";
 import { Buscar } from "../../components/Buscar";

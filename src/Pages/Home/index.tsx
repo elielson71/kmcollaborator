@@ -1,6 +1,6 @@
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Grid, { GridSize } from '@material-ui/core/Grid';
+import Grid from '@material-ui/core/Grid';
 import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
 import { GraficoAvaliacoes } from '../../components/GraficoAvaliacoes';

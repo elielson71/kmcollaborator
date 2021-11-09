@@ -1,4 +1,5 @@
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import {  makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 export const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -24,8 +25,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(6),
-
-    //width: '100%',
 },
+avatar:{
+  backgroundColor: red[500]
+}
 
 }));

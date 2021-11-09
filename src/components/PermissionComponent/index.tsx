@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
 import { useAuth } from "../../conext/authContext";
-import { getIdUsuario } from "../../service/authService";
-import { getGrupo } from "../../service/GrupoService";
+import {  getTipoUsuario } from "../../service/authService";
 import { getOneUsuario } from "../../service/UsuarioService";
 
 interface PermissionComponentProps {
@@ -19,6 +17,7 @@ const PermissionComponent: React.FC<PermissionComponentProps> = ({
   const { idUsuarioLogado } = useAuth()
   useEffect(() => {
     async function loadRoles() {
+      setPermissions(getTipoUsuario()==='S')
       if (idUsuarioLogado === null)
         return
       const response = await getOneUsuario(idUsuarioLogado);

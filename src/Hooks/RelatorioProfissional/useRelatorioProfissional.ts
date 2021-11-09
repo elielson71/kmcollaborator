@@ -1,4 +1,3 @@
-import { useHistory } from "react-router"
 import { useEffect, useMemo, useState } from "react"
 import { getRelatorioProfissonal} from "../../service/CorrecaoService"
 import { useProfissional } from "../Profissional/useProfissional"
@@ -54,7 +53,6 @@ export function useRelatorioProfissional() {
   const filterBuscaD = useMemo(()=>{
     const lowerBusca = buscaD
     if(buscaD){
-      console.log(lowerBusca)
       return allRelatorio.filter(item=>item.id_departamento).filter(item=>
         item.id_departamento===lowerBusca
         )

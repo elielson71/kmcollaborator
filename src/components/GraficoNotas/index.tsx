@@ -3,12 +3,9 @@ import { Paper, Typography} from '@material-ui/core';
 import { useCorrecao } from '../../Hooks/Correcao/useCorrecao';
 
 import { useStyles } from './styles';
-import './styles.scss'
+//import './styles.scss'
 type props = {
   prof: number
-}
-type acum = {
-  nota: number
 }
 export function GraficoNotas({ prof }: props) {
   const classes = useStyles();

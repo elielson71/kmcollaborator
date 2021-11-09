@@ -1,6 +1,6 @@
 import {  typeAvaliacao, typeQuestions } from '../components/Interface'
 import { api } from './Api'
-import { getToken } from './authService'
+
 export async function getAvaliacoes() {
     return await api.get<[]>('/api/avaliacoes')
 }

@@ -1,8 +1,7 @@
 import { useAvaliacoes } from "../../Hooks/Avaliacao/useAvaliacoes";
-import { typeAnswer, typeCorrecao, typeQuestions } from "../../components/Interface";
+import { typeAnswer, typeQuestions } from "../../components/Interface";
 import { useCallback, useEffect, useState } from "react";
 import { getAvaliacoesItenQuestions } from "../../service/AvaliacoesService";
-import useTemporizador from "./useTemporizador";
 import { getQuestionsAnswer } from "../../service/QuestionsService";
 import { useSaveQuestion } from "./useSaveQuestion";
 import { useNavegacao } from "./useNavegacao";

@@ -15,6 +15,7 @@ import CardActions from "@material-ui/core/CardActions";
 import { Grid, IconButton, Typography } from "@material-ui/core";
 import PermissionComponent from "../PermissionComponent";
 import { useAuth } from "../../conext/authContext";
+import { getLoginUsuario } from "../../service/authService";
 type propsAvaliacao = {
     id_avaliacoes?: number
     titulo: string
@@ -75,7 +76,7 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
         //        <Paper className={classes.paper} elevation={3} >
         <Card className={classes.root}>
             <CardHeader
-                avatar={<Avatar aria-label="recipe" className={classes.avatar}>R</Avatar>}
+                avatar={<Avatar aria-label="recipe" className={classes.avatar}>{getLoginUsuario()?.toLocaleUpperCase().slice(0,1)}</Avatar>}
                 action={
                     <Grid>
                         <PermissionComponent>

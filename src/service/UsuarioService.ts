@@ -1,6 +1,5 @@
 import { typeUsuario, typeUsuarioGrupo } from '../components/Interface'
 import { api } from './Api'
-import { getToken } from './authService'
 export async function getUsuario() {
     return await api.get<typeUsuario[]>('/api/usuario')
 }

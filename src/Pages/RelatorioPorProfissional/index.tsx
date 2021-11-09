@@ -43,8 +43,8 @@ export function RelatorioProfissional() {
                       >
                         <MenuItem id="profissional" value={0} ></MenuItem>
                         {
-                          profissional.map(d => (
-                            <MenuItem id="profissional" value={d.id_profissional ? d.id_profissional : 0} >
+                          profissional.map((d,key) => (
+                            <MenuItem key={key} id="profissional" value={d.id_profissional ? d.id_profissional : 0} >
                               {d.nome_completo}</MenuItem>))}
                       </Select>
                     </FormControl>

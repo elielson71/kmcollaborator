@@ -1,6 +1,5 @@
 import { typeAnswer, typeQuestions } from '../components/Interface'
 import { api } from './Api';
-import { getToken } from './authService';
 export async function getQuestions() {
     return await api.get<typeQuestions[]>('/api/questions')
 }

@@ -1,8 +1,8 @@
 import { useHistory } from "react-router"
 import { typeCorrecao } from "../../components/Interface"
 import { useEffect, useMemo, useState } from "react"
-import { validarEmail } from "../../functions/validarEmail"
-import { deleteCorrecao, getCorrecao, getOneCorrecao, postCorrecao, putCorrecao } from "../../service/CorrecaoService"
+
+import { deleteCorrecao, getCorrecao, getOneCorrecao} from "../../service/CorrecaoService"
 import { useProfissional } from "../Profissional/useProfissional";
 import { useAvaliacoes } from "../Avaliacao/useAvaliacoes"
 

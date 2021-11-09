@@ -6,17 +6,12 @@ import { MenuItens } from '../../components/MenuItens';
 import { Copyright } from '../../components/Footer';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import SaveIcon from '@material-ui/icons/Save';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import { useStyles } from './style';
 import { useGrupo } from '../../Hooks/Grupo/useGrupo';
 import { useParams } from 'react-router-dom';
-import { validarEmail } from '../../functions/validarEmail';
 
 type typeparams = {
   id: string

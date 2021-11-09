@@ -44,8 +44,10 @@ export default function AuthProvider({ component: Component, role, ...rest }: an
     }
 
 
+    
     useEffect(() => {
         valid();
+        
     }, [])
 
     return (

@@ -19,7 +19,6 @@ export function ExibirDocumento({ id_midia }: props) {
         if (baseconhecimento) {
             if (baseconhecimento.id_midia) {
                 const resp = await deleteBaseConhecimento(baseconhecimento.id_midia)
-                
                 if (resp.status === 204){
                     window.location.reload()
                 }else{

@@ -19,7 +19,7 @@ import { Buscar } from '../../components/Buscar';
 
 export function ListarProfissionais() {
   const classes = useStyles();
-  const {deleteprofissional,allProfissionais,history,setBusca,filterBusca} = useProfissional('')
+  const {deleteprofissional,history,setBusca,filterBusca} = useProfissional('')
 
   return (
     <div className={classes.root}>
@@ -50,22 +50,20 @@ export function ListarProfissionais() {
                           <TableRow>
                             <TableCell></TableCell>
                             <TableCell>Nome Completo</TableCell>
-                            <TableCell align="center">CPF</TableCell>
-                            <TableCell align="center">Data de cadastro</TableCell>
                             <TableCell align="center">Endereço</TableCell>
+                            <TableCell align="center">Data de cadastro</TableCell>
                             <TableCell align="right">Opções</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
                           {filterBusca.map((profissional, key) => (
-                            <TableRow key={profissional.id_profissional}>
+                            <TableRow key={key}>
                               <TableCell component="th" scope="profissional">
                                 {key + 1}</TableCell>
                               <TableCell component="th" scope="profissional">
                                 {profissional.nome_completo}</TableCell>
-                              <TableCell align="center">{profissional.cpf}</TableCell>
-                              <TableCell align="center">{new Date(profissional.data_cadastro).toLocaleString('pt-br')}</TableCell>
                               <TableCell align="center">{profissional.endereco}</TableCell>
+                              <TableCell align="center">{new Date(profissional.data_cadastro).toLocaleString('pt-br')}</TableCell>
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
                                   <Button color='primary' onClick={() => { history.push('/profissionais/' + profissional.id_profissional) }}>Editar</Button>

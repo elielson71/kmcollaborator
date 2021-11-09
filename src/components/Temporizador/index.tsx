@@ -1,7 +1,3 @@
-
-
-
-import { forwardRef, useCallback, useImperativeHandle } from "react"
 import useTemporizador from "../../Hooks/RealizarAvaliacao/useTemporizador"
 interface typeProps {
     tempo: string

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import{useState } from "react"
 import { typeAvaliacao, typeCorrecao, typeItensCorrecao } from "../../components/Interface"
 import { postCorrecao } from "../../service/CorrecaoService";
 

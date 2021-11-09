@@ -49,8 +49,8 @@ export function RelatorioDepartamento() {
                           }}
                         >
                           <MenuItem id="departamento" value={0} ></MenuItem>
-                          {departamentos.map(d => (
-                            <MenuItem id="departamento" value={d.id_departamento ? d.id_departamento : 0} >
+                          {departamentos.map((d,key) => (
+                            <MenuItem key={key} id="departamento" value={d.id_departamento ? d.id_departamento : 0} >
                               {d.nome}</MenuItem>))}
                         </Select>
                       </FormControl>

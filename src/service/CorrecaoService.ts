@@ -1,6 +1,5 @@
-import { typeAnswer, typeCorrecao, typeQuestions } from '../components/Interface'
+import {  typeCorrecao, typeQuestions } from '../components/Interface'
 import { api } from './Api'
-import { getToken } from './authService'
 export async function getCorrecao() {
     return await api.get<typeCorrecao[]>('/api/correcao')
 }

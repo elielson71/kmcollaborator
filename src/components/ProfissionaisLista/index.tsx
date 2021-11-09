@@ -1,5 +1,4 @@
-import { Avatar, Box, FormControl, Grid, InputBase, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Paper, Select } from "@material-ui/core";
-import { PeopleAlt } from "@material-ui/icons"
+import { Avatar, Box, FormControl, Grid, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Paper, Select } from "@material-ui/core";
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import { useDepartamento } from "../../Hooks/Departamento/useDepartamento";
 import { useProfissional } from "../../Hooks/Profissional/useProfissional";
@@ -40,13 +39,14 @@ export function ProfissionalLista({ setProf }: props) {
                             label="Departamento"
                             id="departamento"
                             className={classes.selectEmpty}
+                            defaultValue = ""
                             //                        value={`${dep.id_departamento}`}
                             onChange={(e) => setBusca(e.target.value as number)}
                         >
                             <MenuItem id="departamento" value={0} >Todos Departamentos </MenuItem>
                             {
-                                dep.map(d => (
-                                    <MenuItem id="departamento" value={d.id_departamento ? d.id_departamento : 0} >
+                                dep.map((d,key) => (
+                                    <MenuItem key={key} id="departamento" value={d.id_departamento ? d.id_departamento : 0} >
                                         {d.nome}</MenuItem>))}
                         </Select>
                     </FormControl>
@@ -54,11 +54,11 @@ export function ProfissionalLista({ setProf }: props) {
 
 
                 {filterBusca.map(item =>
-                    <List >
+                    <List key={item.id_profissional}>
                         <ListItem button component='button' onClick={() => setProf({ id: item.id_profissional ? item.id_profissional : 0, nome: item.nome_completo })}>
                             <ListItemAvatar>
-                                <Avatar>
-                                    <PeopleAlt />
+                                <Avatar className={classes.avatar}>
+                                    {item.nome_completo.toLocaleUpperCase().slice(0,1)}
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary={item.nome_completo} />

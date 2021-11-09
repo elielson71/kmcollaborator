@@ -19,7 +19,7 @@ import { Buscar } from '../../components/Buscar';
 
 export function ListarUsuario() {
   const classes = useStyles();
-  const {usuarios,history,excluirUsuario,setBusca,filterBusca} = useUsuario('')
+  const {history,excluirUsuario,setBusca,filterBusca} = useUsuario('')
 
   return (
     <div className={classes.root}>

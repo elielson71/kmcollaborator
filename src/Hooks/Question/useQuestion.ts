@@ -5,6 +5,7 @@ import { ValidQuestion } from "./ValidQuestion";
 import { deleteAnswer, postAnswer } from "../../service/AnswerService";
 import { FormEvent, useState, useEffect } from "react";
 import { useDepartamento } from "../Departamento/useDepartamento";
+import { useAuth } from "../../conext/authContext";
 
 let countAnswer = 1;
 
@@ -14,7 +15,7 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
     const [hiddenInfo, setHiddenInfo] = useState<boolean>(false)
     const history = useHistory()
     const { departamentos } = useDepartamento('')
-
+    const {idUsuarioLogado} = useAuth()
 
     if (!(Questions.tipo_resposta === 'B' || Questions.tipo_resposta === 'L')) {
         const resp = {} as any
@@ -25,7 +26,9 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
     }
 
     async function saveQuestion() {
+
         if (ValidQuestion(Questions, answers)) {
+            Questions.id_responsavel=idUsuarioLogado;
             const resp = postQuestions(Questions)
             if (await resp) {
                 alert("Questões Salvas com Sucesso!")

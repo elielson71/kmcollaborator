@@ -1,6 +1,6 @@
 import { typeQuestions} from '../components/Interface'
 import { api } from './Api';
-import { getToken } from './authService';
+
 
 export async function postItensAvaliacao(itensAvaliacao: typeQuestions[]) {
      const resp = await api.post('/api/avaliacoes/itensAvaliacoes', itensAvaliacao)

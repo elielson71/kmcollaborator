@@ -1,6 +1,5 @@
 import {  typeDepartamento } from '../components/Interface'
 import { api } from './Api'
-import { getToken } from './authService'
 export async function getDepartamento() {
     return await api.get<typeDepartamento[]>('/api/departamento')
 }

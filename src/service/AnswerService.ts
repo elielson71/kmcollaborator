@@ -1,6 +1,6 @@
 import { typeAnswer } from '../components/Interface'
 import {api} from './Api';
-import { getToken } from './authService';
+
 
 export async function postAnswer(answer: typeAnswer[]) {
      const resp = await api.post('api/questions/answer', answer)

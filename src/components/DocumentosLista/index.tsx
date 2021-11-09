@@ -1,9 +1,7 @@
-import { Avatar, Box, FormControl, Grid, InputBase, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Paper, Select } from "@material-ui/core";
+import { Avatar, Box,  Grid, List, ListItem, ListItemAvatar, ListItemText, Paper } from "@material-ui/core";
 import { PeopleAlt } from "@material-ui/icons"
 import { Dispatch, SetStateAction, useMemo, useState } from "react";
-import { useDepartamento } from "../../Hooks/Departamento/useDepartamento";
 import { useBaseConhecimento } from "../../Hooks/BaseConhecimento/useBaseConhecimento";
-import { typeDepartamento } from "../Interface";
 import { useStyles } from "./styles";
 import { Buscar } from "../Buscar";
 type props = {
@@ -35,8 +33,8 @@ export function DocumentosLista({ setDocumento }: props) {
                 </Grid>
 
 
-                {filterBusca.map(item =>
-                    <List >
+                {filterBusca.map((item,key) =>
+                    <List key={key}>
                         <ListItem button component='button' onClick={() => setDocumento({ id: item.id_midia? item.id_midia : 0, nome: item.nome })}>
                             <ListItemAvatar>
                                 <Avatar>

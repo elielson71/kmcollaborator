@@ -15,9 +15,8 @@ import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { useState, useEffect } from 'react';
 import { typeDepartamento } from '../../components/Interface';
-import { api } from '../../service/Api';
 import { useHistory } from 'react-router';
-import { getDepartamento } from '../../service/DepartamentoService';
+import { deleteDepartamento, getDepartamento } from '../../service/DepartamentoService';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,12 +61,12 @@ export function ListarDepartamento() {
     recuperarDados()
   }, [])
 
-  async function deleteDepartamento(id: number) {
-    if (window.confirm("Deseja realmente excluir departamento?")) {
-      const resp = await api.delete(`/departamento/${id}`)
-      if (resp.status === 204)
+  async function excluirDepartamento(id: number) {
+    
+      const resp = await deleteDepartamento(id)
+      if (resp)
         window.location.reload()
-    }
+    
   }
 
   return (
@@ -85,8 +84,8 @@ export function ListarDepartamento() {
                   </Grid>
                   <Grid item sm={2}>
                     <ButtonGroup arial-label=''>
-                      
-                      <Button  variant="contained" color='primary' onClick={() => history.push('/departamento/new')}>Novo Departamento</Button>
+
+                      <Button variant="contained" color='primary' onClick={() => history.push('/departamento/new')}>Novo Departamento</Button>
                     </ButtonGroup>
                   </Grid>
                 </Grid>
@@ -111,7 +110,7 @@ export function ListarDepartamento() {
                               <TableCell align="right">
                                 <ButtonGroup arial-label=''>
                                   <Button color='primary' onClick={() => { history.push('/departamento/' + departamento.id_departamento) }}>Editar</Button>
-                                  <Button color='secondary' onClick={() => deleteDepartamento(departamento.id_departamento?departamento.id_departamento:0)}>Delete</Button>
+                                  <Button color='secondary' onClick={() => excluirDepartamento(departamento.id_departamento ? departamento.id_departamento : 0)}>Delete</Button>
                                 </ButtonGroup>
                               </TableCell>
                             </TableRow>

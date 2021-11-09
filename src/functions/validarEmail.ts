@@ -1,5 +1,3 @@
-import { RefObject } from "react";
-
 export function validarEmail(email: string,refemail:()=>any) {
     const usuario = email.substring(0, email.indexOf("@"));
     const dominio = email.substring(email.indexOf("@") + 1, email.length);

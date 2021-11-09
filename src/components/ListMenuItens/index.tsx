@@ -1,4 +1,3 @@
-
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -14,7 +13,6 @@ import GroupAdd from '@material-ui/icons/GroupAdd';
 import { Link } from 'react-router-dom'
 import { useMenu } from '../../Hooks/Menu/useMenu';
 import PermissionComponent from '../PermissionComponent';
-import { ListItemSecondaryAction } from '@material-ui/core';
 export function useListaMenu() {
   const { sair, open, handleDrawerOpen } = useMenu();
 

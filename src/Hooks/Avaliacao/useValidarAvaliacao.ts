@@ -9,7 +9,7 @@ export const useValidarAvaliacao = (avaliacaoId:string,avaliacao:typeAvaliacao, 
         alert('A Avaliação deve ter titutlo!')
         return
     }else if ( avaliacao.tempo === '00:00:00') {
-        alert('A Avaliação deve tempo válido!')
+        alert('A Avaliação deve ter um tempo válido!')
         return
     }else if ( avaliacao.id_departamento === undefined) {
         alert('A Avaliação deve ter Departamento!')

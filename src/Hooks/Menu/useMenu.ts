@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { api } from "../../service/Api";
-import { getIdUsuario, getToken, logout } from '../../service/authService';
-import { getOneUsuario } from '../../service/UsuarioService';
+import {  getToken, logout } from '../../service/authService';
 
 export function useMenu() {
 

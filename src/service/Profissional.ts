@@ -1,6 +1,5 @@
 import { typeProfissional } from '../components/Interface'
 import { api } from './Api'
-import { getToken } from './authService'
 export async function getProfissional() {
     return await api.get<typeProfissional[]>('/api/profissional')
 }

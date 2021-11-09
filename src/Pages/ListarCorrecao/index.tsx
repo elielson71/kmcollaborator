@@ -21,7 +21,7 @@ import SearchIcon from '@material-ui/icons/Search';
 
 export function ListarCorrecao() {
   const classes = useStyles();
-  const { history, allCorrecao: correcoes, excluirCorrecao,
+  const { history, excluirCorrecao,
     filterBusca, nome_profissional, avaliacaoDesc,setBusca} = useCorrecao('')
 
   return (

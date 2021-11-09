@@ -21,19 +21,15 @@ export function UploadArquivo({ open, setOpen }: props) {
 
         formData.append('file', arq);
         console.log('formData', formData)
-        const headers = {
-            'headers': {
-                'Content-Type': 'application/pdf'
-            }
-        }
+
         const resp = await api.post("/api/baseconhecimento/upload-file", formData)
         if (resp.status === 200) {
             alert('Upload realizado com sucesso!');
             window.location.reload()
         } else if (resp.status === 400) {
-            alert('error' + 'Upload não realizado com sucesso, necessário enviar uma imagem PNG ou JPG!')
+            alert('error Upload não realizado com sucesso, necessário enviar uma imagem PNG ou JPG!')
         } else {
-            alert('error' + "Erro: Tente mais tarde ou atualize a pagina!")
+            alert('error Erro: Tente mais tarde ou atualize a pagina!')
         }
 
     }

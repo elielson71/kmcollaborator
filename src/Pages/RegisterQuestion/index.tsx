@@ -13,9 +13,6 @@ import { AdicionarMidia } from '../../components/AdicionarMidia';
 type QuestionParams = {
     id: string
 }
-type props = {
-    id_avaliacao?: number
-}
 export function RegisterQuestion(props: any) {
     const params = useParams<QuestionParams>()
 

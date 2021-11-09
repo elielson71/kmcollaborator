@@ -57,10 +57,11 @@ export const CadAvaliacao = () => {
                                             label="Departamento"
                                             id="departamento"
                                             className={classes.selectEmpty}
-                                            value={`${avaliacao.id_departamento}`}
+                                            defaultValue = ""
+                                            value={`${avaliacao.id_departamento?avaliacao.id_departamento:''}`}
                                             onChange={(e) => { const v = e.target.value as string; setAvaliacao({ ...avaliacao,id_departamento: parseInt(v) }) }}
                                         >
-                                            { departamentos.map(d=>(<MenuItem id="departamento"  value={d.id_departamento} >{d.nome}</MenuItem>))}
+                                            { departamentos.map((d,key)=>(<MenuItem key={key} id="departamento"  value={d.id_departamento} >{d.nome}</MenuItem>))}
                                         </Select>
                                     </FormControl>
                                 </Grid>

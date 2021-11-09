@@ -64,7 +64,7 @@ export function CorrecaoAvaliacao() {
                                         />)) : answers.map(value => (
                                             <ListAnswerLabel key={value.id_respostas} id="flexRadioDefault1" 
                                             className={value.selecao==='S'&& value.correta==='S'?
-                                            classes.Rverdeiro:value.selecao==='S'?classes.Rfalse:''+''+value.correta==='S'?classes.Rverdeiro:''}
+                                            classes.Rverdeiro:value.selecao==='S'?classes.Rfalse:' '+value.correta==='S'?classes.Rverdeiro:''}
                                             >
                                                 {
 

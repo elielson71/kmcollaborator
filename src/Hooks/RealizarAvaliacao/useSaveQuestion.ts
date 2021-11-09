@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { typeAnswer, typeAvaliacao, typeCorrecao, typeItensCorrecao, typeQuestions } from "../../components/Interface"
+import { typeAnswer, typeItensCorrecao, typeQuestions } from "../../components/Interface"
 
 export function useSaveQuestion(itemQuestions: typeQuestions,
     answers: typeAnswer[],handleDataQuestion:any) {

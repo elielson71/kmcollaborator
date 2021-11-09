@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Copyright } from '../../components/Footer';
 import { FormEvent } from 'react-router/node_modules/@types/react';
-import { useHistory } from 'react-router';
 import { useAuth } from '../../conext/authContext';
 
 
@@ -39,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
 
 export function Login() {
   const classes = useStyles();
-  const history = useHistory()
   const [login, setLogin] = useState('')
   const [senha, setSenha] = useState('')
   const {signIn} = useAuth()

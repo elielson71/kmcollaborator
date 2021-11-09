@@ -8,6 +8,7 @@ import { useUpdateAvaliacoes } from "./useUpdateAvaliacoes";
 import { useValidarAvaliacao } from "./useValidarAvaliacao";
 import { useDepartamento } from "../Departamento/useDepartamento";
 import { useMemo } from "react";
+import { useAuth } from "../../conext/authContext";
 
 export function useAvaliacoes(avaliacaoId: string) {
 
@@ -40,20 +41,20 @@ export function useAvaliacoes(avaliacaoId: string) {
 
         }
     }
-    async function RecuperarAllAvaliacao(avaliacaoId: string) {
+    async function RecuperarAllAvaliacao() {
         const resp = await getAvaliacoes()
         setAllAvaliacao(resp.data)
     }
     useEffect(() => {
         RecuperandoDadosQuestions(avaliacaoId)
         if (avaliacaoId === '')
-            RecuperarAllAvaliacao(avaliacaoId)
+            RecuperarAllAvaliacao()
         return
     }, [avaliacaoId])
 
     const history = useHistory();
 
-
+    const {idUsuarioLogado} = useAuth()
 
 
     async function salvarAvaliacoes(questionsSelecionadas: typeQuestions[]) {
@@ -61,6 +62,7 @@ export function useAvaliacoes(avaliacaoId: string) {
         avaliacao.itensAvaliacao = questionsSelecionadas
 
         if (validarAvaliacao(avaliacaoId, avaliacao, questionsSelecionadas)) {
+            avaliacao.id_usuario=idUsuarioLogado
             if (await postAvaliacoes(avaliacao)) {
                 alert('Avaliação Registrada com Sucesso!')
                 history.push('/avaliacao')

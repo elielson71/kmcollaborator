@@ -28,8 +28,9 @@ export function QuestionInfo({ info, setInfo, hiddenInfo }: props) {
                             <Select
                                 label="senioridade"
                                 id="senioridade"
+                                defaultValue = ""
                                 className={classes.selectEmpty}
-                                value={info.senioridade}
+                                value={info.senioridade?info.senioridade:''}
                                 onChange={event => setInfo({ ...info, senioridade: event.target.value as string })}
                             >
                                 <MenuItem value="">Selecione uma Senioridade</MenuItem>
@@ -45,7 +46,9 @@ export function QuestionInfo({ info, setInfo, hiddenInfo }: props) {
                             <Select
                                 label="Nivel"
                                 id="nivel"
+                                defaultValue = ""
                                 className={classes.selectEmpty}
+                                value={info.nivel?info.nivel:''}
                                 onChange={event => setInfo({ ...info, nivel: event.target.value as string })}
                             >
                                 <MenuItem value="F" >Facil</MenuItem>
@@ -60,11 +63,12 @@ export function QuestionInfo({ info, setInfo, hiddenInfo }: props) {
                             <Select
                                 label="Departamento"
                                 id="departamento"
+                                defaultValue = ""
                                 className={classes.selectEmpty}
-                                value={`${info.id_departamento}`}
+                                value={`${info.id_departamento?info.id_departamento:''}`}
                                 onChange={event => setInfo({ ...info, id_departamento: parseInt(event.target.value as string) })}
                             >
-                                {departamentos.map(d => (<MenuItem id="departamento" value={d.id_departamento} >{d.nome}</MenuItem>))}
+                                {departamentos.map((d,key) => (<MenuItem key={key} id="departamento" value={d.id_departamento} >{d.nome}</MenuItem>))}
                             </Select>
                         </FormControl>
                     </Grid>

@@ -1,6 +1,5 @@
 import { typeBaseConhecimento } from '../components/Interface'
 import { api } from './Api'
-import { getToken } from './authService'
 export async function getBaseConhecimento() {
     return await api.get<typeBaseConhecimento[]>('/api/baseconhecimento')
 }

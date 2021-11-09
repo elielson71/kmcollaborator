@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { logout, getToken, getIdUsuario, loginToken, setLoginUsuario } from '../service/authService';
+import {  getToken, loginToken, setLoginUsuario, setTipoUsuario } from '../service/authService';
 //import { loginToken, setIdUsuario, setLoginUsuario } from '../../service/authService';
 import { useHistory } from 'react-router-dom';
 
@@ -75,6 +75,7 @@ export const AuthProvider: React.FC = ({ children }) => {
                     loginToken(res.data.token)
                     setIdUsuarioLogado(res.data.id_usuario)
                     setLoginUsuario(res.data.login)
+                    setTipoUsuario(res.data.tipo)
                     setIdProfissionalLogado(res.data.id_profissional)
                     setTipoUsuarioLogado(res.data.tipo === 'S')
                     history.push('/home')
