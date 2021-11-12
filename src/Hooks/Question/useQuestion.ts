@@ -1,21 +1,27 @@
 import { useHistory } from "react-router-dom";
-import { typeAnswer, typeQuestions } from "../../components/Interface";
-import { getOneQuestions, getQuestionsAnswer, postQuestions, putQuestionsAnswer } from "../../service/QuestionsService";
+import { typeAnswer, typeLinks, typeQuestions } from "../../components/Interface";
+import { getOneQuestions, getQuestionsAnswer, getQuestionsLinks, postQuestions, putQuestionsAnswer } from "../../service/QuestionsService";
 import { ValidQuestion } from "./ValidQuestion";
 import { deleteAnswer, postAnswer } from "../../service/AnswerService";
 import { FormEvent, useState, useEffect } from "react";
 import { useDepartamento } from "../Departamento/useDepartamento";
 import { useAuth } from "../../conext/authContext";
+import { postLinks } from "../../service/LinkService";
 
 let countAnswer = 1;
+type props = {
+    questionId: string
+    handleClose: () => void
+}
 
-export function useQuestion(questionId: string, id_avaliacao?: number) {
+export function useQuestion({ questionId, handleClose }: props) {
     const [Questions, setQuestions] = useState<typeQuestions>({ conteudo: '', tipo_resposta: '', id_departamento: 0, senioridade: '', nivel: 'F', id_responsavel: 0 })
     const [answers, setAnswers] = useState<typeAnswer[]>([])
     const [hiddenInfo, setHiddenInfo] = useState<boolean>(false)
+    const [links, setLinks] = useState<typeLinks[]>([])
     const history = useHistory()
     const { departamentos } = useDepartamento('')
-    const {idUsuarioLogado} = useAuth()
+    const { idUsuarioLogado } = useAuth()
 
     if (!(Questions.tipo_resposta === 'B' || Questions.tipo_resposta === 'L')) {
         const resp = {} as any
@@ -28,15 +34,12 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
     async function saveQuestion() {
 
         if (ValidQuestion(Questions, answers)) {
-            Questions.id_responsavel=idUsuarioLogado;
+            Questions.id_responsavel = idUsuarioLogado;
+            Questions.link = links
             const resp = postQuestions(Questions)
             if (await resp) {
                 alert("Questões Salvas com Sucesso!")
-                if (id_avaliacao) {
-                    history.push('/avaliacao/' + id_avaliacao)
-                } else {
-                    history.push('/avaliacao/new')
-                }
+                handleClose()
             } else {
                 alert("Erro ao Salvar Questões!")
                 console.error(resp)
@@ -46,16 +49,18 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
     async function updateQuestion() {
         if (ValidQuestion(Questions, answers)) {
             const answerNew = answers.filter(answer => answer.status === 'AB')
+            const linksNew = links.filter(answer => answer.status === 'AB')
             if (answerNew.length !== 0)
                 postAnswer(answerNew)
+
+            if (linksNew.length !== 0)
+                postLinks(linksNew)
+
+            Questions.link = links
             const resp = putQuestionsAnswer(parseInt(questionId), Questions)
             if (await resp) {
                 alert("Questões atualizadas com Sucesso!")
-                if (id_avaliacao) {
-                    history.push('/avaliacao/' + id_avaliacao)
-                } else {
-                    history.push('/avaliacao/new')
-                }
+                handleClose()
             } else {
                 alert("Erro ao atualizar Questões!")
                 console.error(resp)
@@ -68,15 +73,17 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
 
 
     async function RecuperarQuestao(id: string) {
-        if (id!=='new') {
+        if (id !== 'new') {
             const dataQuestion: typeQuestions[] = (await getOneQuestions(parseInt(id))).data
             const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(parseInt(id))).data
+            const dataLinks: typeLinks[] = (await getQuestionsLinks(parseInt(id))).data
 
             dataQuestion.map(value => {
                 setQuestions(value)
                 return null
             })
             setAnswers(dataAnswer)
+            setLinks(dataLinks)
         }
     }
     useEffect(() => {
@@ -109,11 +116,11 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
 
     async function handleDeleteAnswer(index: number, id_resposta: number) {
         if (index !== undefined) {
-            if (id_resposta !== undefined) {
+            if (Questions.id_perguntas !== undefined) {
                 if (await deleteAnswer(id_resposta))
-                    setAnswers(prev => prev.filter(item => item.id_respostas !== index))
+                    setAnswers(prev => prev.filter(item => item.id_respostas !== id_resposta))
             } else {
-                setAnswers(prev => prev.filter(item => item.id_respostas !== index))
+                setAnswers(prev => prev.filter(item => item.id_respostas !== id_resposta))
             }
         }
     }
@@ -122,7 +129,7 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
         setAnswers(prev => prev.map(item => item.id_respostas !== id_respostas ? { ...item, correta: 'N' } : item))
     }
     function sendQuestion() {
-        if (questionId === 'new')
+        if (questionId === '')
             saveQuestion()
         else if (questionId !== '')
             updateQuestion()
@@ -131,6 +138,6 @@ export function useQuestion(questionId: string, id_avaliacao?: number) {
         sendQuestion, handleAddAnswer, handleDeleteAnswer, handleIsTrue,
         descriptionAnswer, setDescriptionAnswer, handleChangeTypeListCard,
         Questions, setQuestions, answers, setAnswers, hiddenInfo, setHiddenInfo,
-        RecuperarQuestao, departamentos, history
+        RecuperarQuestao, departamentos, history, links, setLinks
     }
 }

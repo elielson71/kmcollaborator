@@ -13,6 +13,7 @@ type propsQuestion = {
     nota_pergunta?: number
     setQuestions: React.Dispatch<React.SetStateAction<typeQuestions[]>>
     id_avaliacao?: number
+    handleOpen:(id:string)=>void
 
 }
 const useStyles = makeStyles({
@@ -35,7 +36,8 @@ const useStyles = makeStyles({
 })
 
 
-export function CardQuestion({ title, departamento, id_perguntas, nivel, deletarQuestao, situacao, nota_pergunta, setQuestions, id_avaliacao }: propsQuestion) {
+export function CardQuestion({ title, id_perguntas, deletarQuestao,
+     situacao, nota_pergunta, setQuestions, id_avaliacao,handleOpen }: propsQuestion) {
     const classes = useStyles();
     const history = useHistory()
     return (
@@ -49,7 +51,7 @@ export function CardQuestion({ title, departamento, id_perguntas, nivel, deletar
                 }
                 action={
                     <Grid >
-                        <IconButton onClick={() => history.push(`/question/${id_perguntas}`,{id_avaliacao:id_avaliacao})}><Edit /></IconButton>
+                        <IconButton onClick={() => handleOpen(id_perguntas as unknown as string)}><Edit /></IconButton>
                         <IconButton onClick={(e) => deletarQuestao(e, id_perguntas)}><Delete /></IconButton>
                     </Grid>}
             />

@@ -13,35 +13,26 @@ import { AdicionarMidia } from '../../components/AdicionarMidia';
 type QuestionParams = {
     id: string
 }
-export function RegisterQuestion(props: any) {
-    const params = useParams<QuestionParams>()
+type props ={
+    id_avaliacao:string
+    questionId:string
+    handleClose:()=>void
+}
+export function RegisterQuestion({id_avaliacao,questionId,handleClose}: props) {
 
-    if (props.location.state)
-        var id_avaliacao = props.location.state.id_avaliacao
-    const questionId = params.id;
     const { sendQuestion, handleAddAnswer, handleDeleteAnswer, handleIsTrue,
         descriptionAnswer, setDescriptionAnswer, handleChangeTypeListCard,
         Questions, setQuestions, answers, setAnswers, hiddenInfo,
-        setHiddenInfo, history } = useQuestion(questionId, id_avaliacao);
-    //alert(id_avaliacao)
+        setHiddenInfo, links, setLinks } = useQuestion({questionId,handleClose});
     const classes = useStyles();
     return (
-        <div className={classes.root}>
-            <MenuItens titulo='Cadastrar Questão' />
             <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>
                     <Grid container spacing={3}>
-
                         <Grid container justifyContent='flex-end' sm={12}>
                             <Button variant='contained' color='primary' startIcon={<Save />} onClick={sendQuestion} >Salvar</Button>
-                            <Button onClick={() => {
-                                if (id_avaliacao) {
-                                    history.push('/avaliacao/' + id_avaliacao)
-                                } else {
-                                    history.push('/avaliacao/new')
-                                }
-                            }} variant='outlined' className='btn btn-seccundary' >Voltar</Button>
+                            <Button onClick={handleClose} variant='outlined' className='btn btn-seccundary' >Voltar</Button>
                         </Grid>
                         <Grid item xs={12} sm={hiddenInfo ? 12 : 8}>
                             <Card>
@@ -49,13 +40,10 @@ export function RegisterQuestion(props: any) {
                                     title='Questão'
                                     action={
                                         <ButtonIcon>
-                                            {/*<button ><i className="far fa-images"></i></button>*/}
-
                                             <button onClick={() => { setHiddenInfo(prev => !prev) }}><i className="fas fa-info"></i></button>
                                         </ButtonIcon >
                                     }
                                 />
-
                                 <CardContent>
                                     <Grid item xs={12} sm={12}>
                                         <Grid item xs={12} sm={12}>
@@ -127,8 +115,7 @@ export function RegisterQuestion(props: any) {
                                         </Grid>
                                         {answers.map(value => (
                                             <ListAnswerDiv>
-                                                {
-                                                    Questions.tipo_resposta === 'R' ?
+                                                { Questions.tipo_resposta === 'R' ?
                                                         <div className="form-check">
                                                             <input
                                                                 defaultValue=""
@@ -151,8 +138,7 @@ export function RegisterQuestion(props: any) {
                                                                             { ...item, correta: e.target.checked ? 'S' : 'N' } : item))}
                                                                     checked={value.correta === 'S'}
                                                                 />
-                                                            </div> : ''
-                                                }
+                                                            </div> : ''}
                                                 <AnswerInput
                                                     type="text"
                                                     value={value.descricao}
@@ -166,12 +152,9 @@ export function RegisterQuestion(props: any) {
                                                         value.id_respostas : 0, value.id_respostas ? value.id_respostas : 0)}>
                                                         <i className="far fa-times-circle"></i></button>
                                                 </ButtonIcon>
-                                            </ListAnswerDiv>))
-                                        }
-
+                                            </ListAnswerDiv>))}
                                     </Grid>
                                 </CardContent>
-
                             </Card>
                         </Grid>
                         <Grid item xs={4}>
@@ -184,7 +167,7 @@ export function RegisterQuestion(props: any) {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AdicionarMidia />
+                                    <AdicionarMidia id_perguntas={Questions.id_perguntas} links={links} setLinks={setLinks}/>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -192,7 +175,7 @@ export function RegisterQuestion(props: any) {
                     </Grid>
                 </Container>
             </main>
-        </div >
+        
     )
 }
 

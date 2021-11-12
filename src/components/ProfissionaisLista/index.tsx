@@ -40,10 +40,9 @@ export function ProfissionalLista({ setProf }: props) {
                             id="departamento"
                             className={classes.selectEmpty}
                             defaultValue = ""
-                            //                        value={`${dep.id_departamento}`}
                             onChange={(e) => setBusca(e.target.value as number)}
                         >
-                            <MenuItem id="departamento" value={0} >Todos Departamentos </MenuItem>
+                            <MenuItem id="departamento" value={0} >Todos </MenuItem>
                             {
                                 dep.map((d,key) => (
                                     <MenuItem key={key} id="departamento" value={d.id_departamento ? d.id_departamento : 0} >
@@ -51,10 +50,8 @@ export function ProfissionalLista({ setProf }: props) {
                         </Select>
                     </FormControl>
                 </Grid>
-
-
-                {filterBusca.map(item =>
-                    <List key={item.id_profissional}>
+                {filterBusca.map((item,key) =>
+                    <List key={key}>
                         <ListItem button component='button' onClick={() => setProf({ id: item.id_profissional ? item.id_profissional : 0, nome: item.nome_completo })}>
                             <ListItemAvatar>
                                 <Avatar className={classes.avatar}>

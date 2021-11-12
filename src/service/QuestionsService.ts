@@ -1,4 +1,4 @@
-import { typeAnswer, typeQuestions } from '../components/Interface'
+import { typeAnswer, typeLinks, typeQuestions } from '../components/Interface'
 import { api } from './Api';
 export async function getQuestions() {
     return await api.get<typeQuestions[]>('/api/questions')
@@ -12,6 +12,9 @@ export async function getOneQuestions(id_perguntas: number) {
 }
 export async function getQuestionsAnswer(id_perguntas: number) {
     return await api.get<typeAnswer[]>(`/api/questions/answer/${id_perguntas}`)
+}
+export async function getQuestionsLinks(id_perguntas: number) {
+    return await api.get<typeLinks[]>(`/api/questions/links/${id_perguntas}`)
 }
 export async function putQuestionsAnswer(id_perguntas: number, questions: typeQuestions) {
     const resp = await api.put<typeQuestions>(`/api/questions/${id_perguntas}`, questions)

@@ -38,8 +38,8 @@ export function CorrecaoAvaliacao() {
                             <Grid item xs={12} sm={8} className={classes.contentAnswer}>
                                 {itemQuestions.tipo_resposta === 'B' ?
                                     respostaAberta.map(value => (
-                                        <Grid>
-                                            <TextField key={value.id_respostas}
+                                        <Grid key={value.id_respostas}>
+                                            <TextField 
                                                 placeholder='Digite sua Resposta aqui'
                                                 className={classes.txtarea}
                                                 value={value.descricao}

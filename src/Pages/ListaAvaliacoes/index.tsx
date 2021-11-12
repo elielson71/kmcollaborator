@@ -46,6 +46,9 @@ export function ListaAvaliacoes() {
             item.titulo.toLocaleLowerCase().includes(lowerBusca)
         )
     }, [avaliacoes, busca])
+
+
+
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -59,7 +62,7 @@ export function ListaAvaliacoes() {
                             <PermissionComponent>
                                 <Button variant="contained" color="primary" onClick={() => { history.push('/avaliacao/new') }}>NOVA AVALIAÇÃO</Button>
                             </PermissionComponent>
-                            <Buscar  setBusca={setBusca} />
+                            <Buscar setBusca={setBusca} />
                         </Grid>
                         {filterBusca.length !== 0 ?
                             <Grid container spacing={3}>

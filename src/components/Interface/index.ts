@@ -20,6 +20,7 @@ export type typeQuestions = {
     answers?: typeAnswer[]
     situacao?: string
     nota_pergunta?: number
+    link?:typeLinks[]
 
 }
 export type typeAvaliacao = {
@@ -104,4 +105,16 @@ export type typeBaseConhecimento={
     id_responsavel?:string
     data_cadastro:string,
     url?:string
+}
+export type typeLinks ={
+    id_links?:number
+    dados:string
+    id_midias:number
+    id_perguntas?:number
+    status:string
+}
+export type typeLinksAvaliacoes = {
+    dados: string
+    id_avaliacoes: number
+    id_midia: number
 }

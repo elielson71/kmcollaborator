@@ -83,5 +83,11 @@ export const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-
+    principal:{
+        //minHeight: '100%',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        
+       // backgroundColor: '#fff',
+    }
 }));

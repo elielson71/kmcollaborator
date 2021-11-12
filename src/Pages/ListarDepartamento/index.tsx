@@ -49,24 +49,24 @@ export function ListarDepartamento() {
 
   const [departamentos, setDepartamento] = useState<typeDepartamento[]>([])
   const history = useHistory()
-  useEffect(() => {
-    async function recuperarDados() {
-      const resp = await getDepartamento()
-      if (resp.status === 200) {
-        setDepartamento(resp.data)
-      } else {
-        alert('Error ao buscar Departamento Atualize a Pagina\n Se persistir entre em contato com desenvolvedor!')
-      }
+  async function recuperarDados() {
+    const resp = await getDepartamento()
+    if (resp.status === 200) {
+      setDepartamento(resp.data)
+    } else {
+      alert('Error ao buscar Departamento Atualize a Pagina\n Se persistir entre em contato com desenvolvedor!')
     }
+  }
+  useEffect(() => {
     recuperarDados()
   }, [])
 
   async function excluirDepartamento(id: number) {
-    
-      const resp = await deleteDepartamento(id)
-      if (resp)
-        window.location.reload()
-    
+
+    const resp = await deleteDepartamento(id)
+    if (resp)
+      recuperarDados()
+
   }
 
   return (

@@ -2,11 +2,12 @@
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
-import { TextField, TextareaAutosize } from "@material-ui/core";
+import { TextField, TextareaAutosize, Typography } from "@material-ui/core";
 import { ListAnswerLabel } from "../../components/componetsStypes";
 import { useStyles } from "./style";
 import { useRealizarAvaliacao } from '../../Hooks/RealizarAvaliacao/useRealizarAvaliacao'
 import Temporarizador from '../../components/Temporizador';
+import { LinksAvaliacoes } from '../../components/LinksAvaliacoes';
 
 
 type props = {
@@ -22,7 +23,8 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
         finalizar, handleIsTrue, respostaAberta, tempo,
         podeFinalizar
     } = useRealizarAvaliacao(parseInt(avaliacaoId))
-
+    function handleClose(){
+    }
     return (
         <div className={classes.root}>
             <main className={classes.content}>
@@ -36,13 +38,13 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                                 <Grid item xs={12}>
                                     <Grid container alignContent='center' justifyContent='center'>
                                         <div className={classes.msg}><h4>
-                                            Realize a atividade respondendo as questões e 
-                                            clicando no botão <b>Responder</b>, apenas 
-                                            na ultima pergunta aparecerá o botão <b>Finalizar </b> 
-                                            para concluír.<br/><br /> Fique atento ao tempo determidado ao finaliza esse a avaliação concluirá
+                                            Realize a atividade respondendo as questões e
+                                            clicando no botão <b>Responder</b>, apenas
+                                            na ultima pergunta aparecerá o botão <b>Finalizar </b>
+                                            para concluír.<br /><br /> Fique atento ao tempo determidado ao finaliza esse a avaliação concluirá
                                             automaticamente. <br /> <br /> O tempo para realizar essa avaliação é de {tempo}
                                             <br /> <br /> <br />Boa Avaliação!</h4></div>
-                                            
+
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -142,10 +144,11 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                             <Grid container className={classes.paper} alignContent="center">
                                 <Grid item sm={12} xl={12}>
                                     <h1>Avialiação concluida</h1>
-                                    <br/>
+                                    <br />
                                     <Grid container justifyContent="center">
-                                    <div className={classes.msg}><h3> Aguarde a correção da Avaliação e acompanhe seu desempenho pela tela de <b>Dashboard</b>!</h3></div>
+                                        <div className={classes.msg}><h3> Aguarde a correção da Avaliação e acompanhe seu desempenho pela tela de <b>Dashboard</b>!</h3></div>
                                     </Grid>
+                                    <LinksAvaliacoes mostrax={false} avaliacaoId={avaliacaoId}  handleClose={handleClose}/>
                                 </Grid>
                             </Grid>
                     }

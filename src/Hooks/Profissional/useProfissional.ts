@@ -41,7 +41,7 @@ export function useProfissional(id_profissional: string) {
     async function deleteprofissional(id: number) {
         const resp = await deleteProfissional(id)
         if (resp.status === 204)
-            window.location.reload()
+        recuperarTodosProfissionais()
     }
     async function recuperarOneProfissional(id: number) {
 

@@ -1,7 +1,7 @@
 import { useAvaliacoes } from "../../Hooks/Avaliacao/useAvaliacoes";
-import { typeAnswer, typeQuestions } from "../../components/Interface";
+import { typeAnswer, typeLinksAvaliacoes, typeQuestions } from "../../components/Interface";
 import { useCallback, useEffect, useState } from "react";
-import { getAvaliacoesItenQuestions } from "../../service/AvaliacoesService";
+import { getAvaliacoesItenQuestions, getLinksAvaliacoes } from "../../service/AvaliacoesService";
 import { getQuestionsAnswer } from "../../service/QuestionsService";
 import { useSaveQuestion } from "./useSaveQuestion";
 import { useNavegacao } from "./useNavegacao";
@@ -75,9 +75,6 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
         getQuestion(avaliacaoId)
         return () => { getQuestion(avaliacaoId) }
     }, [avaliacaoId])
-
-
-
 
 
 

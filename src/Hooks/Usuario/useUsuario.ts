@@ -22,7 +22,7 @@ export function useUsuario(id_usuario: string) {
   async function excluirUsuario(id: number) {
     const resp = await deleteUsuario(id)
     if (resp.status === 204)
-      window.location.reload()
+      recuperarTodosUsuario()
     else if (resp.status >= 400) {
       alert(`Erro ao excluir!${resp.status}\n ${resp.data.message}`)
     }

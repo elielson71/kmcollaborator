@@ -1,11 +1,10 @@
 import Avatar from "@material-ui/core/Avatar";
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
-import { Edit, Delete } from '@material-ui/icons/'
+import { Edit, Delete, Info } from '@material-ui/icons/'
 
 import './style.scss'
 import Button from "@material-ui/core/Button";
-import { useState } from "react";
 import Modal from "@material-ui/core/Modal";
 import { RealizarAvaliacao } from "../../Pages/RealizarAvaliacao";
 import Card from "@material-ui/core/Card";
@@ -16,6 +15,8 @@ import { Grid, IconButton, Typography } from "@material-ui/core";
 import PermissionComponent from "../PermissionComponent";
 import { useAuth } from "../../conext/authContext";
 import { getLoginUsuario } from "../../service/authService";
+import { LinksAvaliacoes } from "../LinksAvaliacoes";
+import { useModal } from "../../Hooks/Modal/useModal";
 type propsAvaliacao = {
     id_avaliacoes?: number
     titulo: string
@@ -54,11 +55,12 @@ const useStyles = makeStyles({
 });
 
 
-export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, deleteAvaliacao }: propsAvaliacao) {
+export function Avaliacao({  titulo, id_avaliacoes, editAvaliacao, deleteAvaliacao }: propsAvaliacao) {
     const classes = useStyles();
     const {idProfissionalLogado} = useAuth()
-    const [open, setOpen] = useState(false);
-
+    
+    const {open, setOpen,handleClose} = useModal()
+    const {open:openB,handleOpen:handleOpenB,handleClose:handleCloseB} = useModal()
     const handleOpen = () => {
         if(idProfissionalLogado===0){
             alert(`Usuario logado não tem vinculo com Profissional! \n
@@ -69,9 +71,7 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
         setOpen(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     return (
         //        <Paper className={classes.paper} elevation={3} >
         <Card className={classes.root}>
@@ -79,6 +79,7 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
                 avatar={<Avatar aria-label="recipe" className={classes.avatar}>{getLoginUsuario()?.toLocaleUpperCase().slice(0,1)}</Avatar>}
                 action={
                     <Grid>
+                            <IconButton onClick={() => handleOpenB()}><Info /></IconButton>
                         <PermissionComponent>
                             <IconButton onClick={() => editAvaliacao(id_avaliacoes)}><Edit /></IconButton>
                             <IconButton onClick={() => deleteAvaliacao(id_avaliacoes)}><Delete /></IconButton>
@@ -114,13 +115,14 @@ export function Avaliacao({ id_usuario, titulo, id_avaliacoes, editAvaliacao, de
 
                 }
             </Modal>
+            <Modal
+                    open={openB}
+                    onClose={handleCloseB}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <LinksAvaliacoes mostrax handleClose={handleCloseB}avaliacaoId={id_avaliacoes ? id_avaliacoes as unknown as string : '0'}/>
+                </Modal>
         </Card>//</Paper>
     )
 }
-/*            <div className='info'>
-                <h5>DEPARTAMENTO</h5>
-                <span>{id_departamento}</span>
-                <h5>Nível médio de Dificuldade </h5>
-                <PrettoSlider valueLabelDisplay="auto" aria-label="pretto slider" defaultValue={20} />
-            </div>
- */

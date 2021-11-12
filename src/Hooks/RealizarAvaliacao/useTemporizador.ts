@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { clearInterval } from "timers";
-export default function useTemporizador(hora: number, minuto: number, segundo: number,quandoStop:()=>void) {
+export default function useTemporizador(hora: number, minuto: number, segundo: number, quandoStop: () => void) {
     const [secondsLeft, setSecondsLeft] = useState(segundo === 0 ? 0 : segundo);
     const [minutoLeft, setMinutoLeft] = useState(minuto);
     const [hoursLeft, setHoursLeft] = useState(hora);
@@ -8,9 +8,10 @@ export default function useTemporizador(hora: number, minuto: number, segundo: n
     const start = useCallback(() => {
         const timer2 = setInterval(() => {
             setSecondsLeft((secondsLeft) => {
-
-                if (secondsLeft ===1)
-                    clearTimeout(timer2)
+                if (hoursLeft === 0)
+                    if (minutoLeft === 0)
+                        if (secondsLeft === 1)
+                            clearTimeout(timer2)
                 return secondsLeft - 1
             });
 
