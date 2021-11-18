@@ -7,6 +7,7 @@ import { useSaveQuestion } from "./useSaveQuestion";
 import { useNavegacao } from "./useNavegacao";
 import { useFinalizarAvaliacao } from "./useFinalizarAvaliacao";
 import { useAuth } from "../../conext/authContext";
+import { embarrarArray } from "../../functions/embarralharArray";
 
 
 export function useRealizarAvaliacao(avaliacaoId: number) {
@@ -17,7 +18,7 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
     const [dataQuestions, setDataQuestions] = useState<typeQuestions[]>([])
     const { avaliacao } = useAvaliacoes(avaliacaoId as unknown as string)
     const tempo = avaliacao.tempo
-    const {idProfissionalLogado}=useAuth()
+    const { idProfissionalLogado } = useAuth()
     const id_profissional = idProfissionalLogado
 
     const { dataQ, saveQuestions } = useSaveQuestion(itemQuestions, answers, handleDataQuestion)
@@ -27,7 +28,7 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
         setItemQuestions, setAnswers, saveQuestions)
 
     const { finalizar, statusAtividade, setStatusAtividade } =
-        useFinalizarAvaliacao(dataQ,id_profissional, avaliacao);
+        useFinalizarAvaliacao(dataQ, id_profissional, avaliacao);
 
     function handleDataQuestion(id_perguntas: number, questions: typeQuestions) {
         setDataQuestions(prev => prev.map
@@ -36,20 +37,27 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
 
     }
     const podeFinalizar = useCallback(
-        ()=>dataQ.every(item=>item.resposta===null || item.resposta===undefined || verificaRespostaMarcada(item.id_perguntas))
-        ,[dataQ])
+        () => {
+            if (itemQuestions.tipo_resposta === 'B' || itemQuestions.tipo_resposta === 'L') {
+                return dataQ.length !== dataQuestions.length
+            }
+            return dataQ.every(item => item.resposta === null || item.resposta === undefined || verificaRespostaMarcada(item.id_perguntas))
+        }, [dataQ])
 
-        function verificaRespostaMarcada(id_perguntas:number){
-            const correta = answers.filter(item=>item.id_perguntas===id_perguntas && item.correta==='S')
-            return correta.length===0
-            
-        }
+    function verificaRespostaMarcada(id_perguntas: number) {
+        const correta = answers.filter(item => item.id_perguntas === id_perguntas && item.correta === 'S')
+
+        return correta.length === 0
+
+    }
     useEffect(() => {
         setPaginacao(1)
         async function getQuestion(avaliacaoId: number) {
             const data = (await getAvaliacoesItenQuestions(avaliacaoId)).data
-            const ans = data.map(async function (value) {
-                const dataAnswer: typeAnswer[] = (await getQuestionsAnswer(value.id_perguntas as unknown as number)).data
+            const resp:typeQuestions[] = embarrarArray(data)
+            const ans = resp.map(async function (value) {
+                const respAnswer: typeAnswer[] = (await getQuestionsAnswer(value.id_perguntas as unknown as number)).data
+                const dataAnswer: typeAnswer[] = embarrarArray(respAnswer)
                 if (dataAnswer.length !== 0) {
                     dataAnswer.map(item => item.correta = 'N')
                     value.answers = dataAnswer
@@ -58,15 +66,15 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
                 }
                 return value
             })
-            if (data.length !== 0) {
-                setDataQuestions(data)
-                setItemQuestions(data[0])
-                if (data[0].tipo_resposta === 'C' || data[0].tipo_resposta === 'R') {
+            if (resp.length !== 0) {
+                setDataQuestions(resp)
+                setItemQuestions(resp[0])
+                if (resp[0].tipo_resposta === 'C' || resp[0].tipo_resposta === 'R') {
                     const answers = (await ans[0]).answers
                     if (answers)
-                        setAnswers(answers.filter(item => item.id_perguntas === data[0].id_perguntas))
+                        setAnswers(answers.filter(item => item.id_perguntas === resp[0].id_perguntas))
                 } else {
-                    setAnswers([{ descricao: '', correta: '', id_perguntas: data[0].id_perguntas, id_respostas: 1 }])
+                    setAnswers([{ descricao: '', correta: '', id_perguntas: resp[0].id_perguntas, id_respostas: 1 }])
                 }
 
             }
@@ -88,6 +96,6 @@ export function useRealizarAvaliacao(avaliacaoId: number) {
         backQuestion, nextQuestion, paginacao, itemQuestions,
         dataQuestions, answers, setAnswers, handleIsTrue,
         statusAtividade, setStatusAtividade, avaliacao,
-        tempo, finalizar, respostaAberta,podeFinalizar
+        tempo, finalizar, respostaAberta, podeFinalizar
     }
 }

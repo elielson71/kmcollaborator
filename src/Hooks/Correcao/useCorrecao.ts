@@ -49,7 +49,7 @@ export function useCorrecao(id_correcao: string) {
   async function excluirCorrecao(id: number) {
     const resp = await deleteCorrecao(id)
     if (resp.status === 204)
-      window.location.reload()
+      recuperarTodosCorrecao()
     else if (resp.status >= 400) {
       alert(`Erro ao excluir!${resp.status}\n ${resp.data.message}`)
     }

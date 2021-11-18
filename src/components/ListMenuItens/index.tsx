@@ -43,12 +43,14 @@ export function useListaMenu() {
           </ListItemIcon>
           <ListItemText primary="Profissionais" />
         </ListItem>
+        </PermissionComponent>
         <ListItem button component={Link} to='/base_conhecimento'>
           <ListItemIcon>
             <LayersIcon />
           </ListItemIcon>
           <ListItemText primary="Base de Conhecimento" />
         </ListItem>
+      <PermissionComponent >
         <ListItem button component='button' onClick={handleDrawerOpen}>
           <ListItemIcon>
             <BarChartIcon />

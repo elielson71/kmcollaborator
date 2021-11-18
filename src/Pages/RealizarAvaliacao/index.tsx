@@ -41,7 +41,7 @@ export function RealizarAvaliacao({ avaliacaoId }: props) {
                                             Realize a atividade respondendo as questões e
                                             clicando no botão <b>Responder</b>, apenas
                                             na ultima pergunta aparecerá o botão <b>Finalizar </b>
-                                            para concluír.<br /><br /> Fique atento ao tempo determidado ao finaliza esse a avaliação concluirá
+                                            para concluír.<br /><br /> Fique atento ao tempo determidado quando ele terminar a avaliação concluirá
                                             automaticamente. <br /> <br /> O tempo para realizar essa avaliação é de {tempo}
                                             <br /> <br /> <br />Boa Avaliação!</h4></div>
 

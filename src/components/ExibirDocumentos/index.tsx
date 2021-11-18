@@ -1,6 +1,6 @@
 
-import { Grid, IconButton, Paper } from "@material-ui/core";
-import { Delete } from "@material-ui/icons";
+import { Button, Grid, IconButton, Paper } from "@material-ui/core";
+import { Delete, OpenInNew } from "@material-ui/icons";
 import { useBaseConhecimento } from "../../Hooks/BaseConhecimento/useBaseConhecimento";
 import { deleteBaseConhecimento } from "../../service/BaseConhecimento";
 import { useStyles } from "./styles";
@@ -35,11 +35,12 @@ export function ExibirDocumento({ id_midia }: props) {
                     <h4>{nome.slice(0, nome.indexOf('.'))}</h4>
                 </Grid>
                 <Grid>
+                {id_midia?<Button onClick={()=>window.open(url ? `${process.env.REACT_APP_API_URL}/midias/` + url : '')} startIcon={<OpenInNew/>}/>:''}
                    {id_midia? <IconButton onClick={() => handleDelete()}><Delete /></IconButton>:''}
                 </Grid>
                 <Grid className={classes.content} item sm={12}>
                     {
-                        <iframe title="PDF" src={url ? `${process.env.REACT_APP_API_URL}midias/` + url : ''} width="100%" height="100%" allow="autoplay"></iframe>}
+                        <iframe title="PDF" src={url ? `${process.env.REACT_APP_API_URL}/midias/` + url : ''} width="100%" height="100%" allow="autoplay"></iframe>}
                 </Grid>
             </Grid>
         </Paper>

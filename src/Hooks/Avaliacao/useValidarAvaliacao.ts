@@ -15,7 +15,7 @@ export const useValidarAvaliacao = (avaliacaoId:string,avaliacao:typeAvaliacao, 
         alert('A Avaliação deve ter Departamento!')
         return
     } else if (questionsSelecionadas.length === 0) {
-        alert('Selecione ao menos uma questão para salvar a Avaialção')
+        alert('Selecione ao menos uma questão para salvar a Avaliação!')
         return
     }
     else if (questionsSelecionadas.filter(value => value.nota_pergunta === 0 || value.nota_pergunta === undefined || value.nota_pergunta === null).length !== 0) {

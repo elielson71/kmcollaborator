@@ -11,8 +11,13 @@ import { useBaseConhecimento } from "../../Hooks/BaseConhecimento/useBaseConheci
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        minWidth: 150,
+        minWidth: 100,
+        maxWidth: 300,
         padding: 5
+    },
+    card: {
+        padding: '0px 5px',
+
     },
 
     content: {
@@ -44,8 +49,10 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         padding: 20
+    },
+    typo: {
+        wordBreak: 'break-all'
     }
-
 }));
 type props = {
     avaliacaoId: string
@@ -68,41 +75,39 @@ export function LinksAvaliacoes({ avaliacaoId, handleClose, mostrax }: props) {
         linksAvaliacao(avaliacaoId)
     }, [])
     const { getUrl } = useBaseConhecimento('')
-    const [url, setUrl] = useState('')
-    async function pegarURl(id: number) {
+    //const [url, setUrl] = useState('')
+    async function abrirLink(id: number) {
         const url = await getUrl(id)
         if (url)
-            setUrl(url)
+            window.open(`${process.env.REACT_APP_API_URL}/midias/${url}`)
     }
-    useEffect(()=>{
-        
-    },[])
 
-    return (
 
-        <Grid className={!mostrax ? classes.mostrax : ''}>
-            <Grid className={classes.content}>
-                <Grid container justifyContent="center" className={classes.msg}>
-                    <Grid container justifyContent="flex-end">
-                        {mostrax && <Button variant='outlined' onClick={() => handleClose()}>X</Button>}
-                    </Grid>
-                    <Grid item xs={12} className={classes.title}>
-                        <Typography variant='h5'>Midias Relacionada a Avaliação ({avaliacao.titulo})</Typography>
-                    </Grid>
-                    {LinksAvaliacoes.map((value, key) => (
-                        <Grid className={classes.root} item xs={4}>
-                            <Card key={key} className={classes.root} component='button' variant='outlined'>
-                                <CardContent className={classes.content}>
-                                    <Typography variant='h6'>{value.dados}</Typography>
-                                </CardContent>
-                                <CardActions >
-                                    <Button fullWidth color='primary' variant='outlined' onClick={() => { pegarURl(value.id_midia); window.open(`${process.env.REACT_APP_API_URL}/midias/${url}`) }} >Visualizar</Button>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    ))}
+return (
+
+    <Grid className={!mostrax ? classes.mostrax : ''}>
+        <Grid className={classes.content}>
+            <Grid container justifyContent="center" className={classes.msg}>
+                <Grid container justifyContent="flex-end">
+                    {mostrax && <Button variant='outlined' onClick={() => handleClose()}>X</Button>}
                 </Grid>
+                <Grid item xs={12} className={classes.title}>
+                    <Typography variant='h5'>Midias Relacionada a Avaliação ({avaliacao.titulo})</Typography>
+                </Grid>
+                {LinksAvaliacoes.map((value, key) => (
+                    <Grid className={classes.card} item xs={4}>
+                        <Card key={key} className={classes.root} component='button' variant='outlined'>
+                            <CardContent className={classes.content}>
+                                <Typography className={classes.typo} variant='h6'>{value.dados}</Typography>
+                            </CardContent>
+                            <CardActions >
+                                <Button fullWidth color='primary' variant='outlined' onClick={() => abrirLink(value.id_midia)} >Visualizar</Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
             </Grid>
         </Grid>
-    )
+    </Grid>
+)
 }
