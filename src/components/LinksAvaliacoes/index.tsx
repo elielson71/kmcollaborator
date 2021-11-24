@@ -78,8 +78,9 @@ export function LinksAvaliacoes({ avaliacaoId, handleClose, mostrax }: props) {
     //const [url, setUrl] = useState('')
     async function abrirLink(id: number) {
         const url = await getUrl(id)
+        
         if (url)
-            window.open(process.env.REACT_APP_TYPE_LOCAL==='PRO'?url:`${process.env.REACT_APP_API_URL}/midias/${url}`)
+            window.open(process.env.REACT_APP_TYPE_LOCAL==='PRO'?'https://'+url:`${process.env.REACT_APP_API_URL}/midias/${url}`)
     }
 
 
