@@ -1,6 +1,7 @@
 import { Button, Grid, Modal, Paper, Typography } from "@material-ui/core";
 import { FormEvent, useState } from "react";
 import { api } from "../../service/Api";
+import storage from "../../service/farebase";
 import PermissionComponent from "../PermissionComponent";
 import { useStyles } from "./styles";
 type props = {
@@ -16,18 +17,35 @@ export function UploadArquivo({ open, setOpen }: props) {
     };
     async function handleSubmitFile(e: FormEvent) {
         e.preventDefault();
-        const formData = new FormData();
-        const arq = arquivo ? arquivo : ''
-
-        formData.append('file', arq);
-        console.log('formData', formData)
-
-        const resp = await api.post("/api/baseconhecimento/upload-file", formData)
-        if (resp.status === 200) {
+        let resp: any
+        if (process.env.REACT_APP_TYPE_LOCAL === 'PRO') {
+            if (arquivo) {
+                let file = {} as any
+                const upload = storage.ref().child('upload/files/' + arquivo.name)
+                if (upload) {
+                    await upload.put(arquivo)
+                    await upload.getMetadata().then(function (metadados) {
+                        file = { originalname: metadados.name, mimetype: metadados.contentType }
+                    })
+                    await upload.getDownloadURL().then(function (url) {
+                        file['path'] = 'bob'+url
+                    })
+                }
+                resp = await api.post("/api/baseconhecimento/", file)
+            }
+        } else {
+            const formData = new FormData();
+            const arq = arquivo ? arquivo : ''
+            formData.append('file', arq);
+            resp = await api.post("/api/baseconhecimento/upload-file", formData)
+        }
+        if (resp.status === 201) {
             alert('Upload realizado com sucesso!');
             window.location.reload()
+        }else if(resp.status===404){
+            alert('Já existe uma Mídia com esse nome!')
         } else if (resp.status === 400) {
-            alert('error Upload não realizado com sucesso, necessário enviar uma imagem PNG ou JPG!')
+            alert('error Upload não realizado com sucesso!')
         } else {
             alert('error Erro: Tente mais tarde ou atualize a pagina!')
         }

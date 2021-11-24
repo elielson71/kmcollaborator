@@ -15,8 +15,11 @@ export async function putBaseConhecimento(id_baseconhecimento: number, baseconhe
     return await api.put<typeBaseConhecimento>(`/api/baseconhecimento/${id_baseconhecimento}`, baseconhecimento)
 }
 export async function deleteBaseConhecimento(id_baseconhecimento: number) {
-    if (window.confirm('Deseja Realmente excluir Documento?')) {
+    
         return (await api.delete(`/api/baseconhecimento/${id_baseconhecimento}`))
-    }
+    
     return {'status':'', 'data':{'message':'sem comunicaçao'}}
+}
+export async function deleteBaseConhecimentoPro(id_baseconhecimento: number) {
+        return (await api.delete(`/api/baseconhecimentopro/${id_baseconhecimento}`))
 }
