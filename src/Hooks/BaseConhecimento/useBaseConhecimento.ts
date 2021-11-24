@@ -2,26 +2,27 @@ import { useEffect, useState } from "react"
 import { typeBaseConhecimento } from "../../components/Interface"
 import { getBaseConhecimento, getOneBaseConhecimento } from "../../service/BaseConhecimento"
 
-export function useBaseConhecimento(id_baseconhecimento:string){
+export function useBaseConhecimento(id_baseconhecimento: string) {
     const [allBaseConhecimento, setAllBaseConhecimento] = useState<typeBaseConhecimento[]>([])
-    const [baseconhecimento, setBaseConhecimento] = useState<typeBaseConhecimento>({data_cadastro:'',nome:'',tipo:''})
+    const [baseconhecimento, setBaseConhecimento] = useState<typeBaseConhecimento>({ data_cadastro: '', nome: '', tipo: '' })
     async function recuperarOneBaseConhecimento(id: number) {
         const resp = await getOneBaseConhecimento(id)
         if (resp.status === 200) {
             setBaseConhecimento(resp.data[0])
         }
     }
-    async function getDescricaoBC(id:number){
+    async function getDescricaoBC(id: number) {
         const resp = await getOneBaseConhecimento(id)
         if (resp.status === 200) {
             return resp.data[0].nome
         }
         return ''
     }
-    async function getUrl(id:number){
+    async function getUrl(id: number) {
         const resp = await getOneBaseConhecimento(id)
         if (resp.status === 200) {
-            return resp.data[0].url
+            if (resp.data[0])
+                return resp.data[0].url
         }
         return ''
     }
@@ -40,12 +41,13 @@ export function useBaseConhecimento(id_baseconhecimento:string){
         }
 
     }, [id_baseconhecimento])
-    return {recuperarOneBaseConhecimento,
+    return {
+        recuperarOneBaseConhecimento,
         recuperarTodosBaseConhecimento,
-        allBaseConhecimento,baseconhecimento,
-         setBaseConhecimento,
-         getDescricaoBC,
-         getUrl
-        }
-    
+        allBaseConhecimento, baseconhecimento,
+        setBaseConhecimento,
+        getDescricaoBC,
+        getUrl
+    }
+
 }
