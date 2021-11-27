@@ -49,14 +49,15 @@ export function useQuestion({ questionId, handleClose }: props) {
     async function updateQuestion() {
         if (ValidQuestion(Questions, answers)) {
             const answerNew = answers.filter(answer => answer.status === 'AB')
-            const linksNew = links.filter(answer => answer.status === 'AB')
+            const linksNew = links.filter(links => links.status === 'AB')
             if (answerNew.length !== 0)
                 postAnswer(answerNew)
 
-            if (linksNew.length !== 0)
+            if (linksNew.length !== 0){
+                linksNew.map(value=>value.id_perguntas=parseInt(questionId))
                 postLinks(linksNew)
+            }
 
-            Questions.link = links
             const resp = putQuestionsAnswer(parseInt(questionId), Questions)
             if (await resp) {
                 alert("Questões atualizadas com Sucesso!")

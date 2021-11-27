@@ -17,7 +17,9 @@ export function useLinks({id_perguntas,links,setLinks}:typePropsLinks) {
 
 
     async function handleAddLinks(e: FormEvent, id_midias: string) {
+        
         e.preventDefault();
+        
         if (id_midias !== "") {
             const dados = await getDescricaoBC(parseInt(id_midias))
             const newLinks: typeLinks = { id_midias: parseInt(id_midias), dados, id_links: countLinks++,status:'AB' }

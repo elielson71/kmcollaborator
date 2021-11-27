@@ -98,7 +98,7 @@ return (
                     <Grid className={classes.card} item xs={4}>
                         <Card key={key} className={classes.root} component='button' variant='outlined'>
                             <CardContent className={classes.content}>
-                                <Typography className={classes.typo} variant='h6'>{value.id_midia+''+value.dados}</Typography>
+                                <Typography className={classes.typo} variant='h6'>{value.dados}</Typography>
                             </CardContent>
                             <CardActions >
                                 <Button fullWidth color='primary' variant='outlined' onClick={() => abrirLink(value.id_midia)} >Visualizar</Button>
