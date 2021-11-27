@@ -19,9 +19,10 @@ export function useBaseConhecimento(id_baseconhecimento: string) {
         return ''
     }
     async function getUrl(id: number) {
+        
         const resp = await getOneBaseConhecimento(id)
         if (resp.status === 200) {
-            if (resp.data[0])
+            //if (resp.data[0])
                 return resp.data[0].url
         }
         return ''

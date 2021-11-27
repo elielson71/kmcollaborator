@@ -77,8 +77,7 @@ export function LinksAvaliacoes({ avaliacaoId, handleClose, mostrax }: props) {
     const { getUrl } = useBaseConhecimento('')
     //const [url, setUrl] = useState('')
     async function abrirLink(id: number) {
-        const url = await getUrl(id)
-        
+        const url = await getUrl(id)        
         if (url)
             window.open(process.env.REACT_APP_TYPE_LOCAL==='PRO'?'https://'+url:`${process.env.REACT_APP_API_URL}/midias/${url}`)
     }
@@ -99,7 +98,7 @@ return (
                     <Grid className={classes.card} item xs={4}>
                         <Card key={key} className={classes.root} component='button' variant='outlined'>
                             <CardContent className={classes.content}>
-                                <Typography className={classes.typo} variant='h6'>{value.dados}</Typography>
+                                <Typography className={classes.typo} variant='h6'>{value.id_midia+''+value.dados}</Typography>
                             </CardContent>
                             <CardActions >
                                 <Button fullWidth color='primary' variant='outlined' onClick={() => abrirLink(value.id_midia)} >Visualizar</Button>
