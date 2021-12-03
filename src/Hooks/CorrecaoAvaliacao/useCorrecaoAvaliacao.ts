@@ -30,7 +30,12 @@ export function useCorrecaoAvaliacao(correcaoId: number) {
 
     }
     const podeFinalizar = useCallback(() => {
-        return dataQ.every(item => item.nota === null || item.nota === undefined) || dataQ.length!==dataQuestions.length
+        let unique = [] as  any
+        dataQ.forEach(e=>{
+            if(!unique.includes(e.id_perguntas))
+                unique.push(e.id_perguntas)
+        })
+        return dataQ.every(item => item.nota === null || item.nota === undefined) || unique.length!==dataQuestions.length
     }, [dataQ])
 
     useEffect(() => {

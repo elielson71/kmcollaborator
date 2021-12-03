@@ -84,7 +84,7 @@ export function LinksAvaliacoes({ avaliacaoId, handleClose, mostrax }: props) {
 
 
 return (
-
+    
     <Grid className={!mostrax ? classes.mostrax : ''}>
         <Grid className={classes.content}>
             <Grid container justifyContent="center" className={classes.msg}>
@@ -109,5 +109,6 @@ return (
             </Grid>
         </Grid>
     </Grid>
+                
 )
 }

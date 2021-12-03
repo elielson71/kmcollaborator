@@ -57,7 +57,7 @@ export function useQuestion({ questionId, handleClose }: props) {
                 linksNew.map(value=>value.id_perguntas=parseInt(questionId))
                 postLinks(linksNew)
             }
-
+            
             const resp = putQuestionsAnswer(parseInt(questionId), Questions)
             if (await resp) {
                 alert("Questões atualizadas com Sucesso!")
