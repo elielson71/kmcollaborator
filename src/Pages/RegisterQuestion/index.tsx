@@ -1,18 +1,12 @@
 import './styles.scss'
 import { AnswerInput, ButtonIcon, ListAnswerDiv } from "../../components/componetsStypes";
 import { QuestionInfo } from "../../components/QuestionInfo";
-import { useParams } from "react-router-dom";
-
 import { Radio, Container, Grid, Button, Card, CardHeader, CardContent, RadioGroup, FormControlLabel } from '@material-ui/core/';
-import { MenuItens } from "../../components/MenuItens";
 import { Save } from "@material-ui/icons";
 import { useQuestion } from '../../Hooks/Question/useQuestion';
 import { useStyles } from './styles';
 import { AdicionarMidia } from '../../components/AdicionarMidia';
 
-type QuestionParams = {
-    id: string
-}
 type props ={
     id_avaliacao:string
     questionId:string

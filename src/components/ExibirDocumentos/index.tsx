@@ -3,7 +3,7 @@ import { Button, Grid, IconButton, Paper } from "@material-ui/core";
 import { Delete, OpenInNew } from "@material-ui/icons";
 import { useBaseConhecimento } from "../../Hooks/BaseConhecimento/useBaseConhecimento";
 import { deleteBaseConhecimento, deleteBaseConhecimentoPro } from "../../service/BaseConhecimento";
-import storage from "../../service/farebase";
+import storage from "../../service/firebase";
 import { useStyles } from "./styles";
 
 type props = {

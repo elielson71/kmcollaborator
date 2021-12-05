@@ -1,7 +1,7 @@
 import { Button, Grid, Modal, Paper, Typography } from "@material-ui/core";
 import { FormEvent, useState } from "react";
 import { api } from "../../service/Api";
-import storage from "../../service/farebase";
+import storage from "../../service/firebase";
 import PermissionComponent from "../PermissionComponent";
 import { useStyles } from "./styles";
 type props = {
