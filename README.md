@@ -11,8 +11,8 @@ Esse software foi desenvolvido como um projeto de trabalho de conclução de Cur
 ## 💻Para utilização do Projeto
  1.  Precisa do NodeJs Instalado
  2.  Faça o Clone do projeto na sua maquina
- 3. Execute `npm install`
- 4. Excute o comando `npm start` e o sistema sistema estará rodando
+ 3.  Execute `npm install`
+ 4.  Excute o comando `npm start` e o sistema sistema estará rodando
 
 Estará roadando em desenvolvimento no seguinte link:
  [http://localhost:3000](http://localhost:3000)
